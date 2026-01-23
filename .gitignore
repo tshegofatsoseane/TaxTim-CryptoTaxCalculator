@@ -1,0 +1,64 @@
+####################################
+# OS / Editor
+####################################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+####################################
+# Environment files (SECRETS)
+####################################
+.env
+.env.*
+!.env.example
+
+####################################
+# Laravel / PHP
+####################################
+backend/vendor/
+backend/node_modules/
+
+backend/storage/*.key
+backend/storage/app/*
+!backend/storage/app/.gitignore
+
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+!backend/storage/framework/.gitignore
+
+backend/storage/logs/*
+!backend/storage/logs/.gitignore
+
+backend/bootstrap/cache/*
+!backend/bootstrap/cache/.gitignore
+
+####################################
+# Composer
+####################################
+backend/composer.lock
+
+####################################
+# React / Vite
+####################################
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+!.env.example
+
+####################################
+# Logs
+####################################
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+####################################
+# Misc
+####################################
+*.log
