@@ -4,9 +4,9 @@ A SARS-compliant crypto capital gains calculator using FIFO multi-balance accoun
 
 **Tech stack**
 
-- Laravel (PHP) – API backend
-- React (Vite) – frontend UI
-- Stateless calculation engine (no database)
+- Laravel (PHP) – API backend  
+- React (Vite) – frontend UI  
+- Stateless calculation engine (no database)  
 
 ---
 
@@ -31,13 +31,20 @@ crypto-calculator/
 - Node.js **18+**
 - npm
 
-Optional (recommended):
+---
 
-- Docker
+## 1. Clone the repository
+
+From your terminal, run:
+
+```bash
+git clone https://github.com/tshegofatsoseane/TaxTim-CryptoTaxCalculator
+cd TaxTim-CryptoTaxCalculator
+```
 
 ---
 
-## 1. Install prerequisites
+## 2. Install prerequisites
 
 ### macOS
 
@@ -53,7 +60,7 @@ Install required tools:
 brew install php composer node
 ```
 
-Verify:
+Verify installation:
 
 ```bash
 php -v
@@ -68,25 +75,25 @@ npm -v
 
 #### PHP
 
-1. Download PHP from https://windows.php.net/download
-2. Extract and add PHP to your **PATH**
+1. Download PHP from [windows.php.net/download](https://windows.php.net/download)  
+2. Extract and add PHP to your **PATH**  
 3. Enable extensions in `php.ini`:
    ```
-   bcmath
-   mbstring
-   openssl
-   json
-   ctype
-   ```
+bcmath
+mbstring
+openssl
+json
+ctype
+```
 
 #### Composer
 
-- Download installer from https://getcomposer.org/download/
+- Download installer from [getcomposer.org/download](https://getcomposer.org/download/)  
 - Ensure “Add to PATH” is enabled
 
 #### Node.js
 
-- Download LTS from https://nodejs.org/
+- Download LTS from [nodejs.org](https://nodejs.org/)  
 
 Verify (Command Prompt or PowerShell):
 
@@ -99,7 +106,7 @@ npm -v
 
 ---
 
-## 2. Backend setup (Laravel)
+## 3. Backend setup (Laravel)
 
 From the project root:
 
@@ -152,7 +159,37 @@ http://127.0.0.1:8000
 
 ---
 
-## 3. Architecture notes
+## 4. Frontend setup (React + Vite)
+
+From the project root:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Frontend URL (Vite will display this in terminal):
+
+```
+http://localhost:5173
+```
+
+> Make sure the backend server is running so the frontend can fetch data correctly.
+
+---
+
+## 5. Architecture notes
 
 - All tax logic lives in:
   ```
@@ -164,7 +201,7 @@ http://127.0.0.1:8000
 
 ---
 
-## 4. Disclaimer
+## 6. Disclaimer
 
 This tool assists with crypto tax calculations but does not replace professional tax advice.  
 Final responsibility remains with the taxpayer.
