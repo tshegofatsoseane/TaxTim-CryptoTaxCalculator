@@ -25,7 +25,6 @@ Route::get('/test-parser', function () {
         // Log to Laravel's log file
         Log::info('Parsed Transactions:', ['transactions' => $transactions]);
         
-        // Also return as JSON to see in browser
         return response()->json([
             'success' => true,
             'count' => count($transactions),
@@ -52,7 +51,6 @@ Route::get('/test-fifo', function () {
 2025-05-05 10:00:00	TRADE	BTC	0.133333333	ETH	10	2000";
 
     try {
-        // Step 1: Parse the transactions
         $parser = new TransactionParser();
         $transactions = $parser->parse($excelData);
         
@@ -61,8 +59,7 @@ Route::get('/test-fifo', function () {
         foreach ($transactions as $i => $txn) {
             Log::info("Transaction " . ($i + 1) . ": {$txn->type} - {$txn->date->format('Y-m-d')} - {$txn->sellCoin} to {$txn->buyCoin}");
         }
-        
-        // Step 2: Run FIFO calculations
+
         $calculator = new FIFOCalculator();
         $results = $calculator->calculate($transactions);
         
