@@ -1,9 +1,11 @@
 import './App.css'
 
 function App() {
-
   return (
-    <div className="App"></div>
+    <div id="root">
+      <h1>TaxTim Crypto Tax Calculator</h1>
+      <p>Vite + React is working 🎉</p>
+    </div>
   )
 }
 
