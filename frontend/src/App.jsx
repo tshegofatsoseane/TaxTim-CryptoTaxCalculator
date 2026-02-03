@@ -1,12 +1,9 @@
 import './App.css'
-
+import BaseCostHoldings from './components/BaseCostHoldings'
 function App() {
-  return (
-    <div id="root">
-      <h1>TaxTim Crypto Tax Calculator</h1>
-      <p>Vite + React is working 🎉</p>
-    </div>
-  )
+return <div className="App">
+  <BaseCostHoldings />
+</div>
 }
 
 export default App
