@@ -1,10 +1,12 @@
 import './App.css'
+import Header from './components/Header/Header'
+import HowItWorks from './components/HowItWorks/HowItWorks'
 
 function App() {
   return (
     <div id="root">
-      <h1>TaxTim Crypto Tax Calculator</h1>
-      <p>Vite + React is working 🎉</p>
+      <Header/>
+      <HowItWorks/>
     </div>
   )
 }
