@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
+/**
+ * @group Crypto Tax API
+ *
+ * APIs for calculating crypto taxes, getting balances, validating transactions, and health check.
+ */
 class CryptoTaxController extends Controller
 {
     private TransactionParser $parser;
@@ -22,10 +27,29 @@ class CryptoTaxController extends Controller
     }
 
     /**
-     * Calculate crypto taxes from pasted transaction data
-     * 
-     * @param Request $request
-     * @return JsonResponse
+     * Calculate crypto taxes
+     *
+     * Calculate full tax report based on transaction history.
+     *
+     * @bodyParam transactions string required Pasted transaction data. Example: "buy 1 BTC @ 20000 on 2025-01-01"
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "message": "Tax calculations completed successfully",
+     *   "data": {
+     *     "transactions": [...],
+     *     "currentBalances": {...},
+     *     "capitalGainEvents": [...],
+     *     "taxYearSummaries": [...],
+     *     "baseCostsByTaxYear": [...]
+     *   },
+     *   "metadata": {
+     *     "transactionCount": 12,
+     *     "capitalGainEventCount": 4,
+     *     "coinsTracked": ["BTC","ETH"],
+     *     "taxYearsCovered": [2025,2026]
+     *   }
+     * }
      */
     public function calculate(Request $request): JsonResponse
     {
@@ -89,10 +113,18 @@ class CryptoTaxController extends Controller
     }
 
     /**
-     * Get current balances only (lightweight endpoint)
-     * 
-     * @param Request $request
-     * @return JsonResponse
+     * Get current balances
+     *
+     * Returns only current balances without full tax calculations.
+     *
+     * @bodyParam transactions string required Pasted transaction data. Example: "buy 1 BTC @ 20000 on 2025-01-01"
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "data": {
+     *     "balances": {"BTC": 2.5, "ETH": 10}
+     *   }
+     * }
      */
     public function getBalances(Request $request): JsonResponse
     {
@@ -134,10 +166,23 @@ class CryptoTaxController extends Controller
     }
 
     /**
-     * Get tax summary for a specific tax year
-     * 
-     * @param Request $request
-     * @return JsonResponse
+     * Get tax year summary
+     *
+     * Returns capital gains, base costs, and events for a specific tax year.
+     *
+     * @bodyParam transactions string required Pasted transaction data.
+     * @bodyParam taxYear integer required Tax year to summarize. Example: 2025
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "data": {
+     *     "taxYear": 2025,
+     *     "summary": {...},
+     *     "baseCosts": {...},
+     *     "events": [...],
+     *     "eventCount": 3
+     *   }
+     * }
      */
     public function getTaxYearSummary(Request $request): JsonResponse
     {
@@ -179,7 +224,7 @@ class CryptoTaxController extends Controller
 
             // Get events for this tax year
             $events = collect($results['capitalGainEvents'])
-                ->filter(function($event) use ($requestedTaxYear) {
+                ->filter(function ($event) use ($requestedTaxYear) {
                     return $event['taxYear'] === $requestedTaxYear;
                 })
                 ->values()
@@ -211,11 +256,22 @@ class CryptoTaxController extends Controller
     }
 
     /**
-     * Validate transaction data without calculating
-     * Useful for frontend validation before submission
-     * 
-     * @param Request $request
-     * @return JsonResponse
+     * Validate transactions
+     *
+     * Checks transaction data for correctness without calculating taxes.
+     *
+     * @bodyParam transactions string required Pasted transaction data.
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "message": "Transactions are valid",
+     *   "data": {
+     *     "transactionCount": 12,
+     *     "dateRange": {"earliest":"2025-01-01","latest":"2025-12-31"},
+     *     "transactionTypes": {"BUY":5,"SELL":7,"TRADE":0},
+     *     "coinsInvolved": ["BTC","ETH"]
+     *   }
+     * }
      */
     public function validateTransactions(Request $request): JsonResponse
     {
@@ -259,9 +315,22 @@ class CryptoTaxController extends Controller
     }
 
     /**
-     * Health check endpoint
-     * 
-     * @return JsonResponse
+     * Health check
+     *
+     * Check if the Crypto Tax API is running.
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "message": "Crypto Tax Calculator API is running",
+     *   "version": "1.0.0",
+     *   "endpoints": {
+     *       "POST /api/crypto-tax/calculate": "Calculate full tax report",
+     *       "POST /api/crypto-tax/balances": "Get current balances only",
+     *       "POST /api/crypto-tax/tax-year": "Get specific tax year summary",
+     *       "POST /api/crypto-tax/validate": "Validate transactions without calculating",
+     *       "GET /api/crypto-tax/health": "Health check"
+     *   }
+     * }
      */
     public function health(): JsonResponse
     {
@@ -285,7 +354,7 @@ class CryptoTaxController extends Controller
      */
     private function formatTransactionsForDisplay(array $transactions): array
     {
-        return array_map(function($transaction, $index) {
+        return array_map(function ($transaction, $index) {
             return [
                 'index' => $index + 1,
                 'date' => $transaction->date->format('Y-m-d H:i:s'),
@@ -305,7 +374,7 @@ class CryptoTaxController extends Controller
      */
     private function extractTaxYears(array $summaries): array
     {
-        return array_map(function($summary) {
+        return array_map(function ($summary) {
             return $summary['taxYear'];
         }, $summaries);
     }
@@ -316,13 +385,13 @@ class CryptoTaxController extends Controller
     private function getTransactionTypeCounts(array $transactions): array
     {
         $counts = ['BUY' => 0, 'SELL' => 0, 'TRADE' => 0];
-        
+
         foreach ($transactions as $transaction) {
             if (isset($counts[$transaction->type])) {
                 $counts[$transaction->type]++;
             }
         }
-        
+
         return $counts;
     }
 
@@ -332,7 +401,7 @@ class CryptoTaxController extends Controller
     private function getUniqueCoins(array $transactions): array
     {
         $coins = [];
-        
+
         foreach ($transactions as $transaction) {
             if ($transaction->sellCoin !== 'ZAR') {
                 $coins[$transaction->sellCoin] = true;
@@ -341,7 +410,7 @@ class CryptoTaxController extends Controller
                 $coins[$transaction->buyCoin] = true;
             }
         }
-        
+
         return array_keys($coins);
     }
 }
