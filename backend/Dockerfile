@@ -1,34 +1,34 @@
-# Use PHP 8.4 FPM
+# PHP 8.4 FPM base
 FROM php:8.4-fpm
 
-# Set working directory
 WORKDIR /var/www
 
-# Install system dependencies
+# Install system dependencies + nginx
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libzip-dev \
-    curl \
-    zip \
-    bash \
-    && docker-php-ext-install zip
+    git unzip curl zip bash nginx libzip-dev \
+    && docker-php-ext-install zip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy Composer from official image
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy Laravel project
+# Copy Laravel app
 COPY . .
 
-# Install PHP dependencies
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
+# Permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 775 storage bootstrap/cache
 
-# Expose PHP-FPM port (internal)
-EXPOSE 9000
+# Copy nginx config + start script
+COPY docker/nginx/render.conf /etc/nginx/sites-available/default
 
-# Start PHP-FPM
-CMD ["php-fpm"]
+COPY docker/nginx/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Render will route traffic to $PORT (usually 10000)
+EXPOSE 10000
+
+CMD ["/start.sh"]
