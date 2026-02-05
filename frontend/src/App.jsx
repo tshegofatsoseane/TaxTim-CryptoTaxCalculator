@@ -1,12 +1,10 @@
 import './App.css'
-import Header from './components/Header/Header'
-import HowItWorks from './components/HowItWorks/HowItWorks'
+import Transactions from './components/Transactions/Transactions'
 
 function App() {
   return (
     <div id="root">
-      <Header/>
-      <HowItWorks/>
+      <Transactions/>
     </div>
   )
 }

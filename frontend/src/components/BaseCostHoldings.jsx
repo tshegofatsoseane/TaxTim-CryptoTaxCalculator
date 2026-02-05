@@ -1,54 +1,126 @@
-import React from 'react';
-import './BaseCostHoldings.css'; // We'll create this CSS file
+import React, { useState, useEffect } from 'react';
+import './BaseCostHoldings.css';
+import Transactions from './Transactions/Transactions';
 
-const BaseCostHoldings = () => {
-  // Data for the tables
-  const tablesData = [
-    {
-      title: "Base costs as at 1 March 2023",
-      columns: ["Coin", "Quantity Held", "Base Cost (ZAR)"],
-      data: [
-        { coin: "BTC", quantity: "0.431", baseCost: "R22,140" },
-        { coin: "ETH", quantity: "0.489", baseCost: "R26,599" },
-        { coin: "USDT", quantity: "700", baseCost: "R12,998" }
-      ],
-      total: "R61,737",
-      note: null
-    },
-    {
-      title: "Base costs as at 1 March 2024",
-      columns: ["Coin", "Capital Gains", "Base Cost (ZAR)"],
-      data: [
-        { coin: "BTC", quantity: "0.062", baseCost: "R3,410" },
-        { coin: "SOL", quantity: "93,661", baseCost: "R14,820" },
-        { coin: "USDT", quantity: "699", baseCost: "R699" }
-      ],
-      total: "R18,929",
-      note: null
-    },
-    {
-      title: "Base costs as at 1 March 2023",
-      columns: ["Coin", "Quantity Held", "Base Cost (ZAR)"],
-      data: [
-        { coin: "BTC", quantity: "0.062", baseCost: "R3,410" },
-        { coin: "SOL", quantity: "93,661", baseCost: "R14,820" },
-        { coin: "USDT", quantity: "699", baseCost: "R699" }
-      ],
-      total: "R61,737",
-      note: null
-    },
-    {
-      title: "2025 Tax Year",
-      columns: ["Coin", "Quantity Held", "Base Cost (ZAR)"],
-      data: [
-        { coin: "BTC", quantity: "0.062", baseCost: "R3,410" },
-        { coin: "SOL", quantity: "-640", baseCost: "-R640" },
-        { coin: "USDT", quantity: "699", baseCost: "R699" }
-      ],
-      total: "R1,250",
-      note: null
+const BaseCostHoldings = ({ transactions }) => {
+  const [tablesData, setTablesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBaseCosts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch('/crypto-tax/calculate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            transactions: transactions
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Transform the API response into the format needed for the tables
+        const transformedData = transformApiDataToTables(data);
+        setTablesData(transformedData);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching base costs:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (transactions) {
+      fetchBaseCosts();
     }
-  ];
+  }, [transactions]);
+
+  // Transform API response to match table structure
+  const transformApiDataToTables = (apiData) => {
+    if (!apiData.baseCostsByYear) return [];
+    
+    return apiData.baseCostsByYear.map(yearData => ({
+      title: yearData.title || `Base costs as at ${yearData.date}`,
+      columns: ["Coin", "Quantity Held", "Base Cost (ZAR)"],
+      data: yearData.holdings?.map(holding => ({
+        coin: holding.coin,
+        quantity: holding.quantity,
+        baseCost: formatCurrency(holding.baseCost)
+      })) || [],
+      total: formatCurrency(yearData.totalBaseCost),
+      note: yearData.note || null
+    }));
+  };
+
+  const formatCurrency = (amount) => {
+    if (amount === null || amount === undefined) return 'R0';
+    const formatted = Math.abs(amount).toLocaleString('en-ZA', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+    return amount < 0 ? `-R${formatted}` : `R${formatted}`;
+  };
+
+  const handleDownloadCSV = () => {
+    // Generate CSV from tablesData
+    let csvContent = '';
+    
+    tablesData.forEach(table => {
+      csvContent += `${table.title}\n`;
+      csvContent += `${table.columns.join(',')}\n`;
+      
+      table.data.forEach(row => {
+        csvContent += `${row.coin},${row.quantity},${row.baseCost}\n`;
+      });
+      
+      csvContent += `Total,${table.total}\n\n`;
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'base-costs.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  if (loading) {
+    return (
+      <div className="base-cost-container">
+        <div className="loading-state">Loading base costs...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="base-cost-container">
+        <div className="error-state">
+          <p>Error loading base costs: {error}</p>
+          <button onClick={() => window.location.reload()}>Retry</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!tablesData.length) {
+    return (
+      <div className="base-cost-container">
+        <div className="empty-state">No base cost data available.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="base-cost-container">
@@ -104,7 +176,7 @@ const BaseCostHoldings = () => {
       </div>
 
       <div className="download-section">
-        <button className="download-btn">
+        <button className="download-btn" onClick={handleDownloadCSV}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="7 10 12 15 17 10" />
