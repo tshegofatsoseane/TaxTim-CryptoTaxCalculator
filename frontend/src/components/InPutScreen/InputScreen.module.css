@@ -4,19 +4,25 @@
   padding: 40px 20px;
 }
 
+/* Page layout */
 .content {
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
 }
 
-/* Paste Section */
+/* Paste Section (left) */
 .pasteSection {
   background: white;
   border-radius: 16px;
   padding: 48px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  margin-bottom: 40px;
   position: relative;
+
+  flex: 1;
+  min-width: 0;
 }
 
 .mainTitle {
@@ -35,10 +41,11 @@
   max-width: 600px;
 }
 
-/* Input Wrapper */
+/* Input box area */
 .inputWrapper {
-  position: relative;
-  margin-bottom: 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
 }
 
 .inputArea {
@@ -47,24 +54,11 @@
   border-radius: 12px;
   padding: 24px;
   min-height: 400px;
-  position: relative;
+
   display: flex;
   flex-direction: column;
-}
-
-.tablePlaceholder {
-  position: absolute;
-  top: 50%;
-  right: 40px;
-  transform: translateY(-50%);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.clipboardIllustration {
-  width: 320px;
-  height: auto;
-  opacity: 0.9;
+  flex: 1;
+  position: relative;
 }
 
 .excelTextarea {
@@ -73,18 +67,16 @@
   background: transparent;
   border: none;
   outline: none;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 14px;
   color: #2d3748;
   resize: vertical;
   padding: 12px;
-  position: relative;
-  z-index: 2;
 }
 
 .excelTextarea::placeholder {
   color: #a0aec0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .excelTextarea:disabled {
@@ -107,6 +99,32 @@
 
 .columnHeaders span {
   text-align: left;
+}
+
+/* Right-side image */
+.rightVisual {
+  flex: 0 0 auto;
+  width: min(360px, 30vw);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  position: sticky;
+  top: 100px;        /* matches .content margin-top */
+  padding-top: 16px; /* breathing room under header */
+}
+
+.clipboardIllustration {
+  width: 200%;
+  max-width: 860px;
+  height: auto;
+  display: block;
+  opacity: 0.95;
+  margin-left: 100px;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.12));
 }
 
 /* Submit Button */
@@ -155,56 +173,21 @@
   font-size: 14px;
 }
 
-/* How It Works Section */
-.howItWorksSection {
-  background: white;
-  border-radius: 16px;
-  padding: 40px 48px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+/* Responsive */
+@media (max-width: 900px) {
+  .content {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .rightVisual {
+    position: static;
+    width: min(420px, 90vw);
+    margin: 0 auto;
+    padding-top: 0;
+  }
 }
 
-.howItWorksTitle {
-  font-size: 24px;
-  font-weight: 700;
-  color: #5a6c7d;
-  margin: 0 0 32px 0;
-}
-
-.stepsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
-}
-
-.stepItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.stepNumber {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, #2c7a7b 0%, #319795 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 16px;
-}
-
-.stepText {
-  margin: 0;
-  color: #5a6c7d;
-  font-size: 15px;
-  line-height: 1.6;
-  padding-top: 4px;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
   .pasteSection {
     padding: 32px 24px;
@@ -218,21 +201,8 @@
     font-size: 15px;
   }
 
-  .clipboardIllustration {
-    width: 200px;
-    right: 20px;
-  }
-
   .columnHeaders {
     display: none;
-  }
-
-  .stepsList {
-    grid-template-columns: 1fr;
-  }
-
-  .howItWorksSection {
-    padding: 32px 24px;
   }
 }
 
@@ -247,10 +217,6 @@
 
   .mainTitle {
     font-size: 24px;
-  }
-
-  .tablePlaceholder {
-    display: none;
   }
 
   .submitTransactionsBtn {

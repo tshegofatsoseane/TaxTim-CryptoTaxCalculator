@@ -1,0 +1,218 @@
+/* src/components/BaseCosts/BaseCosts.module.css */
+.page {
+  background: #f6f7f9;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.header { margin-bottom: 14px; }
+
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  color: #111827;
+}
+
+.sub {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); } }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardYear {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.cardRange {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.bigNumber {
+  font-size: 14px;
+  font-weight: 900;
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+.preview {
+  border-top: 1px dashed #eef0f3;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.previewRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  gap: 12px;
+}
+
+.previewVals {
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.coinSym { font-weight: 700; color: #111827; }
+
+.moreCoins {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.primaryBtn {
+  width: 100%;
+  border: none;
+  background: #0d9488;
+  color: #fff;
+  font-weight: 650;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.primaryBtn:hover { filter: brightness(0.96); }
+
+.ghostBtn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: #0f766e;
+  font-weight: 650;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+.ghostBtn:hover {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.12);
+}
+
+.tableCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.tableHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.tableTitle { font-weight: 800; color: #111827; font-size: 13px; }
+.tableMeta { color: #6b7280; font-size: 12px; }
+
+.tableWrap { overflow-x: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table thead th {
+  background: #f9fafb;
+  color: #6b7280;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef0f3;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f3f5;
+}
+.table tbody tr:hover td { background: #fbfcfd; }
+
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.coinStrong { font-weight: 800; color: #111827; }
+.muted { color: #6b7280; }
+
+tfoot td {
+  background: #fafafa;
+  border-top: 1px solid #eef0f3;
+}
+
+.footLabel { font-weight: 800; color: #111827; }
+.footValue { font-weight: 900; }
+
+.helperText {
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #6b7280;
+  border-top: 1px solid #eef0f3;
+}
+
+.emptyCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.emptyIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(13,148,136,.12);
+  color: #0f766e;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.emptyTitle { font-weight: 800; color: #111827; }
+.emptyText { color: #6b7280; font-size: 13px; margin-top: 2px; }

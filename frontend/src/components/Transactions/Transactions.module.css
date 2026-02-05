@@ -1,0 +1,729 @@
+.page {
+  background: #f6f7f9;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.header {
+  margin-bottom: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  color: #111827;
+}
+
+.sub {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.sectionCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  margin-bottom: 12px;
+}
+
+.sectionTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.sectionTitle {
+  font-weight: 800;
+  color: #111827;
+  font-size: 13px;
+}
+
+.sectionMeta {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.balanceGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 12px 14px 14px 14px;
+}
+
+@media (max-width: 1100px) {
+  .balanceGrid {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .balanceGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.balanceCard {
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fbfcfd;
+}
+
+.balanceCoin {
+  font-weight: 900;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.balanceRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  padding: 3px 0;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+@media (max-width: 760px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filterLabel {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 650;
+}
+
+.select,
+.input {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  outline: none;
+}
+
+.select:focus,
+.input:focus {
+  border-color: rgba(13, 148, 136, 0.45);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+}
+
+.tableCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.tableHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.tableTitle {
+  font-weight: 800;
+  color: #111827;
+  font-size: 13px;
+}
+
+.tableMeta {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table thead th {
+  background: #f9fafb;
+  color: #6b7280;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef0f3;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: top;
+}
+
+.row:hover td {
+  background: #fbfcfd;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-variant-numeric: tabular-nums;
+  color: #111827;
+}
+
+.coinStrong {
+  font-weight: 800;
+  color: #111827;
+}
+
+.chevCell {
+  width: 30px;
+}
+
+.chevBtn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.chevBtn:hover {
+  background: #f9fafb;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-weight: 750;
+  font-size: 11px;
+  border: 1px solid transparent;
+}
+.pillBuy {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  border-color: rgba(59, 130, 246, 0.18);
+}
+.pillSell {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.22);
+}
+.pillTrade {
+  background: rgba(13, 148, 136, 0.12);
+  color: #0f766e;
+  border-color: rgba(13, 148, 136, 0.22);
+}
+.pillDefault {
+  background: #f3f4f6;
+  color: #111827;
+  border-color: #e5e7eb;
+}
+
+.expandRow td {
+  background: #fbfcfd;
+}
+
+.detailBox {
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+}
+
+.detailTitle {
+  font-weight: 900;
+  color: #111827;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .detailGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detailLabel {
+  color: #6b7280;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.lotsWrap {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+.lotsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.lotsTable th {
+  text-align: left;
+  padding: 8px 10px;
+  background: #f9fafb;
+  border-bottom: 1px solid #eef0f3;
+  color: #6b7280;
+  font-weight: 750;
+}
+
+.lotsTable td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.gainStrip {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 10px;
+  background: #f9fafb;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .gainStrip {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pos {
+  color: #0f766e;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.neg {
+  color: #b42318;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.helperText {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.emptyCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.emptyIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(13, 148, 136, 0.12);
+  color: #0f766e;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.emptyTitle {
+  font-weight: 800;
+  color: #111827;
+}
+
+.emptyText {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.expandAllBtn {
+  background: #0d9488;
+  border: none;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.expandAllBtn:hover {
+  opacity: 0.95;
+}
+
+.mathBox {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.mathTitle {
+  font-weight: 900;
+  color: #111827;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.mathLine {
+  font-size: 13px;
+  color: #111827;
+  margin: 6px 0;
+  line-height: 1.45;
+}
+
+.mathCalc {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f9fafb;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #111827;
+}
+
+.calcRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.calcLeft {
+  color: #374151;
+  font-weight: 700;
+}
+.calcRight {
+  color: #111827;
+  font-weight: 900;
+}
+
+.lotsWrap {
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+.lotsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.lotsTable th {
+  text-align: left;
+  padding: 8px 10px;
+  background: #ffffff;
+  border-bottom: 1px solid #eef0f3;
+  color: #6b7280;
+  font-weight: 800;
+}
+
+.lotsTable td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.hint {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.warn {
+  margin-top: 10px;
+  color: #92400e;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.pos {
+  color: #0f766e;
+}
+.neg {
+  color: #b42318;
+}
+
+.noRows {
+  padding: 14px;
+  color: #6b7280;
+  text-align: left;
+}
+
+/* Default header alignment */
+.table th {
+  text-align: left;
+}
+
+/* Numeric headers align right */
+.table th.num {
+  text-align: right;
+}
+
+/* Numeric cells align right */
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dates / codes look better monospaced */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+/* Coins slightly emphasized */
+.coinStrong {
+  font-weight: 600;
+}
+
+
+.calcRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.calcLeft {
+  text-align: left;
+}
+
+.calcRight {
+  text-align: right;
+}
+
+.calcRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.calcLeft {
+  text-align: left;
+}
+
+.calcRight {
+  text-align: right;
+}
+
+.row {
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.row:hover {
+  background: #f7fbfa; /* very light teal tint */
+}
+
+.row:hover td:first-child .chevBtn {
+  transform: translateX(1px);
+}
+
+/* make expanded block feel connected to the row */
+.expandRow td {
+  padding-top: 0;
+}
+
+.expandRow td > div {
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+}
+
+/* final result emphasis */
+.finalResult {
+  font-weight: 900;
+  font-size: 13px;
+}
+
+/* keep earlier lines calmer */
+.calcLeft {
+  font-weight: 700;
+  color: #374151;
+}
+
+.calcRight {
+  font-weight: 800;
+}
+
+.help {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.helpIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ea;
+  background: #ffffff;
+  color: #0f766e;
+  font-weight: 900;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 28px;
+  width: min(360px, 85vw);
+  background: #111827;
+  color: #fff;
+  padding: 12px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+  z-index: 10;
+}
+
+.helpIcon:hover .tooltip,
+.helpIcon:focus .tooltip {
+  opacity: 1;
+}
+
+.tooltip strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+/* Scroll wrapper so sticky header works */
+.tableWrap {
+  max-height: 520px;
+  overflow: auto;
+  border-radius: 12px;
+}
+
+/* Sticky header */
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Make first column (chevron) also sticky-feeling */
+.table thead th:first-child {
+  width: 40px;
+}
+
+/* Row hover focus */
+.row {
+  transition: background 0.15s ease;
+}
+
+.row:hover {
+  background: #f7fbfa;
+}
+
+/* Expanded row looks connected */
+.expandRow td {
+  padding-top: 0;
+}
+
+.mathBox {
+  margin-top: 10px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  box-shadow: 0 10px 25px rgba(17, 24, 39, 0.08);
+}
+
+/* Lots sub-table scroll + sticky header */
+.lotsWrap {
+  max-height: 260px;
+  overflow: auto;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  margin-top: 10px;
+}
+
+.lotsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lotsTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
