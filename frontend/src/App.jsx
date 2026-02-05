@@ -1,9 +1,14 @@
 import './App.css'
-import BaseCostHoldings from './components/BaseCostHoldings'
+import Header from './components/Header/Header'
+import HowItWorks from './components/HowItWorks/HowItWorks'
+
 function App() {
-return <div className="App">
-  <BaseCostHoldings />
-</div>
+  return (
+    <div id="root">
+      <Header/>
+      <HowItWorks/>
+    </div>
+  )
 }
 
 export default App
