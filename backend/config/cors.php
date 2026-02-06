@@ -8,7 +8,7 @@ return [
 
     'allowed_origins' => [
       'http://localhost:5173',
-      'https://taxtim-crypto-calculator.vercel.app',
+      'https://tax-tim-crypto-tax-calculator-jtod.vercel.app/',
     ],
 
 
