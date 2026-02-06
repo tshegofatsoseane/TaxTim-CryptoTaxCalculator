@@ -1,4 +1,3 @@
-// InputScreen.js
 import { useState } from "react";
 import { parseExcelText } from "../../utils/excelParser.jsx";
 import styles from "./InputScreen.module.css";
@@ -25,26 +24,50 @@ export default function InputScreen({ onCalculate }) {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/crypto-tax/calculate", {
+      const baseUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+      if (!baseUrl) throw new Error("Missing VITE_API_BASE_URL. Please set it in Vercel env vars.");
+
+      const response = await fetch(`${baseUrl}/api/crypto-tax/calculate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ transactions: rawText }),
+    
+        body: JSON.stringify({
+          transactions: rawText, // optional (remove if your API doesn't want it)
+        }),
       });
 
-      const payload = await response.json().catch(() => null);
+ 
+      const contentType = response.headers.get("content-type") || "";
+      const payload = contentType.includes("application/json")
+        ? await response.json().catch(() => null)
+        : await response.text().catch(() => "");
 
-      if (!response.ok || payload?.success === false) {
+      if (!response.ok) {
+
+        const msg =
+          (typeof payload === "object" && payload
+            ? payload?.errors?.transactions?.[0] || payload?.message || payload?.error
+            : typeof payload === "string" && payload
+            ? payload
+            : `API error: ${response.status}`);
+
+        throw new Error(msg);
+      }
+
+      // If API returns { success:false } even with 200
+      if (typeof payload === "object" && payload?.success === false) {
         const msg =
           payload?.errors?.transactions?.[0] ||
           payload?.error ||
           payload?.message ||
-          `API error: ${response.status}`;
+          "Calculation failed.";
         throw new Error(msg);
       }
 
+    
       onCalculate?.(parsed, payload, rawText);
     } catch (err) {
       console.error("Error calculating taxes:", err);
@@ -53,6 +76,7 @@ export default function InputScreen({ onCalculate }) {
       setLoading(false);
     }
   };
+
 
   return (
     <div className={styles.container}>
