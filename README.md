@@ -189,7 +189,81 @@ http://localhost:5173
 
 ---
 
-## 5. Architecture notes
+## 5. Contributing
+
+Contributions are welcome and greatly appreciated! 🎉  
+Thank you for taking the time to help improve this project.
+
+## Getting Started
+
+### 1. Fork the Repository
+Click the **Fork** button on GitHub to create your own copy of this repository.
+
+### 2. Clone Your Fork
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
+
+### 3. Install Dependencies
+```bash
+npm install
+```
+
+### 4. Start the Development Server
+```bash
+npm run dev
+```
+
+## Making Changes
+
+- Create a new branch for your changes:
+  ```bash
+  git checkout -b feature/your-feature-name
+  ```
+
+
+## Commit Guidelines
+
+- Use clear and descriptive commit messages.
+- Keep commits small and focused.
+
+Example:
+```bash
+git commit -m "fix: resolve component re-render issue"
+```
+
+## Submitting a Pull Request
+
+1. Push your branch to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+2. Open a Pull Request targeting the `main` branch.
+3. In your Pull Request description, include:
+   - A clear summary of the changes
+   - The reason for the change
+   - Screenshots or additional context if applicable
+
+## Reporting Issues
+
+If you find a bug or would like to request a feature:
+
+- Check existing issues to avoid duplicates.
+- Provide clear steps to reproduce the issue.
+- Include expected behavior, actual behavior, and screenshots if possible.
+
+## Code of Conduct
+
+By participating in this project, you agree to be respectful and considerate of others.  
+Harassment, abusive behavior, or discrimination will not be tolerated.
+
+---
+
+Thank you for contributing! 🚀
+
+
+## 6. Architecture notes
 
 - All tax logic lives in:
   ```
