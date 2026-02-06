@@ -1,11 +1,14 @@
 /* src/components/BaseCosts/BaseCosts.module.css */
+
 .page {
   background: #f6f7f9;
   padding: 20px;
   border-radius: 12px;
 }
 
-.header { margin-bottom: 14px; }
+.header {
+  margin-bottom: 14px;
+}
 
 .headerRow {
   display: flex;
@@ -35,8 +38,17 @@
   gap: 14px;
   margin-top: 14px;
 }
-@media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); } }
-@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 .card {
   background: #fff;
@@ -47,7 +59,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-height: 190px;
 }
+
 
 .cardTop {
   display: flex;
@@ -84,7 +98,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-height: 72px;
 }
+
 
 .previewRow {
   display: flex;
@@ -99,7 +115,10 @@
   text-align: right;
 }
 
-.coinSym { font-weight: 700; color: #111827; }
+.coinSym {
+  font-weight: 700;
+  color: #111827;
+}
 
 .moreCoins {
   font-size: 12px;
@@ -116,8 +135,13 @@
   border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
+  margin-top: auto;
 }
-.primaryBtn:hover { filter: brightness(0.96); }
+
+.primaryBtn:hover {
+  filter: brightness(0.96);
+}
+
 
 .ghostBtn {
   border: 1px solid transparent;
@@ -128,6 +152,7 @@
   padding: 8px 10px;
   border-radius: 10px;
 }
+
 .ghostBtn:hover {
   background: rgba(13, 148, 136, 0.08);
   border-color: rgba(13, 148, 136, 0.12);
@@ -149,16 +174,31 @@
   border-bottom: 1px solid #eef0f3;
 }
 
-.tableTitle { font-weight: 800; color: #111827; font-size: 13px; }
-.tableMeta { color: #6b7280; font-size: 12px; }
+.tableTitle {
+  font-weight: 800;
+  color: #111827;
+  font-size: 13px;
+}
 
-.tableWrap { overflow-x: auto; }
+.tableMeta {
+  color: #6b7280;
+  font-size: 12px;
+}
 
+.tableWrap {
+  overflow-x: auto;
+}
+
+/* ✅ Alignment fixes */
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  table-layout: fixed;
 }
+
+/* Default header alignment */
 .table thead th {
   background: #f9fafb;
   color: #6b7280;
@@ -167,24 +207,69 @@
   border-bottom: 1px solid #eef0f3;
   font-weight: 750;
   white-space: nowrap;
+  vertical-align: middle;
 }
+
+/* ✅ FORCE numeric header alignment (beats .table thead th specificity) */
+.table thead th.num {
+  text-align: right;
+}
+
+/* Body cells */
 .table td {
   padding: 10px 12px;
   border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.table tbody tr:hover td { background: #fbfcfd; }
 
-.num { text-align: right; font-variant-numeric: tabular-nums; }
-.coinStrong { font-weight: 800; color: #111827; }
-.muted { color: #6b7280; }
+/* ✅ FORCE numeric cell alignment (consistent for all numeric tds) */
+.table td.num {
+  text-align: right;
+}
+
+.table tbody tr:hover td {
+  background: #fbfcfd;
+}
+
+.num {
+  /* keep for general use, but the real enforcement is above */
+  font-variant-numeric: tabular-nums;
+}
+
+.monoNum {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+.money {
+  font-variant-numeric: tabular-nums;
+}
+
+.coinStrong {
+  font-weight: 800;
+  color: #111827;
+}
+
+.muted {
+  color: #6b7280;
+}
 
 tfoot td {
   background: #fafafa;
   border-top: 1px solid #eef0f3;
 }
 
-.footLabel { font-weight: 800; color: #111827; }
-.footValue { font-weight: 900; }
+.footLabel {
+  font-weight: 800;
+  color: #111827;
+}
+
+.footValue {
+  font-weight: 900;
+}
 
 .helperText {
   padding: 12px 14px;
@@ -207,12 +292,20 @@ tfoot td {
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  background: rgba(13,148,136,.12);
+  background: rgba(13, 148, 136, 0.12);
   color: #0f766e;
   display: grid;
   place-items: center;
   font-weight: 900;
 }
 
-.emptyTitle { font-weight: 800; color: #111827; }
-.emptyText { color: #6b7280; font-size: 13px; margin-top: 2px; }
+.emptyTitle {
+  font-weight: 800;
+  color: #111827;
+}
+
+.emptyText {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 2px;
+}

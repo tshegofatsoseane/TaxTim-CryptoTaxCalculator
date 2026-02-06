@@ -1,5 +1,6 @@
+// InputScreen.js
 import { useState } from "react";
-import { parseExcelText } from "../../utils/excelParser.jsx";// ✅ fixed path
+import { parseExcelText } from "../../utils/excelParser.jsx";
 import styles from "./InputScreen.module.css";
 
 export default function InputScreen({ onCalculate }) {
@@ -24,7 +25,6 @@ export default function InputScreen({ onCalculate }) {
     setLoading(true);
 
     try {
-
       const response = await fetch("/api/crypto-tax/calculate", {
         method: "POST",
         headers: {
@@ -45,68 +45,87 @@ export default function InputScreen({ onCalculate }) {
         throw new Error(msg);
       }
 
-      // ✅ pass full payload so App can use payload.data + payload.metadata
-      onCalculate?.(parsed, payload);
+      onCalculate?.(parsed, payload, rawText);
     } catch (err) {
       console.error("Error calculating taxes:", err);
       setError(err?.message || "Failed to calculate taxes. Please try again.");
     } finally {
       setLoading(false);
     }
-    console.log("API_BASE_URL:", import.meta.env.VITE_API_BASE_URL);
-
   };
 
   return (
-    <div className={styles.content}>
-      <div className={styles.pasteSection}>
-        <h1 className={styles.mainTitle}>Paste your transaction data here.</h1>
-        <p className={styles.subtitle}>
-          Copy and paste your cryptocurrency transactions list from Excel to
-          calculate your capital gains tax in seconds.
-        </p>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        {/* Left */}
+        <div className={styles.pasteSection}>
+          <div className={styles.top}>
+            <h1 className={styles.mainTitle}>Paste your transaction data</h1>
+            <p className={styles.subtitle}>
+              Copy & paste your crypto transactions from Excel. We’ll calculate your SARS FIFO
+              gains and show the step-by-step maths.
+            </p>
+          </div>
 
-        <div className={styles.inputWrapper}>
-          <div className={styles.inputArea}>
+          <div className={styles.inputCard}>
+
+
             <textarea
               className={styles.excelTextarea}
-              placeholder="Paste your transactions list from Excel here..."
+              placeholder={`Paste your transactions list here...`}
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
               disabled={loading}
             />
 
-            <div className={styles.columnHeaders}>
-              <span>Date</span>
-              <span>Type</span>
-              <span>Sell Coin</span>
-              <span>Sell Amount</span>
-              <span>Buy Coin</span>
-              <span>Buy Amount</span>
-              <span>Buy Price/Coin</span>
+            {/*  <div className={styles.helperRow}>
+              <div className={styles.helperChip}>Date</div>
+              <div className={styles.helperChip}>Type</div>
+              <div className={styles.helperChip}>Sell coin</div>
+              <div className={styles.helperChip}>Sell amount</div>
+              <div className={styles.helperChip}>Buy coin</div>
+              <div className={styles.helperChip}>Buy amount</div>
+              <div className={styles.helperChip}>Price/coin</div>
+            </div> */}
+          </div>
+
+          {error && (
+            <div className={styles.errorMessage} role="alert">
+              <div className={styles.errorDot}>!</div>
+              <div>{error}</div>
+            </div>
+          )}
+
+          <div className={styles.actions}>
+            <button
+              className={styles.submitTransactionsBtn}
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <span className={styles.spinnerWrap}>
+                  <span className={styles.spinner} />
+                  Processing…
+                </span>
+              ) : (
+                "Calculate"
+              )}
+            </button>
+
+            <div className={styles.smallHint}>
+              Your data stays in your browser.
             </div>
           </div>
         </div>
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
-
-        <div className={styles.submitButtonWrapper}>
-          <button
-            className={styles.submitTransactionsBtn}
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Processing..." : "Submit Transactions"}
-          </button>
+        {/* Right */}
+        <div className={styles.rightVisual}>
+          <img
+            src={`${import.meta.env.BASE_URL}clipboard-image.png`}
+            alt="Paste transactions"
+            className={styles.clipboardIllustration}
+          />
         </div>
-      </div>
-
-      <div className={styles.rightVisual}>
-        <img
-          src={`${import.meta.env.BASE_URL}clipboard-image.png`}
-          alt="Paste transactions"
-          className={styles.clipboardIllustration}
-        />
       </div>
     </div>
   );

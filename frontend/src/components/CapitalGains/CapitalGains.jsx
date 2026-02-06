@@ -158,7 +158,7 @@ export default function CapitalGains({ apiData }) {
         <div className={styles.header}>
           <h2 className={styles.title}>Your capital gains & losses</h2>
           <p className={styles.sub}>
-            These are the amounts you must declare to SARS.
+            These are the gains and losses you must declare to SARS, grouped by tax year.
           </p>
         </div>
 
@@ -187,27 +187,32 @@ export default function CapitalGains({ apiData }) {
                 </div>
 
                 <div className={styles.coinLines}>
-                  {byCoins.slice(0, 4).map((c) => (
-                    <div key={c.coin} className={styles.coinLine}>
-                      <span className={styles.coinSym}>{c.coin}</span>
-                      <span
-                        className={`${styles.coinVal} ${
-                          Number(c.netGain ?? c.totalGain ?? 0) >= 0
-                            ? styles.pos
-                            : styles.neg
-                        }`}
-                      >
-                        {fmtCurrency(c.netGain ?? c.totalGain ?? 0)}
-                      </span>
-                    </div>
-                  ))}
+                  {byCoins.length ? (
+                    <>
+                      {byCoins.slice(0, 4).map((c) => (
+                        <div key={c.coin} className={styles.coinLine}>
+                          <span className={styles.coinSym}>{c.coin}</span>
+                          <span
+                            className={`${styles.coinVal} ${
+                              Number(c.netGain ?? c.totalGain ?? 0) >= 0 ? styles.pos : styles.neg
+                            }`}
+                          >
+                            {fmtCurrency(c.netGain ?? c.totalGain ?? 0)}
+                          </span>
+                        </div>
+                      ))}
 
-                  {byCoins.length > 4 && (
-                    <div className={styles.moreCoins}>
-                      +{byCoins.length - 4} more
+                      {byCoins.length > 4 && (
+                        <div className={styles.moreCoins}>+{byCoins.length - 4} more</div>
+                      )}
+                    </>
+                  ) : (
+                    <div className={styles.muted} style={{ fontSize: 12 }}>
+                      No coin breakdown available for this year.
                     </div>
                   )}
                 </div>
+
 
                 <button
                   className={styles.primaryBtn}
@@ -258,40 +263,52 @@ export default function CapitalGains({ apiData }) {
         </button>
       </div>
 
-      {/* Year summary mini card */}
-      {selectedSummary && (
-        <div className={styles.yearSummary}>
-          <div className={styles.yearSummaryTop}>
-            <div className={styles.yearSummaryLabel}>Total capital gain</div>
-            <div
-              className={`${styles.yearSummaryValue} ${
-                Number(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0) >= 0
-                  ? styles.pos
-                  : styles.neg
-              }`}
-            >
-              {fmtCurrency(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0)}
-            </div>
-          </div>
+              {/* Year summary mini card */}
+        {selectedSummary && (
+          <div className={styles.statementCard}>
 
-          <div className={styles.yearSummaryCoins}>
-            {(selectedSummary.byCoins ?? []).map((c) => (
-              <div key={c.coin} className={styles.yearSummaryCoin}>
-                <span className={styles.coinSym}>{c.coin}</span>
-                <span
-                  className={`${styles.coinVal} ${
-                    Number(c.netGain ?? c.totalGain ?? 0) >= 0
+
+            <div className={styles.statementSection}>
+              <div className={styles.statementSectionTitle}>Summary</div>
+
+              <div className={styles.kvGrid}>
+                <div className={styles.k}>Total capital gain / loss</div>
+                <div
+                  className={`${styles.v} ${
+                    Number(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0) >= 0
                       ? styles.pos
                       : styles.neg
                   }`}
                 >
-                  {fmtCurrency(c.netGain ?? c.totalGain ?? 0)}
-                </span>
+                  {fmtCurrency(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0)}
+                </div>
               </div>
-            ))}
+            </div>
+
+            <div className={styles.statementSection}>
+              <div className={styles.statementSectionTitle}>Breakdown by coin</div>
+
+              <div className={styles.kvGrid}>
+                {(selectedSummary.byCoins ?? []).map((c) => {
+                  const val = Number(c.netGain ?? c.totalGain ?? 0);
+                  return (
+                    <div key={c.coin} className={styles.kvRow}>
+                      <div className={styles.k}>{c.coin}</div>
+                      <div className={`${styles.v} ${val >= 0 ? styles.pos : styles.neg}`}>
+                        {fmtCurrency(val)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className={styles.statementFooter}>
+              Amounts shown in ZAR. Values are calculated using FIFO (oldest coins first).
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
 
       {/* Filters */}
       <div className={styles.filters}>
@@ -471,7 +488,7 @@ export default function CapitalGains({ apiData }) {
                             </div>
 
                             <div className={styles.helperText}>
-                              Tip: Expand any row to see exactly which buy lots were used.
+                             
                             </div>
                           </div>
                         </td>
@@ -494,20 +511,7 @@ export default function CapitalGains({ apiData }) {
       </div>
 
       {/* Done bar */}
-      <div className={styles.doneBar}>
-        <div>
-          <div className={styles.doneTitle}>You’re done!</div>
-          <div className={styles.doneText}>
-            These amounts can now be used in your tax return.
-          </div>
-        </div>
 
-        <div className={styles.doneActions}>
-          <button className={styles.ghostBtn} onClick={() => setSelectedYear(null)}>
-            ← Back to tax years
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 /* src/components/CapitalGains/CapitalGains.module.css */
+
 .page {
   background: #f6f7f9;
   padding: 20px;
@@ -39,10 +40,14 @@
 }
 
 @media (max-width: 1100px) {
-  .grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
+  .grid {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+  }
 }
 @media (max-width: 760px) {
-  .grid { grid-template-columns: 1fr; }
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -82,6 +87,7 @@
   border-radius: 999px;
   background: #f3f4f6;
   color: #111827;
+  font-variant-numeric: tabular-nums;
 }
 
 .coinLines {
@@ -104,8 +110,10 @@
 }
 
 .coinVal {
+  text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
 
 .moreCoins {
   font-size: 12px;
@@ -123,7 +131,9 @@
   padding: 10px 12px;
   cursor: pointer;
 }
-.primaryBtn:hover { filter: brightness(0.96); }
+.primaryBtn:hover {
+  filter: brightness(0.96);
+}
 
 .secondaryBtn {
   border: 1px solid #e5e7eb;
@@ -134,7 +144,9 @@
   font-weight: 600;
   color: #111827;
 }
-.secondaryBtn:hover { background: #f9fafb; }
+.secondaryBtn:hover {
+  background: #f9fafb;
+}
 
 .ghostBtn {
   border: 1px solid transparent;
@@ -162,13 +174,26 @@
 }
 
 @media (max-width: 760px) {
-  .filters { flex-direction: column; align-items: stretch; }
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
-.filterGroup { display: flex; flex-direction: column; gap: 6px; }
-.filterLabel { font-size: 11px; color: #6b7280; font-weight: 650; }
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-.select, .input {
+.filterLabel {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 650;
+}
+
+.select,
+.input {
   border: 1px solid #e5e7eb;
   background: #fff;
   border-radius: 10px;
@@ -176,7 +201,12 @@
   font-size: 13px;
   outline: none;
 }
-.select:focus, .input:focus { border-color: rgba(13,148,136,.45); box-shadow: 0 0 0 4px rgba(13,148,136,.12); }
+
+.select:focus,
+.input:focus {
+  border-color: rgba(13, 148, 136, 0.45);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+}
 
 .tableCard {
   background: #fff;
@@ -194,15 +224,29 @@
   border-bottom: 1px solid #eef0f3;
 }
 
-.tableTitle { font-weight: 750; color: #111827; font-size: 13px; }
-.tableMeta { color: #6b7280; font-size: 12px; }
+.tableTitle {
+  font-weight: 750;
+  color: #111827;
+  font-size: 13px;
+}
 
-.tableWrap { overflow-x: auto; }
+.tableMeta {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+/* ✅ Alignment fix for main table */
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
+
 .table thead th {
   background: #f9fafb;
   color: #6b7280;
@@ -211,19 +255,53 @@
   border-bottom: 1px solid #eef0f3;
   font-weight: 750;
   white-space: nowrap;
+  vertical-align: middle;
 }
+
+/* ✅ FORCE numeric headers right-aligned */
+.table thead th.num {
+  text-align: right;
+}
+
 .table td {
   padding: 10px 12px;
   border-bottom: 1px solid #f1f3f5;
-  vertical-align: top;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.row:hover td { background: #fbfcfd; }
 
-.num { text-align: right; font-variant-numeric: tabular-nums; }
-.mono { font-variant-numeric: tabular-nums; color: #111827; }
-.coinStrong { font-weight: 750; }
+/* ✅ FORCE numeric cells right-aligned */
+.table td.num {
+  text-align: right;
+}
 
-.chevCell { width: 30px; }
+.row:hover td {
+  background: #fbfcfd;
+}
+
+/* Keep as general utility class */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Monospace for date/time */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+  color: #111827;
+}
+
+.coinStrong {
+  font-weight: 750;
+}
+
+.chevCell {
+  width: 44px;
+}
+
 .chevBtn {
   border: 1px solid #e5e7eb;
   background: #fff;
@@ -232,7 +310,9 @@
   border-radius: 8px;
   cursor: pointer;
 }
-.chevBtn:hover { background: #f9fafb; }
+.chevBtn:hover {
+  background: #f9fafb;
+}
 
 .pill {
   display: inline-flex;
@@ -243,12 +323,35 @@
   font-size: 11px;
   border: 1px solid transparent;
 }
-.pillBuy { background: rgba(59,130,246,.10); color: #1d4ed8; border-color: rgba(59,130,246,.18); }
-.pillSell { background: rgba(245,158,11,.12); color: #92400e; border-color: rgba(245,158,11,.22); }
-.pillTrade { background: rgba(13,148,136,.12); color: #0f766e; border-color: rgba(13,148,136,.22); }
-.pillDefault { background: #f3f4f6; color: #111827; border-color: #e5e7eb; }
 
-.expandRow td { background: #fbfcfd; }
+.pillBuy {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  border-color: rgba(59, 130, 246, 0.18);
+}
+
+.pillSell {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.22);
+}
+
+.pillTrade {
+  background: rgba(13, 148, 136, 0.12);
+  color: #0f766e;
+  border-color: rgba(13, 148, 136, 0.22);
+}
+
+.pillDefault {
+  background: #f3f4f6;
+  color: #111827;
+  border-color: #e5e7eb;
+}
+
+.expandRow td {
+  background: #fbfcfd;
+}
+
 .mathBox {
   border: 1px solid #eef0f3;
   border-radius: 12px;
@@ -270,13 +373,23 @@
   margin-bottom: 10px;
   font-size: 12px;
 }
+
 @media (max-width: 900px) {
-  .mathSummary { grid-template-columns: repeat(2, 1fr); }
+  .mathSummary {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (max-width: 520px) {
-  .mathSummary { grid-template-columns: 1fr; }
+  .mathSummary {
+    grid-template-columns: 1fr;
+  }
 }
-.mathLabel { color: #6b7280; font-weight: 700; margin-right: 4px; }
+
+.mathLabel {
+  color: #6b7280;
+  font-weight: 700;
+  margin-right: 4px;
+}
 
 .lotsTitle {
   margin-top: 6px;
@@ -285,13 +398,20 @@
   font-size: 12px;
 }
 
-.lotsWrap { overflow-x: auto; margin-top: 8px; }
+.lotsWrap {
+  overflow-x: auto;
+  margin-top: 8px;
+}
 
+/* ✅ Alignment fix for lots table */
 .lotsTable {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  table-layout: fixed;
 }
+
 .lotsTable th {
   text-align: left;
   padding: 8px 10px;
@@ -299,10 +419,26 @@
   border-bottom: 1px solid #eef0f3;
   color: #6b7280;
   font-weight: 750;
+  white-space: nowrap;
+  vertical-align: middle;
 }
+
+/* ✅ FORCE numeric lots headers right-aligned */
+.lotsTable th.num {
+  text-align: right;
+}
+
 .lotsTable td {
   padding: 8px 10px;
   border-bottom: 1px solid #f1f3f5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ FORCE numeric lots cells right-aligned */
+.lotsTable td.num {
+  text-align: right;
 }
 
 .helperText {
@@ -326,28 +462,52 @@
   gap: 12px;
 }
 
-.yearSummaryLabel { color: #6b7280; font-size: 12px; font-weight: 750; }
-.yearSummaryValue { font-weight: 900; font-size: 14px; }
+.yearSummaryLabel {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.yearSummaryValue {
+  font-weight: 900;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
 
 .yearSummaryCoins {
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(180px, 1fr));
-  gap: 8px 14px;
+  grid-template-columns: 1fr auto;
+  row-gap: 8px;
+  column-gap: 16px;
+  border-top: 1px dashed #eef0f3;
+  padding-top: 10px;
 }
+
+
 @media (max-width: 760px) {
-  .yearSummaryCoins { grid-template-columns: 1fr; }
+  .yearSummaryCoins {
+    grid-template-columns: 1fr;
+  }
 }
+
 .yearSummaryCoin {
-  display: flex;
+  display: contents;
   justify-content: space-between;
   font-size: 12px;
 }
 
-.pos { color: #0f766e; }
-.neg { color: #b42318; }
+.pos {
+  color: #0f766e;
+}
 
-.muted { color: #6b7280; }
+.neg {
+  color: #b42318;
+}
+
+.muted {
+  color: #6b7280;
+}
 
 .emptyCard {
   background: #fff;
@@ -363,15 +523,23 @@
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  background: rgba(13,148,136,.12);
+  background: rgba(13, 148, 136, 0.12);
   color: #0f766e;
   display: grid;
   place-items: center;
   font-weight: 900;
 }
 
-.emptyTitle { font-weight: 800; color: #111827; }
-.emptyText { color: #6b7280; font-size: 13px; margin-top: 2px; }
+.emptyTitle {
+  font-weight: 800;
+  color: #111827;
+}
+
+.emptyText {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 2px;
+}
 
 .doneBar {
   margin-top: 14px;
@@ -391,5 +559,156 @@
   margin-bottom: 3px;
 }
 
-.doneText { font-size: 12px; color: #6b7280; }
-.doneActions { display: flex; gap: 10px; }
+.doneText {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.doneActions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Ensure all cards have consistent vertical structure */
+.card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  /* optional but helps all cards feel same height */
+  min-height: 190px;
+}
+
+/* Give the coin section a "reserved" height so button doesn't jump up */
+.coinLines {
+  border-top: 1px dashed #eef0f3;
+  padding-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  /* key: reserve vertical space */
+  min-height: 72px;
+}
+
+/* Push the button to the bottom of the card */
+.primaryBtn {
+  width: 100%;
+  border: none;
+  background: #0d9488;
+  color: #fff;
+  font-weight: 650;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+
+  /* key: keep button aligned across cards */
+  margin-top: auto;
+}
+
+/* === SARS-style statement card === */
+.statementCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  margin: 10px 0 12px 0;
+}
+
+.statementHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 14px;
+  border-bottom: 1px solid #eef0f3;
+  background: #fafafa;
+}
+
+.statementTitle {
+  font-weight: 900;
+  color: #111827;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.statementSub {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.statementRef {
+  color: #6b7280;
+  font-size: 12px;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.statementSection {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.statementSectionTitle {
+  font-size: 11px;
+  font-weight: 850;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 10px;
+}
+
+/* Key-value layout like SARS statements */
+.kvGrid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
+/* Each kv row spans the grid (so we can map safely) */
+.kvRow {
+  display: contents;
+}
+
+/* Left labels */
+.k {
+  color: #111827;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* Right values */
+.v {
+  text-align: right;
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Footer note like statements */
+.statementFooter {
+  padding: 12px 14px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Already in your file, but ensure it exists */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+
+

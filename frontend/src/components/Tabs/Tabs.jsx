@@ -4,10 +4,10 @@ import styles from "./Tabs.module.css";
 import Transactions from "../Transactions/Transactions";
 import BaseCosts from "../BaseCosts/BaseCosts";
 import CapitalGains from "../CapitalGains/CapitalGains";
-import TaxSummary from "../TaxSummary/TaxSummary";
+/*import TaxSummary from "../TaxSummary/TaxSummary"; */
 import CompletionBanner from "../Completionbanner/CompletionBanner";
 
-function Tabs({ apiData, metadata, parsedText }) {
+function Tabs({ apiData, metadata, parsedText, rawText, onCalculate, onReset }) {
   const [activeTab, setActiveTab] = useState("transactions");
 
   const tabs = [
@@ -28,29 +28,36 @@ function Tabs({ apiData, metadata, parsedText }) {
                 ? styles.tabButtonActive
                 : styles.tabButtonInactive
             }`}
+            type="button"
           >
             {tab.label}
-            {activeTab === tab.id && (
-              <span className={styles.activeIndicator} />
-            )}
+            {activeTab === tab.id && <span className={styles.activeIndicator} />}
           </button>
         ))}
       </div>
 
       <div className={styles.tabContent}>
         {activeTab === "transactions" && (
-          <Transactions apiData={apiData} />
+          <Transactions
+            apiData={apiData}
+            metadata={metadata}
+            parsedText={parsedText}
+            rawText={rawText}
+            onCalculate={onCalculate}
+            onReset={onReset}
+          />
         )}
 
-      {activeTab === "baseCosts" && <BaseCosts apiData={apiData} />}
+        {/* ✅ FIX: actually render BaseCosts */}
+        {activeTab === "baseCosts" && <BaseCosts apiData={apiData} />}
 
-      {activeTab === "capitalGains" && (
-        <>
-          <CapitalGains apiData={apiData} />
-     
-        </>
-      )}
-
+        {activeTab === "capitalGains" && (
+          <>
+            <CapitalGains apiData={apiData} />
+           {/* <TaxSummary apiData={apiData} /> */}
+           
+          </>
+        )}
       </div>
     </div>
   );

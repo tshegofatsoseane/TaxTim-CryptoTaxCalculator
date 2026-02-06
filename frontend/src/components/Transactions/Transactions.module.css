@@ -727,3 +727,638 @@
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
 }
+
+.infoBanner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid #e6f4f1;
+  background: #f2fbf9;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.infoDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #0d9488;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.infoTitle {
+  font-weight: 800;
+  color: #0f766e;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.infoText {
+  color: #334155;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.calcTitle {
+  font-weight: 800;
+  color: #111827;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.calcGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 980px) {
+  .calcGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px) {
+  .calcGrid { grid-template-columns: 1fr; }
+}
+
+.calcItem {
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff;
+}
+
+.calcLabel {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 750;
+  margin-bottom: 6px;
+}
+
+.calcValue {
+  font-size: 12px;
+  font-weight: 750;
+  color: #111827;
+}
+
+/* src/components/Transactions/Transactions.module.css */
+/* Add ONLY the block below at the end of your file */
+
+/* ===== Pretty breakdown (matching CapitalGains) ===== */
+
+.mathHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.mathSub {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Chips */
+.tagChip {
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  font-variant-numeric: tabular-nums;
+}
+.tagChipInfo {
+  background: rgba(59, 130, 246, 0.10);
+  color: #1d4ed8;
+  border-color: rgba(59, 130, 246, 0.20);
+}
+
+.gainChip {
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  font-variant-numeric: tabular-nums;
+}
+.gainChipPos {
+  background: rgba(13, 148, 136, 0.10);
+  color: #0f766e;
+  border-color: rgba(13, 148, 136, 0.22);
+}
+.gainChipNeg {
+  background: rgba(180, 35, 24, 0.10);
+  color: #b42318;
+  border-color: rgba(180, 35, 24, 0.22);
+}
+
+/* Step tiles */
+.stepGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 900px) {
+  .stepGrid { grid-template-columns: 1fr; }
+}
+
+.stepCard {
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid #eef0f3;
+  background: #fbfcfd;
+}
+
+.stepTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.stepBadge {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.stepLabel {
+  font-weight: 850;
+  color: #111827;
+  font-size: 12px;
+}
+
+.stepValue {
+  font-weight: 900;
+  color: #111827;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepCoin {
+  font-weight: 900;
+}
+
+.stepHint {
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* Tile color variants */
+.stepSold {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.18);
+}
+.stepCost {
+  background: rgba(99, 102, 241, 0.07);
+  border-color: rgba(99, 102, 241, 0.16);
+}
+.stepProceeds {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.18);
+}
+.stepBuy {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.18);
+}
+.stepPaid {
+  background: rgba(17, 24, 39, 0.04);
+  border-color: rgba(17, 24, 39, 0.10);
+}
+.stepPrice {
+  background: rgba(16, 185, 129, 0.07);
+  border-color: rgba(16, 185, 129, 0.16);
+}
+
+/* Equation row */
+.equationRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1.2fr;
+  gap: 10px;
+  align-items: stretch;
+  margin: 10px 0 14px 0;
+}
+
+@media (max-width: 900px) {
+  .equationRow { grid-template-columns: 1fr; }
+  .eqOp { display: none; }
+}
+
+.eqBox {
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.eqResult {
+  background: #fafafa;
+}
+
+.eqLabel {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.eqValue {
+  margin-top: 6px;
+  font-weight: 900;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.eqOp {
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 900;
+  color: #6b7280;
+}
+
+/* Lots block + timeline */
+.lotsBlock {
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fbfcfd;
+}
+
+.lotsHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.lotsTitle {
+  font-weight: 900;
+  color: #111827;
+  font-size: 12px;
+}
+
+.lotsMeta {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.lotTimeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lotItem {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  position: relative;
+}
+
+.lotItem:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 28px;
+  bottom: -10px;
+  width: 2px;
+  background: #e5e7eb;
+}
+
+.lotDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #0d9488;
+  margin-top: 4px;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+}
+
+.lotCard {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.lotTopRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.lotDate {
+  font-size: 12px;
+  color: #111827;
+  font-weight: 750;
+}
+
+.lotCost {
+  font-size: 12px;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+.lotGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .lotGrid { grid-template-columns: 1fr; }
+}
+
+.lotKV {
+  border: 1px solid #f1f3f5;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #fbfcfd;
+}
+
+.lotK {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lotV {
+  margin-top: 5px;
+  font-weight: 900;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Optional table toggle */
+.detailsWrap { margin-top: 10px; }
+.detailsSummary {
+  cursor: pointer;
+  font-weight: 800;
+  color: #0f766e;
+  font-size: 12px;
+  user-select: none;
+}
+
+/* Empty lots */
+.emptyLots {
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px dashed #e5e7eb;
+  border-radius: 12px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Cost-lot (BUY) card */
+.lotCreateCard {
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fbfcfd;
+}
+
+.lotCreateTitle {
+  font-weight: 900;
+  color: #111827;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* Key/value grid */
+.kvGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+@media (max-width: 760px) {
+  .kvGrid { grid-template-columns: 1fr; }
+}
+
+.k {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.v {
+  color: #111827;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Compact breakdown overrides ===== */
+
+.mathBox {
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.mathHeader {
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mathTitle {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.mathSub {
+  font-size: 11px;
+  line-height: 1.35;
+  margin-top: 0;
+}
+
+/* Chips smaller */
+.tagChip,
+.gainChip {
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Info banner smaller */
+.infoBanner {
+  padding: 8px 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+.infoDot {
+  width: 8px;
+  height: 8px;
+}
+.infoTitle {
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+.infoText {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* Step cards: tighter + smaller */
+.stepGrid {
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+@media (max-width: 900px) {
+  .stepGrid { grid-template-columns: 1fr; }
+}
+.stepCard {
+  padding: 10px;
+  border-radius: 12px;
+}
+.stepTop {
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.stepBadge {
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+}
+.stepLabel {
+  font-size: 11px;
+}
+.stepValue {
+  font-size: 12px;
+}
+.stepHint {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+/* Equation row: smaller + less height */
+.equationRow {
+  gap: 8px;
+  margin: 8px 0 10px 0;
+}
+.eqBox {
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+.eqLabel {
+  font-size: 10px;
+}
+.eqValue {
+  margin-top: 4px;
+  font-size: 12px;
+}
+.eqOp {
+  font-size: 16px;
+}
+
+/* Lots block: hide the timeline by default and keep it minimal */
+.lotsBlock {
+  padding: 10px;
+  border-radius: 12px;
+}
+.lotsHeader {
+  margin-bottom: 8px;
+}
+.lotsTitle {
+  font-size: 11px;
+}
+.lotsMeta {
+  font-size: 11px;
+}
+
+/* Timeline becomes compact */
+.lotItem {
+  padding: 8px 0;
+  grid-template-columns: 14px 1fr;
+  gap: 8px;
+}
+.lotDot {
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+}
+.lotCard {
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+.lotTopRow {
+  margin-bottom: 6px;
+}
+.lotDate,
+.lotCost {
+  font-size: 11px;
+}
+.lotGrid {
+  gap: 6px;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+}
+@media (max-width: 900px) {
+  .lotGrid { grid-template-columns: 1fr; }
+}
+.lotKV {
+  padding: 7px 8px;
+  border-radius: 10px;
+}
+.lotK {
+  font-size: 10px;
+}
+.lotV {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+/* Details toggle smaller */
+.detailsSummary {
+  font-size: 11px;
+}
+
+/* KV grid smaller */
+.kvGrid {
+  gap: 8px 12px;
+}
+.k {
+  font-size: 11px;
+}
+.v {
+  font-size: 11px;
+}
+
+/* Helper text smaller */
+.helperText {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* Empty lots smaller */
+.emptyLots {
+  padding: 8px 10px;
+  font-size: 11px;
+}

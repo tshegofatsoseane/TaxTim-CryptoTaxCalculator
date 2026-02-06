@@ -1,7 +1,9 @@
-// Transactions.jsx
+// src/components/Transactions/Transactions.jsx
 import React, { useMemo, useState } from "react";
 import styles from "./Transactions.module.css";
+import InputScreen from "../InputScreen/InputScreen";
 
+// ---------- helpers ----------
 const fmtCurrency = (n) => {
   const val = Number(n || 0);
   const formatted = Math.abs(val).toLocaleString("en-ZA", {
@@ -30,7 +32,24 @@ const TypePill = ({ type }) => (
   </span>
 );
 
-export default function Transactions({ apiData }) {
+export default function Transactions({
+  apiData,
+  metadata,
+  rawText,
+  onCalculate,
+  onReset,
+}) {
+  // ✅ If no results yet, show the input screen *inside* this tab
+  if (!apiData) {
+    return (
+      <div className={styles.page}>
+        <InputScreen
+          onCalculate={(parsed, payload, raw) => onCalculate?.(parsed, payload, raw)}
+        />
+      </div>
+    );
+  }
+
   const transactions = apiData?.transactions ?? [];
   const gainEvents = apiData?.capitalGainEvents ?? [];
 
@@ -42,16 +61,16 @@ export default function Transactions({ apiData }) {
   // Expand state
   const [expanded, setExpanded] = useState(() => new Set());
 
-  // Build stable row keys + list for Expand All
   const rowKeys = useMemo(() => {
     return transactions.map((t, idx) => `${t.index ?? idx}-${t.date}-${t.type}`);
   }, [transactions]);
 
-  // Match a transaction to a gain event (SELL/TRADE) by (date, type, soldCoin, soldAmount)
   const eventLookup = useMemo(() => {
     const m = new Map();
     for (const e of gainEvents) {
-      const key = `${e.date}|${e.transactionType}|${e.soldCoin}|${Number(e.soldAmount)}`;
+      const key = `${e.date}|${e.transactionType}|${e.soldCoin}|${Number(
+        e.soldAmount
+      )}`;
       m.set(key, e);
     }
     return m;
@@ -105,30 +124,7 @@ export default function Transactions({ apiData }) {
 
   const expandAll = () => setExpanded(new Set(rowKeys));
   const collapseAll = () => setExpanded(new Set());
-
-  const allExpanded =
-    expanded.size > 0 && rowKeys.every((k) => expanded.has(k));
-
-  if (!apiData) {
-    return (
-      <div className={styles.page}>
-        <h2 className={styles.title}>Transactions</h2>
-        <p className={styles.sub}>
-          Paste your transactions and click <b>Submit Transactions</b> to see
-          results.
-        </p>
-      </div>
-    );
-  }
-
-  if (!transactions.length) {
-    return (
-      <div className={styles.page}>
-        <h2 className={styles.title}>Transactions</h2>
-        <p className={styles.sub}>No transactions returned by the API.</p>
-      </div>
-    );
-  }
+  const allExpanded = expanded.size > 0 && rowKeys.every((k) => expanded.has(k));
 
   return (
     <div className={styles.page}>
@@ -158,17 +154,34 @@ export default function Transactions({ apiData }) {
           </div>
 
           <p className={styles.sub}>
-            Expand a row to see the step-by-step maths SARS FIFO uses (where
-            applicable).
+            Expand a row to see the step-by-step SARS FIFO logic (where applicable).
           </p>
+
+          {metadata?.transactionCount != null && (
+            <p className={styles.sub}>
+              Loaded <b>{metadata.transactionCount}</b> transactions across{" "}
+              <b>{(metadata.coinsTracked ?? []).length}</b> coins.
+            </p>
+          )}
         </div>
 
-        <button
-          className={styles.expandAllBtn}
-          onClick={allExpanded ? collapseAll : expandAll}
-        >
-          {allExpanded ? "Collapse all maths" : "Expand all maths"}
-        </button>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button
+            className={styles.expandAllBtn}
+            onClick={allExpanded ? collapseAll : expandAll}
+          >
+            {allExpanded ? "Collapse all maths" : "Expand all maths"}
+          </button>
+
+          <button
+            className={styles.expandAllBtn}
+            style={{ background: "#111827" }}
+            onClick={() => onReset?.()}
+            title="Paste different transactions"
+          >
+            Paste new transactions
+          </button>
+        </div>
       </div>
 
       {/* Filters */}
@@ -215,7 +228,7 @@ export default function Transactions({ apiData }) {
 
       {/* Table */}
       <div className={styles.tableCard}>
-        <div className={styles.tableHeader}>
+        <div className={styles.tableHeaderRow}>
           <div className={styles.tableTitle}>Transactions</div>
           <div className={styles.tableMeta}>{filtered.length} rows</div>
         </div>
@@ -288,160 +301,366 @@ export default function Transactions({ apiData }) {
                         <td />
                         <td colSpan={8}>
                           <div className={styles.mathBox}>
-                            <div className={styles.mathTitle}>
-                              Maths (step-by-step)
+                            {/* Header */}
+                            <div className={styles.mathHeader}>
+                              <div>
+                                <div className={styles.mathTitle}>
+                                  {t.type === "BUY"
+                                    ? "Buy breakdown (creates a cost lot)"
+                                    : "How SARS calculated this (FIFO)"}
+                                </div>
+                                <div className={styles.mathSub}>
+                                  {t.type === "BUY"
+                                    ? "BUY does not create a capital gain event. It creates a new lot that FIFO may use later."
+                                    : "Oldest coins are used first. Here’s the exact breakdown for this disposal."}
+                                </div>
+                              </div>
+
+                              {t.type === "BUY" ? (
+                                <div
+                                  className={`${styles.tagChip} ${styles.tagChipInfo}`}
+                                >
+                                  No CGT event
+                                </div>
+                              ) : (
+                                <div
+                                  className={`${styles.gainChip} ${
+                                    Number(event?.capitalGain ?? 0) >= 0
+                                      ? styles.gainChipPos
+                                      : styles.gainChipNeg
+                                  }`}
+                                  title="Capital gain/loss for this event"
+                                >
+                                  {Number(event?.capitalGain ?? 0) >= 0
+                                    ? "Gain"
+                                    : "Loss"}
+                                  : <b>{fmtCurrency(event?.capitalGain ?? 0)}</b>
+                                </div>
+                              )}
                             </div>
 
-                            {/* BUY maths */}
+                            {/* BUY */}
                             {t.type === "BUY" && (
                               <>
-                                <div className={styles.mathLine}>
-                                  You bought{" "}
-                                  <b>
-                                    {fmtNum(t.buyAmount, 8)} {t.buyCoin}
-                                  </b>{" "}
-                                  using{" "}
-                                  <b>
-                                    {fmtCurrency(t.sellAmount)} {t.sellCoin}
-                                  </b>
-                                  .
-                                </div>
-
-                                <div className={styles.mathLine}>
-                                  Price per coin:{" "}
-                                  <b>{fmtCurrency(t.buyPricePerCoin)}</b>
-                                </div>
-
-                                <div className={styles.mathCalc}>
-                                  Base cost lot created:
-                                  <div className={styles.calcRow}>
-                                    <span className={styles.calcLeft}>
-                                      {fmtNum(t.buyAmount, 8)} ×{" "}
-                                      {fmtCurrency(t.buyPricePerCoin)}
-                                    </span>
-                                    <span className={styles.calcRight}>
-                                      = {fmtCurrency(t.totalValue)}
-                                    </span>
+                                <div className={styles.infoBanner}>
+                                  <span
+                                    className={styles.infoDot}
+                                    aria-hidden="true"
+                                  />
+                                  <div>
+                                    <div className={styles.infoTitle}>
+                                      BUY does not create a capital gain event
+                                    </div>
+                                    <div className={styles.infoText}>
+                                      SARS calculates capital gains when you{" "}
+                                      <b>SELL</b> or <b>TRADE</b>. This BUY creates a{" "}
+                                      <b>new cost lot</b> (base cost) that FIFO may use
+                                      later.
+                                    </div>
                                   </div>
                                 </div>
 
-                                <div className={styles.hint}>
-                                  (BUY transactions don’t create a capital gain
-                                  event.)
+                                <div className={styles.stepGrid}>
+                                  <div
+                                    className={`${styles.stepCard} ${styles.stepBuy}`}
+                                  >
+                                    <div className={styles.stepTop}>
+                                      <span className={styles.stepBadge}>1</span>
+                                      <div className={styles.stepLabel}>You bought</div>
+                                    </div>
+                                    <div className={styles.stepValue}>
+                                      {fmtNum(t.buyAmount, 8)}{" "}
+                                      <span className={styles.stepCoin}>
+                                        {t.buyCoin}
+                                      </span>
+                                    </div>
+                                    <div className={styles.stepHint}>
+                                      New FIFO lot is created at this quantity.
+                                    </div>
+                                  </div>
+
+                                  <div
+                                    className={`${styles.stepCard} ${styles.stepPaid}`}
+                                  >
+                                    <div className={styles.stepTop}>
+                                      <span className={styles.stepBadge}>2</span>
+                                      <div className={styles.stepLabel}>You paid</div>
+                                    </div>
+                                    <div className={styles.stepValue}>
+                                      {fmtCurrency(t.totalValue)}
+                                    </div>
+                                    <div className={styles.stepHint}>
+                                      This becomes the lot’s total base cost.
+                                    </div>
+                                  </div>
+
+                                  <div
+                                    className={`${styles.stepCard} ${styles.stepPrice}`}
+                                  >
+                                    <div className={styles.stepTop}>
+                                      <span className={styles.stepBadge}>3</span>
+                                      <div className={styles.stepLabel}>
+                                        Price per coin
+                                      </div>
+                                    </div>
+                                    <div className={styles.stepValue}>
+                                      {fmtCurrency(t.buyPricePerCoin)}
+                                    </div>
+                                    <div className={styles.stepHint}>
+                                      Used to compute the base cost lot.
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className={styles.lotCreateCard}>
+                                  <div className={styles.lotCreateTitle}>
+                                    Cost lot created (base cost)
+                                  </div>
+
+                                  <div className={styles.kvGrid}>
+                                    <div className={styles.k}>Buy date</div>
+                                    <div className={`${styles.v} ${styles.mono}`}>
+                                      {t.date}
+                                    </div>
+
+                                    <div className={styles.k}>Quantity</div>
+                                    <div className={`${styles.v} ${styles.mono}`}>
+                                      {fmtNum(t.buyAmount, 8)} {t.buyCoin}
+                                    </div>
+
+                                    <div className={styles.k}>Price per coin</div>
+                                    <div className={`${styles.v} ${styles.mono}`}>
+                                      {fmtCurrency(t.buyPricePerCoin)}
+                                    </div>
+
+                                    <div className={styles.k}>Total base cost</div>
+                                    <div className={`${styles.v} ${styles.mono}`}>
+                                      {fmtCurrency(t.totalValue)}
+                                    </div>
+                                  </div>
+
+                                  <div className={styles.helperText}>
+                                    Later, when you <b>SELL</b> or <b>TRADE</b>, FIFO
+                                    will use your <b>oldest</b> lots first.
+                                  </div>
                                 </div>
                               </>
                             )}
 
-                            {/* SELL/TRADE maths */}
+                            {/* SELL / TRADE */}
                             {(t.type === "SELL" || t.type === "TRADE") && (
                               <>
-                                <div className={styles.mathLine}>
-                                  You disposed of{" "}
-                                  <b>
-                                    {fmtNum(t.sellAmount, 8)} {t.sellCoin}
-                                  </b>{" "}
-                                  and received{" "}
-                                  <b>
-                                    {fmtNum(t.buyAmount, 8)} {t.buyCoin}
-                                  </b>
-                                  .
+                                <div className={styles.stepGrid}>
+                                  <div
+                                    className={`${styles.stepCard} ${styles.stepSold}`}
+                                  >
+                                    <div className={styles.stepTop}>
+                                      <span className={styles.stepBadge}>1</span>
+                                      <div className={styles.stepLabel}>Disposed</div>
+                                    </div>
+                                    <div className={styles.stepValue}>
+                                      {fmtNum(t.sellAmount, 8)}{" "}
+                                      <span className={styles.stepCoin}>
+                                        {t.sellCoin}
+                                      </span>
+                                    </div>
+                                    <div className={styles.stepHint}>
+                                      What SARS treats as “sold/traded away”.
+                                    </div>
+                                  </div>
+
+                                  <div
+                                    className={`${styles.stepCard} ${styles.stepProceeds}`}
+                                  >
+                                    <div className={styles.stepTop}>
+                                      <span className={styles.stepBadge}>2</span>
+                                      <div className={styles.stepLabel}>Proceeds</div>
+                                    </div>
+                                    <div className={styles.stepValue}>
+                                      {fmtCurrency(event?.proceeds ?? t.totalValue)}
+                                    </div>
+                                    <div className={styles.stepHint}>
+                                      Value received for the disposal.
+                                    </div>
+                                  </div>
+
+                                  <div
+                                    className={`${styles.stepCard} ${styles.stepCost}`}
+                                  >
+                                    <div className={styles.stepTop}>
+                                      <span className={styles.stepBadge}>3</span>
+                                      <div className={styles.stepLabel}>Cost basis</div>
+                                    </div>
+                                    <div className={styles.stepValue}>
+                                      {fmtCurrency(event?.costBasis ?? 0)}
+                                    </div>
+                                    <div className={styles.stepHint}>
+                                      Sum of FIFO lot costs (oldest first).
+                                    </div>
+                                  </div>
                                 </div>
 
-                                <div className={styles.mathLine}>
-                                  Proceeds (value received) ={" "}
-                                  <b>
-                                    {fmtCurrency(event?.proceeds ?? t.totalValue)}
-                                  </b>
-                                </div>
+                                {event && (
+                                  <div className={styles.equationRow}>
+                                    <div className={styles.eqBox}>
+                                      <div className={styles.eqLabel}>Proceeds</div>
+                                      <div className={styles.eqValue}>
+                                        {fmtCurrency(event.proceeds)}
+                                      </div>
+                                    </div>
+
+                                    <div className={styles.eqOp}>−</div>
+
+                                    <div className={styles.eqBox}>
+                                      <div className={styles.eqLabel}>Cost basis</div>
+                                      <div className={styles.eqValue}>
+                                        {fmtCurrency(event.costBasis)}
+                                      </div>
+                                    </div>
+
+                                    <div className={styles.eqOp}>=</div>
+
+                                    <div
+                                      className={`${styles.eqBox} ${styles.eqResult}`}
+                                    >
+                                      <div className={styles.eqLabel}>Gain / Loss</div>
+                                      <div
+                                        className={`${styles.eqValue} ${
+                                          Number(event.capitalGain) >= 0
+                                            ? styles.pos
+                                            : styles.neg
+                                        }`}
+                                      >
+                                        {fmtCurrency(event.capitalGain)}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
 
                                 {event ? (
-                                  <>
-                                    <div className={styles.mathCalc}>
-                                      FIFO lots used (oldest first):
-                                      <div className={styles.lotsWrap}>
-                                        <table className={styles.lotsTable}>
-                                          <thead>
-                                            <tr>
-                                              <th>Lot buy date</th>
-                                              <th className={styles.num}>
-                                                Amount used
-                                              </th>
-                                              <th className={styles.num}>
-                                                Buy price/coin
-                                              </th>
-                                              <th className={styles.num}>
-                                                Cost
-                                              </th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            {(event.lotsUsed ?? []).map(
-                                              (lot, i) => (
-                                                <tr key={i}>
-                                                  <td className={styles.mono}>
-                                                    {lot.priceDate?.date ?? "-"}
-                                                  </td>
-                                                  <td
-                                                    className={`${styles.num} ${styles.mono}`}
-                                                  >
-                                                    {fmtNum(lot.amount, 8)}
-                                                  </td>
-                                                  <td
-                                                    className={`${styles.num} ${styles.mono}`}
-                                                  >
-                                                    {fmtCurrency(lot.pricePerCoin)}
-                                                  </td>
-                                                  <td
-                                                    className={`${styles.num} ${styles.mono}`}
-                                                  >
-                                                    {fmtCurrency(lot.costBasis)}
-                                                  </td>
+                                  <div className={styles.lotsBlock}>
+                                    <div className={styles.lotsHeader}>
+                                      <div className={styles.lotsTitle}>
+                                        FIFO lots used (oldest first)
+                                      </div>
+                                      <div className={styles.lotsMeta}>
+                                        {(event.lotsUsed ?? []).length
+                                          ? `${(event.lotsUsed ?? []).length} lots`
+                                          : "No lots provided"}
+                                      </div>
+                                    </div>
+
+                                    {(event.lotsUsed ?? []).length ? (
+                                      <>
+                                        <ol className={styles.lotTimeline}>
+                                          {(event.lotsUsed ?? []).map((lot, i) => (
+                                            <li key={i} className={styles.lotItem}>
+                                              <div className={styles.lotDot} />
+                                              <div className={styles.lotCard}>
+                                                <div className={styles.lotTopRow}>
+                                                  <div className={styles.lotDate}>
+                                                    Buy date:{" "}
+                                                    <span className={styles.mono}>
+                                                      {lot.priceDate?.date ?? "-"}
+                                                    </span>
+                                                  </div>
+                                                  <div className={styles.lotCost}>
+                                                    Cost:{" "}
+                                                    <b>{fmtCurrency(lot.costBasis)}</b>
+                                                  </div>
+                                                </div>
+
+                                                <div className={styles.lotGrid}>
+                                                  <div className={styles.lotKV}>
+                                                    <div className={styles.lotK}>
+                                                      Amount used
+                                                    </div>
+                                                    <div
+                                                      className={`${styles.lotV} ${styles.mono}`}
+                                                    >
+                                                      {fmtNum(lot.amount, 8)}
+                                                    </div>
+                                                  </div>
+
+                                                  <div className={styles.lotKV}>
+                                                    <div className={styles.lotK}>
+                                                      Buy price / coin
+                                                    </div>
+                                                    <div
+                                                      className={`${styles.lotV} ${styles.mono}`}
+                                                    >
+                                                      {fmtCurrency(lot.pricePerCoin)}
+                                                    </div>
+                                                  </div>
+
+                                                  <div className={styles.lotKV}>
+                                                    <div className={styles.lotK}>
+                                                      Lot cost
+                                                    </div>
+                                                    <div
+                                                      className={`${styles.lotV} ${styles.mono}`}
+                                                    >
+                                                      {fmtCurrency(lot.costBasis)}
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </li>
+                                          ))}
+                                        </ol>
+
+                                        <details className={styles.detailsWrap}>
+                                          <summary className={styles.detailsSummary}>
+                                            Show as table
+                                          </summary>
+                                          <div className={styles.lotsWrap}>
+                                            <table className={styles.lotsTable}>
+                                              <thead>
+                                                <tr>
+                                                  <th>Lot buy date</th>
+                                                  <th className={styles.num}>Amount used</th>
+                                                  <th className={styles.num}>Buy price/coin</th>
+                                                  <th className={styles.num}>Cost</th>
                                                 </tr>
-                                              )
-                                            )}
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
+                                              </thead>
+                                              <tbody>
+                                                {(event.lotsUsed ?? []).map((lot, i) => (
+                                                  <tr key={i}>
+                                                    <td className={styles.mono}>
+                                                      {lot.priceDate?.date ?? "-"}
+                                                    </td>
+                                                    <td className={`${styles.num} ${styles.mono}`}>
+                                                      {fmtNum(lot.amount, 8)}
+                                                    </td>
+                                                    <td className={`${styles.num} ${styles.mono}`}>
+                                                      {fmtCurrency(lot.pricePerCoin)}
+                                                    </td>
+                                                    <td className={`${styles.num} ${styles.mono}`}>
+                                                      {fmtCurrency(lot.costBasis)}
+                                                    </td>
+                                                  </tr>
+                                                ))}
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </details>
 
-                                    <div className={styles.mathCalc}>
-                                      Cost basis (sum of lot costs):
-                                      <div className={styles.calcRow}>
-                                        <span className={styles.calcLeft}>
-                                          Total cost basis
-                                        </span>
-                                        <span className={styles.calcRight}>
-                                          = {fmtCurrency(event.costBasis)}
-                                        </span>
+                                        <div className={styles.helperText}>
+                                          FIFO means your <b>oldest</b> buys are used first.{" "}
+                                          Tax year: <b>{event.taxYear}</b>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <div className={styles.emptyLots}>
+                                        We don’t have a FIFO lot breakdown for this row, but totals
+                                        above are still shown.
                                       </div>
-                                    </div>
-
-                                    <div className={styles.mathCalc}>
-                                      Capital gain / loss:
-                                      <div className={styles.calcRow}>
-                                        <span className={styles.calcLeft}>
-                                          Proceeds − Cost basis
-                                        </span>
-                                        <span
-                                          className={`${styles.calcRight} ${styles.finalResult} ${
-                                            Number(event.capitalGain) >= 0
-                                              ? styles.pos
-                                              : styles.neg
-                                          }`}
-                                        >
-                                          = {fmtCurrency(event.capitalGain)}
-                                        </span>
-                                      </div>
-                                      <div className={styles.hint}>
-                                        Tax year: <b>{event.taxYear}</b>
-                                      </div>
-                                    </div>
-                                  </>
+                                    )}
+                                  </div>
                                 ) : (
                                   <div className={styles.warn}>
-                                    We couldn’t match this row to a FIFO gain
-                                    event (this can happen if multiple trades
-                                    share the exact same timestamp/amount).
+                                    We couldn’t match this row to a FIFO gain event (this can happen if
+                                    multiple trades share the exact same timestamp/amount).
                                   </div>
                                 )}
                               </>

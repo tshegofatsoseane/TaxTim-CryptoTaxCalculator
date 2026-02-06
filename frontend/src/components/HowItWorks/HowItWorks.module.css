@@ -1,20 +1,21 @@
 .container {
-  /*width: 100%;*/
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: 1.5rem;
+  max-width: 60rem;              /* ⬇ slightly narrower */
+  margin: 24px auto 0 auto;      /* ⬇ tighter spacing */
+  padding: 12px 16px;            /* ⬇ smaller padding */
 }
 
 .heading {
   color: #6b7280;
-  font-size: 1.125rem;
-  margin-bottom: 1.5rem;
+  font-size: 0.95rem;            /* ⬇ from 1.125rem */
+  font-weight: 600;
+  margin-bottom: 12px;           /* ⬇ tighter */
 }
 
+/* Grid */
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 12px;                     /* ⬇ from 1.5rem */
 }
 
 @media (min-width: 768px) {
@@ -23,32 +24,38 @@
   }
 }
 
+/* Individual step */
 .step {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 10px;                     /* ⬇ tighter */
 }
 
+/* Number badge */
 .badge {
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
+  width: 22px;                   /* ⬇ from 32px */
+  height: 22px;
+  border-radius: 999px;
   background-color: #0d9488;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 0.7rem;             /* ⬇ smaller */
 }
 
+/* Text */
 .text {
   color: #4b5563;
-  font-size: 0.875rem;
-  padding-top: 0.25rem;
+  font-size: 0.8rem;             /* ⬇ from 0.875rem */
+  line-height: 1.4;
+  padding-top: 1px;
 }
 
+/* Highlight */
 .highlight {
-  font-weight: 600;
+  font-weight: 700;
+  color: #0f766e;                /* subtle emphasis */
 }

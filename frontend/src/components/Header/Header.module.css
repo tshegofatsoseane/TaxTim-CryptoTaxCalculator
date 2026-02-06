@@ -78,3 +78,5 @@ margin-top: 0%;
   font-weight: 400;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
+
+:root { --header-h: 130px; }
