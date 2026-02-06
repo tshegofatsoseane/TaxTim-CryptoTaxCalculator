@@ -1,7 +1,7 @@
 // src/components/Transactions/Transactions.jsx
 import React, { useMemo, useState } from "react";
 import styles from "./Transactions.module.css";
-import InputScreen from "../InputScreen/InputScreen";
+import InputScreen from "../InPutScreen/InPutScreen";
 
 // ---------- helpers ----------
 const fmtCurrency = (n) => {
