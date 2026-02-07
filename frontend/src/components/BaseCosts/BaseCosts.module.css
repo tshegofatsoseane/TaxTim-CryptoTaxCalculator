@@ -1,5 +1,3 @@
-/* src/components/BaseCosts/BaseCosts.module.css */
-
 .page {
   background: #f6f7f9;
   padding: 20px;
@@ -210,7 +208,7 @@
   vertical-align: middle;
 }
 
-/* ✅ FORCE numeric header alignment (beats .table thead th specificity) */
+/*  FORCE numeric header alignment (beats .table thead th specificity) */
 .table thead th.num {
   text-align: right;
 }
@@ -225,7 +223,7 @@
   text-overflow: ellipsis;
 }
 
-/* ✅ FORCE numeric cell alignment (consistent for all numeric tds) */
+/* FORCE numeric cell alignment (consistent for all numeric tds) */
 .table td.num {
   text-align: right;
 }
@@ -235,7 +233,6 @@
 }
 
 .num {
-  /* keep for general use, but the real enforcement is above */
   font-variant-numeric: tabular-nums;
 }
 

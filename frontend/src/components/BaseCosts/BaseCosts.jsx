@@ -1,4 +1,3 @@
-// src/components/BaseCosts/BaseCosts.jsx
 import { useMemo, useState } from "react";
 import styles from "./BaseCosts.module.css";
 

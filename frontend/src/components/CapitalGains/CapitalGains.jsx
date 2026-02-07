@@ -1,4 +1,3 @@
-// src/components/CapitalGains/CapitalGains.jsx
 import { useMemo, useState } from "react";
 import styles from "./CapitalGains.module.css";
 import CompletionBanner from "../Completionbanner/CompletionBanner";
@@ -89,6 +88,57 @@ export default function CapitalGains({ apiData }) {
     return rows;
   }, [events, selectedYear, coinFilter, query]);
 
+
+    // ✅ Capital gain to declare to SARS (all years + breakdown + simple equation parts)
+    const declaration = useMemo(() => {
+      const byYear = new Map();
+
+      if (Array.isArray(summaries) && summaries.length) {
+        for (const s of summaries) {
+          const y = Number(s.taxYear);
+          if (!y) continue;
+          const net = Number(s.netGain ?? s.totalGain ?? 0);
+          byYear.set(y, net);
+        }
+      } else {
+        for (const e of events) {
+          const y = Number(e.taxYear);
+          if (!y) continue;
+          const g = Number(e.capitalGain ?? 0);
+          byYear.set(y, (byYear.get(y) ?? 0) + g);
+        }
+      }
+
+      const yearList = Array.from(byYear.keys()).sort((a, b) => b - a);
+
+      // Net total across years
+      const total = yearList.reduce((acc, y) => acc + (byYear.get(y) ?? 0), 0);
+
+      // For the “equation” UI:
+      const totalGains = yearList.reduce((acc, y) => {
+        const v = Number(byYear.get(y) ?? 0);
+        return v > 0 ? acc + v : acc;
+      }, 0);
+
+      const totalLossesAbs = yearList.reduce((acc, y) => {
+        const v = Number(byYear.get(y) ?? 0);
+        return v < 0 ? acc + Math.abs(v) : acc;
+      }, 0);
+
+      const selectedVal = selectedYear
+        ? Number(byYear.get(Number(selectedYear)) ?? 0)
+        : null;
+
+      return {
+        yearList,
+        byYear,
+        total,
+        selectedVal,
+        totalGains,
+        totalLossesAbs,
+      };
+    }, [summaries, events, selectedYear]);
+
   const selectedSummary = useMemo(() => {
     if (!selectedYear) return null;
     return summaries.find((s) => Number(s.taxYear) === Number(selectedYear));
@@ -102,6 +152,7 @@ export default function CapitalGains({ apiData }) {
       return next;
     });
   };
+
 
   const setAllRowsExpanded = (on) => {
     setExpandAll(on);
@@ -157,6 +208,33 @@ export default function CapitalGains({ apiData }) {
       <div className={styles.page}>
         <div className={styles.header}>
           <h2 className={styles.title}>Your capital gains & losses</h2>
+
+        {/* ✅ Big “declare to SARS” card */}
+        {!!declaration.yearList.length && (
+          <div className={styles.sarsHero} role="note" aria-label="Capital gain to declare to SARS">
+            <div className={styles.sarsHeroTop}>
+              <div>
+                <div className={styles.sarsHeroTitle}>Capital gain to declare to SARS</div>
+                <div className={styles.sarsHeroSub}>
+                  This is the total capital gain/loss you enter on your <b>SARS return</b>.
+                </div>
+              </div>
+
+              <div
+                className={`${styles.sarsPillAmount} ${
+                  declaration.total >= 0 ? styles.pos : styles.neg
+                }`}
+              >
+                {fmtCurrency(declaration.total)}
+              </div>
+            </div>
+
+            <div className={styles.sarsHeroMeta}>
+              Amounts shown in ZAR. This is <b>not</b> your final tax payable.
+            </div>
+          </div>
+        )}
+
           <p className={styles.sub}>
             These are the gains and losses you must declare to SARS, grouped by tax year.
           </p>
@@ -272,7 +350,7 @@ export default function CapitalGains({ apiData }) {
               <div className={styles.statementSectionTitle}>Summary</div>
 
               <div className={styles.kvGrid}>
-                <div className={styles.k}>Total capital gain / loss</div>
+                <div className={styles.k}>This is what you declare to SARS</div>
                 <div
                   className={`${styles.v} ${
                     Number(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0) >= 0
