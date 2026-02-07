@@ -228,14 +228,14 @@
 
 .clipboardIllustration {
   width: 500%;
-  max-width: 1000px;      /* slightly smaller */
+  max-width: 1000px;
   height: auto;
   opacity: 0.95;
 
   user-select: none;
   pointer-events: none;
 
-  filter: none;          /* ⛔ remove floating shadow */
+  filter: none; 
 }
 
 

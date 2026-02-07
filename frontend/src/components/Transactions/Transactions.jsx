@@ -74,7 +74,7 @@ export default function Transactions({
     return m;
   }, [gainEvents]);
 
-    // ✅ Capital gain to declare to SARS (by year + total + "current" year value)
+    // Capital gain to declare to SARS (by year + total + "current" year value)
     const declaration = useMemo(() => {
       const byYear = new Map();
 
@@ -222,7 +222,7 @@ export default function Transactions({
         </div>
       </div>
 
-      {/* ✅ “Your SARS number for this tax year” */}
+      {/* SARS number for this tax year” */}
       <div
         className={styles.sarsYearHero}
         role="note"

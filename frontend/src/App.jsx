@@ -5,10 +5,10 @@ import Header from "./components/Header/Header";
 import HowItWorks from "./components/HowItWorks/HowItWorks";
 
 function App() {
-  const [apiData, setApiData] = useState(null);      // payload.data
-  const [metadata, setMetadata] = useState(null);    // payload.metadata
-  const [parsedText, setParsedText] = useState([]);  // parseExcelText output
-  const [rawText, setRawText] = useState("");        // keep raw input text for re-runs
+  const [apiData, setApiData] = useState(null);
+  const [metadata, setMetadata] = useState(null);
+  const [parsedText, setParsedText] = useState([]);
+  const [rawText, setRawText] = useState("");
 
   const handleCalculate = (parsed, payload, raw) => {
     setParsedText(parsed);
