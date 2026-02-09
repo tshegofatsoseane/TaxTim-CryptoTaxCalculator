@@ -1,3 +1,5 @@
+/* Transactions.module.css */
+
 .page {
   background: #f6f7f9;
   padding: 20px;
@@ -76,30 +78,197 @@
   font-size: 12px;
 }
 
-/* Buttons */
-.expandAllBtn {
-  background: #0d9488;
-  border: none;
-  color: #fff;
-  padding: 10px 14px;
+/* Quiet button (Replace transactions) */
+.ghostBtn {
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  color: #111827;
+  padding: 10px 12px;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
 }
-.expandAllBtn:hover {
-  opacity: 0.95;
+.ghostBtn:hover {
+  background: #f9fafb;
 }
 
-/* Filters */
+/* ===== SARS hero ===== */
+.sarsYearHero {
+  background: linear-gradient(180deg, #ffffff 0%, #f6fbfa 100%);
+  border: 1px solid rgba(13, 148, 136, 0.16);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(16, 24, 40, 0.06);
+  margin: 10px 0 12px 0;
+}
+
+.sarsYearHeroTop {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(238, 240, 243, 0.9);
+  background: rgba(15, 118, 110, 0.05);
+}
+
+.sarsYearTitle {
+  font-weight: 900;
+  color: #111827;
+  font-size: 13px;
+}
+
+.sarsYearBig {
+  padding: 14px;
+  font-size: 28px;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sarsYearBullets {
+  margin: 0;
+  padding: 0 14px 14px 28px;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Colors */
+.pos {
+  color: #0f766e;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.neg {
+  color: #b42318;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.muted {
+  color: #6b7280;
+}
+
+/* ===== Equation ===== */
+.declareEquation {
+  padding: 0 14px 14px 14px;
+}
+
+.declareEquationLabelRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 0;
+}
+
+.declareEquationLabel {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.helpIconInline {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ea;
+  background: #ffffff;
+  color: #0f766e;
+  font-weight: 950;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  position: relative;
+  transform: translateY(1px);
+}
+.helpIconInline:hover .tooltip,
+.helpIconInline:focus .tooltip {
+  opacity: 1;
+}
+
+.declareEquationRow {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.declareTerm {
+  min-width: 200px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 10px 10px 10px 10px;
+}
+
+.declareTermTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.declareTermYear {
+  font-size: 11px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.declareTermVal {
+  font-size: 12px;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.declareTermSub {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+.declareTermMeta {
+  color: #6b7280;
+  font-weight: 800;
+}
+
+.declareOp {
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+  color: #94a3b8;
+  padding: 0 2px;
+}
+
+.declareTotalPill {
+  min-width: 210px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.declareTotalLabel {
+  font-size: 11px;
+  font-weight: 950;
+  color: #111827;
+}
+.declareTotalVal {
+  font-size: 12px;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ===== Filters ===== */
 .filters {
   display: flex;
   gap: 12px;
   align-items: flex-end;
-  background: #fff;
-  border: 1px solid #eef0f3;
-  border-radius: 12px;
-  padding: 12px;
-  margin: 12px 0;
 }
 @media (max-width: 760px) {
   .filters {
@@ -107,16 +276,19 @@
     align-items: stretch;
   }
 }
+
 .filterGroup {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
+
 .filterLabel {
   font-size: 11px;
   color: #6b7280;
   font-weight: 650;
 }
+
 .select,
 .input {
   border: 1px solid #e5e7eb;
@@ -126,46 +298,140 @@
   font-size: 13px;
   outline: none;
 }
+
 .select:focus,
 .input:focus {
   border-color: rgba(13, 148, 136, 0.45);
   box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
 }
 
-/* Table */
-.tableCard {
+/* Segmented type pills */
+.typeSeg {
+  display: inline-flex;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.segBtn {
+  border: none;
+  background: transparent;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #64748b;
+  cursor: pointer;
+}
+.segBtn:hover {
+  background: #f9fafb;
+}
+.segActive {
+  background: rgba(13, 148, 136, 0.1);
+  color: #0f766e;
+}
+
+.clearLink {
+  border: none;
+  background: transparent;
+  color: #0f766e;
+  font-weight: 900;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+.clearLink:hover {
+  text-decoration: underline;
+}
+
+/* ✅ Combined transactions card */
+.txCard {
   background: #fff;
   border: 1px solid #eef0f3;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
-.tableHeaderRow {
+
+/* Header (replaces tableHeaderRow for this card) */
+.txHeader {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   padding: 12px 14px;
   border-bottom: 1px solid #eef0f3;
 }
-.tableTitle {
-  font-weight: 800;
+
+.txTitle {
+  font-weight: 900;
   color: #111827;
   font-size: 13px;
 }
-.tableMeta {
+
+.txMeta {
   color: #6b7280;
   font-size: 12px;
+  margin-top: 2px;
 }
+
+.txHeaderRight {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Filters area inside the card */
+.txFilters {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef0f3;
+  background: #fbfcfd;
+}
+
+.txFiltersTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.txFiltersLabel {
+  font-size: 11px;
+  font-weight: 900;
+  color: #64748b;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Buttons */
+.smallBtn {
+  background: #0d9488;
+  border: none;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 12px;
+}
+.smallBtn:hover {
+  opacity: 0.95;
+}
+
+/* ===== Table ===== */
 .tableWrap {
   max-height: 520px;
   overflow: auto;
-  border-radius: 12px;
 }
+
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  /* Optional stability:
+     Uncomment if you want columns to stop shifting.
+     table-layout: fixed;
+  */
 }
+
 .table thead th {
   position: sticky;
   top: 0;
@@ -174,53 +440,79 @@
   border-bottom: 1px solid #e5e7eb;
   color: #6b7280;
   text-align: left;
-  padding: 10px 12px;
-  font-weight: 750;
+  padding: 12px 12px;
+  font-weight: 850;
   white-space: nowrap;
 }
+
+/* Right-align numeric headers */
 .thNum {
   text-align: right;
 }
+
 .table td {
-  padding: 10px 12px;
+  padding: 12px 12px;
   border-bottom: 1px solid #f1f3f5;
   vertical-align: top;
 }
-.row {
-  transition: background 0.15s ease;
-}
-.row:hover td {
-  background: #f7fbfa;
+
+/* zebra striping (light) */
+.table tbody tr:nth-child(odd) td {
+  background: #fcfdfd;
 }
 
-.chevCell {
-  width: 30px;
-}
-.chevBtn {
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.chevBtn:hover {
-  background: #f9fafb;
+.row:hover td {
+  background: #f7fbfa;
 }
 
 .num {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
   font-variant-numeric: tabular-nums;
   color: #111827;
 }
+
 .coinStrong {
-  font-weight: 800;
+  font-weight: 900;
   color: #111827;
+}
+
+/* ✅ Alignment anchor: headers + cells share the same right edge */
+.thInnerRight,
+.tdInnerRight {
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
+/* Details button */
+.chevCell {
+  width: 110px;
+}
+.detailsBtn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 12px;
+  color: #111827;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+.detailsBtn:hover {
+  background: #f9fafb;
+}
+
+.gainAnchor {
+  font-weight: 950; /* make Gain/Loss the scan anchor */
 }
 
 /* Pills */
@@ -229,7 +521,7 @@
   align-items: center;
   padding: 4px 9px;
   border-radius: 999px;
-  font-weight: 750;
+  font-weight: 850;
   font-size: 11px;
   border: 1px solid transparent;
 }
@@ -266,192 +558,7 @@
   text-align: left;
 }
 
-/* Colors */
-.pos {
-  color: #0f766e;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
-.neg {
-  color: #b42318;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
-.muted {
-  color: #6b7280;
-}
-
-
-/* Card */
-.declareCard {
-  position: relative;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
-  border: 1px solid rgba(15, 118, 110, 0.14);
-  border-radius: 16px;
-  padding: 14px 14px 12px 14px;
-  margin: 10px 0 12px 0;
-  box-shadow:
-    0 12px 30px rgba(17, 24, 39, 0.06),
-    0 1px 0 rgba(17, 24, 39, 0.03);
-  overflow: hidden;
-}
-
-/* Soft accent glow */
-.declareCard::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background:
-    radial-gradient(520px 220px at 8% 0%, rgba(13, 148, 136, 0.16), transparent 55%),
-    radial-gradient(420px 200px at 98% 12%, rgba(59, 130, 246, 0.10), transparent 58%);
-  pointer-events: none;
-}
-
-/* Top */
-.declareTop {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.declareTitle {
-  font-weight: 950;
-  color: #0f172a;
-  font-size: 13px;
-  letter-spacing: 0.01em;
-  margin: 0;
-}
-
-.declareSub {
-  margin-top: 3px;
-  color: #64748b;
-  font-size: 11px;
-  line-height: 1.35;
-  max-width: 54ch;
-}
-
-/* Total number pill (big + readable) */
-.declareAmount {
-  position: relative;
-  font-weight: 950;
-  font-size: 18px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  box-shadow:
-    0 10px 18px rgba(17, 24, 39, 0.06),
-    0 1px 0 rgba(17, 24, 39, 0.03);
-}
-
-/* Year list */
-.declareYears {
-  position: relative;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(226, 232, 240, 0.9);
-  display: grid;
-  gap: 8px;
-}
-
-.declareYearRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-
-  padding: 9px 10px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(241, 245, 249, 1);
-  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.03);
-}
-
-.declareYearLeft {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-/* A nicer “chip” */
-.declareYearChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  font-size: 11px;
-  font-weight: 900;
-  color: #0f766e;
-
-  background: rgba(13, 148, 136, 0.10);
-  border: 1px solid rgba(13, 148, 136, 0.18);
-  padding: 5px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-/* Add a tiny dot inside the chip for polish */
-.declareYearChip::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: #0d9488;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
-}
-
-/* Year value */
-.declareYearVal {
-  font-size: 12px;
-  font-weight: 950;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-/* “More years” text */
-.declareMore {
-  position: relative;
-  font-size: 11px;
-  color: #64748b;
-  padding-left: 2px;
-}
-
-/* Footnote */
-.declareFoot {
-  position: relative;
-  margin-top: 10px;
-  color: #64748b;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-/* Hover: subtle lift */
-.declareCard:hover {
-  border-color: rgba(13, 148, 136, 0.20);
-  box-shadow:
-    0 16px 36px rgba(17, 24, 39, 0.08),
-    0 1px 0 rgba(17, 24, 39, 0.03);
-}
-
-/* Mobile */
-@media (max-width: 640px) {
-  .declareTop {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .declareAmount {
-    width: fit-content;
-  }
-}
-
-/* ===== Pretty breakdown (compact) ===== */
+/* ===== Existing breakdown styles (kept) ===== */
 .mathBox {
   margin-top: 10px;
   border-radius: 12px;
@@ -549,7 +656,9 @@
   margin-bottom: 10px;
 }
 @media (max-width: 900px) {
-  .stepGrid { grid-template-columns: 1fr; }
+  .stepGrid {
+    grid-template-columns: 1fr;
+  }
 }
 .stepCard {
   border-radius: 12px;
@@ -614,7 +723,7 @@
 }
 .stepPaid {
   background: rgba(17, 24, 39, 0.04);
-  border-color: rgba(17, 24, 39, 0.10);
+  border-color: rgba(17, 24, 39, 0.1);
 }
 .stepPrice {
   background: rgba(16, 185, 129, 0.07);
@@ -630,8 +739,12 @@
   margin: 8px 0 10px 0;
 }
 @media (max-width: 900px) {
-  .equationRow { grid-template-columns: 1fr; }
-  .eqOp { display: none; }
+  .equationRow {
+    grid-template-columns: 1fr;
+  }
+  .eqOp {
+    display: none;
+  }
 }
 .eqBox {
   border: 1px solid #eef0f3;
@@ -741,7 +854,9 @@
   gap: 6px;
 }
 @media (max-width: 900px) {
-  .lotGrid { grid-template-columns: 1fr; }
+  .lotGrid {
+    grid-template-columns: 1fr;
+  }
 }
 .lotKV {
   border: 1px solid #f1f3f5;
@@ -810,7 +925,9 @@
   gap: 8px 12px;
 }
 @media (max-width: 760px) {
-  .kvGrid { grid-template-columns: 1fr; }
+  .kvGrid {
+    grid-template-columns: 1fr;
+  }
 }
 .k {
   color: #6b7280;
@@ -824,50 +941,3 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-
-
-/* ===== Year “Your SARS number” ===== */
-.sarsYearHero {
-  background: linear-gradient(180deg, #ffffff 0%, #f6fbfa 100%);
-  border: 1px solid rgba(13, 148, 136, 0.16);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 8px 22px rgba(16, 24, 40, 0.06);
-  margin: 10px 0 12px 0;
-}
-
-.sarsYearHeroTop {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(238, 240, 243, 0.9);
-  background: rgba(15, 118, 110, 0.05);
-}
-
-.sarsYearTitle {
-  font-weight: 900;
-  color: #111827;
-  font-size: 13px;
-}
-
-.sarsYearBig {
-  padding: 14px;
-  font-size: 28px;
-  font-weight: 950;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
-.sarsYearBullets {
-  margin: 0;
-  padding: 0 14px 14px 28px;
-  color: #6b7280;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-
-
-
-
-
-
-
