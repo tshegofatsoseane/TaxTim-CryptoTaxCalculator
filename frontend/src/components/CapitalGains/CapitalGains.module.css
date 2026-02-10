@@ -4,6 +4,13 @@
   border-radius: 12px;
 }
 
+@media (max-width: 760px) {
+  .page {
+    padding: 12px;
+    border-radius: 8px;
+  }
+}
+
 .header {
   margin-bottom: 16px;
 }
@@ -16,11 +23,24 @@
   margin-bottom: 14px;
 }
 
+@media (max-width: 520px) {
+  .headerRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 .title {
   margin: 0;
   font-size: 18px;
   font-weight: 650;
   color: #111827;
+}
+
+@media (max-width: 520px) {
+  .title {
+    font-size: 16px;
+  }
 }
 
 .sub {
@@ -42,9 +62,11 @@
     grid-template-columns: repeat(2, minmax(260px, 1fr));
   }
 }
+
 @media (max-width: 760px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
@@ -57,6 +79,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-height: 190px;
+}
+
+@media (max-width: 520px) {
+  .card {
+    padding: 12px;
+    border-radius: 10px;
+  }
 }
 
 .cardTop {
@@ -94,12 +124,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-height: 72px;
 }
 
 .coinLine {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
+  gap: 8px;
 }
 
 .coinSym {
@@ -111,7 +143,6 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-
 
 .moreCoins {
   font-size: 12px;
@@ -128,9 +159,19 @@
   border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
+  margin-top: auto;
+  font-size: 14px;
+  min-height: 44px; /* Touch-friendly */
 }
+
 .primaryBtn:hover {
   filter: brightness(0.96);
+}
+
+@media (max-width: 520px) {
+  .primaryBtn {
+    padding: 12px;
+  }
 }
 
 .secondaryBtn {
@@ -141,7 +182,10 @@
   cursor: pointer;
   font-weight: 600;
   color: #111827;
+  font-size: 14px;
+  min-height: 44px; /* Touch-friendly */
 }
+
 .secondaryBtn:hover {
   background: #f9fafb;
 }
@@ -154,7 +198,9 @@
   cursor: pointer;
   padding: 8px 10px;
   border-radius: 10px;
+  min-height: 40px; /* Touch-friendly */
 }
+
 .ghostBtn:hover {
   background: rgba(13, 148, 136, 0.08);
   border-color: rgba(13, 148, 136, 0.12);
@@ -175,6 +221,7 @@
   .filters {
     flex-direction: column;
     align-items: stretch;
+    padding: 10px;
   }
 }
 
@@ -182,12 +229,15 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
 }
 
 .filterLabel {
   font-size: 11px;
   color: #6b7280;
   font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .select,
@@ -198,6 +248,7 @@
   padding: 10px 12px;
   font-size: 13px;
   outline: none;
+  min-height: 44px; /* Touch-friendly */
 }
 
 .select:focus,
@@ -214,12 +265,26 @@
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
 
+@media (max-width: 520px) {
+  .tableCard {
+    border-radius: 10px;
+  }
+}
+
 .tableHeaderRow {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   padding: 12px 14px;
   border-bottom: 1px solid #eef0f3;
+  gap: 12px;
+}
+
+@media (max-width: 520px) {
+  .tableHeaderRow {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+  }
 }
 
 .tableTitle {
@@ -233,8 +298,36 @@
   font-size: 12px;
 }
 
+@media (max-width: 520px) {
+  .tableMeta {
+    font-size: 11px;
+  }
+}
+
 .tableWrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+@media (max-width: 760px) {
+  .tableWrap {
+    /* Add scrollbar styling for better mobile UX */
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+  }
+  
+  .tableWrap::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .tableWrap::-webkit-scrollbar-track {
+    background: #f9fafb;
+  }
+  
+  .tableWrap::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
 }
 
 .table {
@@ -242,6 +335,12 @@
   border-collapse: collapse;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .table {
+    min-width: 600px; /* Ensures table doesn't collapse too much */
+  }
 }
 
 .table thead th {
@@ -255,6 +354,13 @@
   vertical-align: middle;
 }
 
+@media (max-width: 760px) {
+  .table thead th {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}
+
 .table thead th.num {
   text-align: right;
 }
@@ -266,6 +372,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (max-width: 760px) {
+  .table td {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
 }
 
 .table td.num {
@@ -302,9 +415,20 @@
   height: 26px;
   border-radius: 8px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .chevBtn:hover {
   background: #f9fafb;
+}
+
+@media (max-width: 760px) {
+  .chevBtn {
+    width: 32px;
+    height: 32px; /* Larger touch target */
+  }
 }
 
 .pill {
@@ -315,6 +439,7 @@
   font-weight: 750;
   font-size: 11px;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .pillBuy {
@@ -352,6 +477,13 @@
   background: #fff;
 }
 
+@media (max-width: 520px) {
+  .mathBox {
+    padding: 10px;
+    border-radius: 10px;
+  }
+}
+
 .mathTitle {
   font-weight: 800;
   color: #111827;
@@ -372,9 +504,11 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @media (max-width: 520px) {
   .mathSummary {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
@@ -393,7 +527,28 @@
 
 .lotsWrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-top: 8px;
+}
+
+@media (max-width: 760px) {
+  .lotsWrap {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+  }
+  
+  .lotsWrap::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .lotsWrap::-webkit-scrollbar-track {
+    background: #f9fafb;
+  }
+  
+  .lotsWrap::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
 }
 
 .lotsTable {
@@ -402,6 +557,13 @@
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   table-layout: fixed;
+}
+
+@media (max-width: 760px) {
+  .lotsTable {
+    min-width: 500px; /* Prevents excessive compression */
+    font-size: 11px;
+  }
 }
 
 .lotsTable th {
@@ -413,6 +575,13 @@
   font-weight: 750;
   white-space: nowrap;
   vertical-align: middle;
+}
+
+@media (max-width: 760px) {
+  .lotsTable th {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
 }
 
 .lotsTable th.num {
@@ -427,7 +596,12 @@
   text-overflow: ellipsis;
 }
 
-/* ✅ FORCE numeric lots cells right-aligned */
+@media (max-width: 760px) {
+  .lotsTable td {
+    padding: 6px 8px;
+  }
+}
+
 .lotsTable td.num {
   text-align: right;
 }
@@ -436,6 +610,13 @@
   margin-top: 10px;
   font-size: 12px;
   color: #6b7280;
+  line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .helperText {
+    font-size: 11px;
+  }
 }
 
 .yearSummary {
@@ -446,11 +627,26 @@
   margin: 10px 0 12px 0;
 }
 
+@media (max-width: 520px) {
+  .yearSummary {
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+}
+
 .yearSummaryTop {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
+}
+
+@media (max-width: 520px) {
+  .yearSummaryTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
 
 .yearSummaryLabel {
@@ -465,6 +661,12 @@
   font-variant-numeric: tabular-nums;
 }
 
+@media (max-width: 520px) {
+  .yearSummaryValue {
+    font-size: 16px;
+  }
+}
+
 .yearSummaryCoins {
   margin-top: 10px;
   display: grid;
@@ -475,10 +677,10 @@
   padding-top: 10px;
 }
 
-
 @media (max-width: 760px) {
   .yearSummaryCoins {
     grid-template-columns: 1fr;
+    row-gap: 6px;
   }
 }
 
@@ -510,6 +712,13 @@
   align-items: center;
 }
 
+@media (max-width: 520px) {
+  .emptyCard {
+    padding: 12px;
+    border-radius: 10px;
+  }
+}
+
 .emptyIcon {
   width: 34px;
   height: 34px;
@@ -519,6 +728,7 @@
   display: grid;
   place-items: center;
   font-weight: 900;
+  flex-shrink: 0;
 }
 
 .emptyTitle {
@@ -530,6 +740,7 @@
   color: #6b7280;
   font-size: 13px;
   margin-top: 2px;
+  line-height: 1.5;
 }
 
 .doneBar {
@@ -542,6 +753,15 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+}
+
+@media (max-width: 760px) {
+  .doneBar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    border-radius: 10px;
+  }
 }
 
 .doneTitle {
@@ -560,43 +780,15 @@
   gap: 10px;
 }
 
-.card {
-  background: #fff;
-  border: 1px solid #eef0f3;
-  border-radius: 12px;
-  padding: 14px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  min-height: 190px;
-}
-
-.coinLines {
-  border-top: 1px dashed #eef0f3;
-  padding-top: 10px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  min-height: 72px;
-}
-
-.primaryBtn {
-  width: 100%;
-  border: none;
-  background: #0d9488;
-  color: #fff;
-  font-weight: 650;
-  border-radius: 10px;
-  padding: 10px 12px;
-  cursor: pointer;
-
-  /* key: keep button aligned across cards */
-  margin-top: auto;
+@media (max-width: 760px) {
+  .doneActions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .doneActions > button {
+    width: 100%;
+  }
 }
 
 .statementCard {
@@ -608,6 +800,12 @@
   margin: 10px 0 12px 0;
 }
 
+@media (max-width: 520px) {
+  .statementCard {
+    border-radius: 10px;
+  }
+}
+
 .statementHeader {
   display: flex;
   justify-content: space-between;
@@ -615,6 +813,14 @@
   padding: 14px 14px;
   border-bottom: 1px solid #eef0f3;
   background: #fafafa;
+}
+
+@media (max-width: 760px) {
+  .statementHeader {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
 }
 
 .statementTitle {
@@ -638,9 +844,21 @@
   white-space: nowrap;
 }
 
+@media (max-width: 760px) {
+  .statementRef {
+    align-self: flex-start;
+  }
+}
+
 .statementSection {
   padding: 12px 14px;
   border-bottom: 1px solid #eef0f3;
+}
+
+@media (max-width: 520px) {
+  .statementSection {
+    padding: 10px 12px;
+  }
 }
 
 .statementSectionTitle {
@@ -659,18 +877,29 @@
   row-gap: 8px;
 }
 
+@media (max-width: 520px) {
+  .kvGrid {
+    column-gap: 12px;
+    row-gap: 6px;
+  }
+}
+
 .kvRow {
   display: contents;
 }
 
-/* Left labels */
 .k {
   color: #111827;
   font-weight: 700;
   font-size: 12px;
 }
 
-/* Right values */
+@media (max-width: 520px) {
+  .k {
+    font-size: 11px;
+  }
+}
+
 .v {
   text-align: right;
   font-size: 12px;
@@ -679,20 +908,26 @@
   white-space: nowrap;
 }
 
-/* Footer note like statements */
+@media (max-width: 520px) {
+  .v {
+    font-size: 11px;
+  }
+}
+
 .statementFooter {
   padding: 12px 14px;
   color: #6b7280;
   font-size: 12px;
+  line-height: 1.5;
 }
 
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  font-variant-numeric: tabular-nums;
+@media (max-width: 520px) {
+  .statementFooter {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
 }
 
-/* ===== Overview “SARS hero” ===== */
 .sarsHero {
   background: linear-gradient(180deg, #ffffff 0%, #f6fbfa 100%);
   border: 1px solid rgba(13, 148, 136, 0.16);
@@ -702,11 +937,25 @@
   margin: 10px 0 12px 0;
 }
 
+@media (max-width: 520px) {
+  .sarsHero {
+    padding: 12px;
+    border-radius: 12px;
+  }
+}
+
 .sarsHeroTop {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   align-items: flex-start;
+}
+
+@media (max-width: 600px) {
+  .sarsHeroTop {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 .sarsHeroTitle {
@@ -733,11 +982,25 @@
   white-space: nowrap;
 }
 
+@media (max-width: 600px) {
+  .sarsPillAmount {
+    align-self: flex-start;
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+}
+
 .sarsHeroMeta {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px dashed rgba(229, 231, 235, 0.9);
   font-size: 12px;
   color: #6b7280;
+  line-height: 1.5;
 }
 
+@media (max-width: 520px) {
+  .sarsHeroMeta {
+    font-size: 11px;
+  }
+}

@@ -21,6 +21,7 @@
   gap: 8px;
   align-items: baseline;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .yearTitle {
@@ -38,12 +39,15 @@
   border: 1px solid #eff2f5;
   border-radius: 10px;
   overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  min-width: 300px;
 }
 
 .table thead th {
@@ -53,6 +57,7 @@
   padding: 10px;
   font-weight: 650;
   border-bottom: 1px solid #eff2f5;
+  white-space: nowrap;
 }
 
 .table td {
@@ -63,6 +68,7 @@
 
 .coin {
   font-weight: 650;
+  white-space: nowrap;
 }
 
 .right {
@@ -104,8 +110,76 @@
   font-size: 12px;
 }
 
+/* Tablet and below */
 @media (max-width: 980px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .grid {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .card {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .cardHeader {
+    margin-bottom: 8px;
+  }
+
+  .yearTitle {
+    font-size: 14px;
+  }
+
+  .range {
+    font-size: 11px;
+  }
+
+  .tableWrap {
+    border-radius: 8px;
+  }
+
+  .table {
+    font-size: 11px;
+  }
+
+  .table thead th,
+  .table td {
+    padding: 8px 6px;
+  }
+
+  .emptyCard {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .emptyCard h3 {
+    font-size: 13px;
+  }
+
+  .emptyCard p {
+    font-size: 11px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 380px) {
+  .table {
+    font-size: 10px;
+  }
+
+  .table thead th,
+  .table td {
+    padding: 6px 4px;
+  }
+
+  .yearTitle {
+    font-size: 13px;
   }
 }
