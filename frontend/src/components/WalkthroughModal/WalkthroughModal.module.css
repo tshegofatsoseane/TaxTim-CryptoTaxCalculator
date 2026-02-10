@@ -15,6 +15,7 @@
   border: 1px solid rgba(229, 231, 235, 0.9);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
   overflow: hidden;
+  zoom: 0.88;
 }
 
 /* Top */
