@@ -1,9 +1,22 @@
 /* Transactions.module.css */
 
+/* ✅ Global compact tuning */
 .page {
   background: #f6f7f9;
-  padding: 20px;
+  padding: 14px;
   border-radius: 12px;
+
+  /* makes everything slightly smaller without rewriting every class */
+  zoom: 0.90; /* works great in Chromium */
+}
+
+/* fallback for browsers that don't support zoom well */
+@supports not (zoom: 1) {
+  .page {
+    transform: scale(0.92);
+    transform-origin: top left;
+    width: 108.7%;
+  }
 }
 
 /* Header */
@@ -12,21 +25,21 @@
   justify-content: space-between;
   align-items: flex-end;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .title {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: #111827;
 }
 
 .sub {
-  margin: 6px 0 0 0;
+  margin: 5px 0 0 0;
   color: #6b7280;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 /* FIFO help */
@@ -36,14 +49,14 @@
   gap: 8px;
 }
 .helpIcon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 999px;
   border: 1px solid #dbe3ea;
   background: #ffffff;
   color: #0f766e;
   font-weight: 900;
-  font-size: 13px;
+  font-size: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -54,14 +67,14 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 28px;
-  width: min(360px, 85vw);
+  top: 26px;
+  width: min(340px, 85vw);
   background: #111827;
   color: #fff;
-  padding: 12px 12px;
+  padding: 10px 10px;
   border-radius: 12px;
-  font-size: 12px;
-  line-height: 1.45;
+  font-size: 11px;
+  line-height: 1.4;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
   opacity: 0;
   pointer-events: none;
@@ -75,7 +88,7 @@
 .tooltip strong {
   display: block;
   margin-bottom: 6px;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 /* Quiet button (Replace transactions) */
@@ -83,11 +96,11 @@
   border: 1px solid #e5e7eb;
   background: transparent;
   color: #111827;
-  padding: 10px 16px;
+  padding: 8px 12px;
   border-radius: 10px;
   font-weight: 800;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   transition: all 0.15s ease;
 }
 .ghostBtn:hover {
@@ -99,14 +112,14 @@
 .taxDeclarationCard {
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
   border: 2px solid rgba(13, 148, 136, 0.2);
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
-  margin-bottom: 20px;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.06);
+  margin-bottom: 14px;
 }
 
 .taxDeclHeader {
-  padding: 16px 20px;
+  padding: 12px 14px;
   border-bottom: 1px solid rgba(13, 148, 136, 0.1);
   background: rgba(15, 118, 110, 0.05);
   display: flex;
@@ -117,47 +130,52 @@
 .taxDeclBadge {
   font-weight: 900;
   color: #0f766e;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   background: rgba(13, 148, 136, 0.15);
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 6px;
 }
 
 .taxDeclAmount {
-  padding: 32px 20px;
+  padding: 18px 14px;
   text-align: center;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 .taxDeclLabel {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   color: #6b7280;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
+/* ✅ biggest win: reduce the giant number */
 .taxDeclValue {
-  font-size: 48px;
-  font-weight: 900;
+  font-size: 34px;
+  font-weight: 950;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .taxDeclHint {
-  font-size: 14px;
+  font-size: 12px;
   color: #6b7280;
-  max-width: 500px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
 /* Year Breakdown Section */
 .yearBreakdown {
-  padding: 20px;
+  padding: 14px;
   border-top: 1px solid rgba(13, 148, 136, 0.1);
   background: rgba(255, 255, 255, 0.5);
 }
@@ -166,12 +184,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .yearBreakdownTitle {
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 900;
   color: #111827;
 }
 
@@ -195,78 +213,79 @@
   opacity: 1;
 }
 
+/* ✅ make year cards less wide so they don't dominate */
 .yearCards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
 }
 
 .yearCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 16px;
+  padding: 12px;
   transition: all 0.2s ease;
 }
 
 .yearCard:hover {
-  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.07);
+  transform: translateY(-1px);
 }
 
 .yearCardHeader {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #f3f4f6;
 }
 
 .yearCardYear {
-  font-size: 16px;
-  font-weight: 900;
+  font-size: 14px;
+  font-weight: 950;
   color: #111827;
 }
 
 .yearCardAmount {
-  font-size: 18px;
-  font-weight: 900;
+  font-size: 15px;
+  font-weight: 950;
   font-variant-numeric: tabular-nums;
 }
 
 .yearCardStats {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .yearCardStat {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .yearCardStatLabel {
   color: #6b7280;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .yearCardStatValue {
-  font-weight: 800;
+  font-weight: 900;
   color: #111827;
 }
 
 /* Colors */
 .pos {
   color: #0f766e;
-  font-weight: 900;
+  font-weight: 950;
   font-variant-numeric: tabular-nums;
 }
 .neg {
   color: #b42318;
-  font-weight: 900;
+  font-weight: 950;
   font-variant-numeric: tabular-nums;
 }
 .muted {
@@ -274,50 +293,46 @@
 }
 
 /* ===== Stats Grid ===== */
+/* ✅ smaller cards, tighter grid */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .statCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 16px;
+  padding: 4px;
   text-align: center;
   transition: all 0.2s ease;
 }
 
 .statCard:hover {
-  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
-  transform: translateY(-2px);
-}
-
-.statIcon {
-  font-size: 28px;
-  margin-bottom: 8px;
+  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.07);
+  transform: translateY(-1px);
 }
 
 .statLabel {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 800;
   color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .statValue {
-  font-size: 32px;
-  font-weight: 900;
+  font-size: 26px;
+  font-weight: 950;
   color: #111827;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .statHint {
-  font-size: 12px;
+  font-size: 11px;
   color: #9ca3af;
 }
 
@@ -326,41 +341,37 @@
   background: #fff;
   border: 1px solid rgb(248, 246, 246);
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 14px;
+  margin-bottom: 14px;
 }
 
 .notesHeader {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
-}
-
-.notesIcon {
-  font-size: 24px;
+  margin-bottom: 10px;
 }
 
 .notesTitle {
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 900;
   color: #0f766e;
 }
 
 .notesList {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 18px;
   color: #0f766e;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .notesList li {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .notesList strong {
-  font-weight: 700;
+  font-weight: 800;
   color: #0f766e;
 }
 
@@ -377,7 +388,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 12px 14px;
   border-bottom: 1px solid #e5e7eb;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -391,40 +402,40 @@
 .txHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .collapseIcon {
-  font-size: 14px;
-  font-weight: 900;
+  font-size: 13px;
+  font-weight: 950;
   color: #0f766e;
-  width: 20px;
+  width: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .txTitle {
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .txMeta {
   color: #6b7280;
-  font-size: 12px;
+  font-size: 11px;
   margin-top: 2px;
 }
 
 .txHeaderRight {
   display: inline-flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 /* Filters area inside the card */
 .txFilters {
-  padding: 16px 20px;
+  padding: 12px 14px;
   border-bottom: 1px solid #e5e7eb;
   background: #fbfcfd;
 }
@@ -433,12 +444,12 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .txFiltersLabel {
-  font-size: 11px;
-  font-weight: 900;
+  font-size: 10px;
+  font-weight: 950;
   color: #64748b;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -447,7 +458,7 @@
 /* ===== Filters ===== */
 .filters {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-end;
 }
 @media (max-width: 760px) {
@@ -464,9 +475,9 @@
 }
 
 .filterLabel {
-  font-size: 11px;
+  font-size: 10px;
   color: #6b7280;
-  font-weight: 650;
+  font-weight: 750;
 }
 
 .select,
@@ -474,8 +485,8 @@
   border: 1px solid #e5e7eb;
   background: #fff;
   border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 13px;
+  padding: 8px 10px;
+  font-size: 12px;
   outline: none;
   transition: all 0.15s ease;
 }
@@ -497,9 +508,9 @@
 .segBtn {
   border: none;
   background: transparent;
-  padding: 10px 14px;
-  font-size: 12px;
-  font-weight: 900;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 950;
   color: #64748b;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -516,8 +527,8 @@
   border: none;
   background: transparent;
   color: #0f766e;
-  font-weight: 900;
-  font-size: 12px;
+  font-weight: 950;
+  font-size: 11px;
   cursor: pointer;
   padding: 0;
   transition: opacity 0.15s ease;
@@ -532,11 +543,11 @@
   background: #0d9488;
   border: none;
   color: #fff;
-  padding: 8px 12px;
+  padding: 7px 10px;
   border-radius: 10px;
-  font-weight: 900;
+  font-weight: 950;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
   transition: all 0.15s ease;
 }
 .smallBtn:hover {
@@ -544,15 +555,16 @@
 }
 
 /* ===== Table ===== */
+/* ✅ less height so it doesn't dominate the viewport */
 .tableWrap {
-  max-height: 520px;
+  max-height: 360px;
   overflow: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .table thead th {
@@ -563,9 +575,9 @@
   border-bottom: 1px solid #e5e7eb;
   color: #6b7280;
   text-align: left;
-  padding: 12px 12px;
-  font-size: 11px;
-  font-weight: 800;
+  padding: 10px 10px;
+  font-size: 10px;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -580,81 +592,51 @@
 }
 
 .table td {
-  padding: 12px 12px;
+  padding: 10px 10px;
   vertical-align: middle;
 }
 
 /* Table cells */
-.cellIconToggle {
-  width: 28px;
-  padding: 8px 4px 8px 12px;
-}
-
-.expandToggle {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  color: #0f766e;
-  font-weight: 900;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-}
-
-.expandToggle:hover {
-  background: #f0fdfa;
-  border-color: #0d9488;
-}
-
 .cellIndex {
   color: #9ca3af;
-  font-weight: 800;
-  font-size: 11px;
+  font-weight: 900;
+  font-size: 10px;
 }
 
 .cellDate {
   color: #111827;
-  font-size: 12px;
-}
-
-.cellType {
-  /* TypePill handles styling */
+  font-size: 11px;
 }
 
 .cellSold,
 .cellBought {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .cellSold .mono,
 .cellBought .mono {
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
 }
 
 .cellSold .coin,
 .cellBought .coin {
-  font-size: 10px;
+  font-size: 9px;
   color: #6b7280;
-  font-weight: 800;
+  font-weight: 850;
   margin-top: 2px;
 }
 
 .cellPrice,
 .cellTotal {
-  font-size: 12px;
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 950;
   color: #111827;
 }
 
 .cellGain {
-  font-size: 12px;
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 950;
 }
 
 .cellActions {
@@ -662,7 +644,8 @@
 }
 
 .mono {
-  font-family: ui-monospace, "SF Mono", Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Liberation Mono", Menlo, Courier, monospace;
+  font-family: ui-monospace, "SF Mono", Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Liberation Mono", Menlo, Courier, monospace;
   font-variant-numeric: tabular-nums;
 }
 
@@ -670,10 +653,10 @@
   border: 1px solid #e5e7eb;
   background: transparent;
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 5px 8px;
   cursor: pointer;
-  font-weight: 900;
-  font-size: 11px;
+  font-weight: 950;
+  font-size: 10px;
   color: #111827;
   display: inline-flex;
   gap: 6px;
@@ -693,10 +676,10 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 999px;
-  font-weight: 850;
-  font-size: 11px;
+  font-weight: 900;
+  font-size: 10px;
   border: 1px solid transparent;
 }
 .pillBuy {
@@ -727,20 +710,20 @@
 }
 
 .noRows {
-  padding: 20px;
+  padding: 16px;
   color: #6b7280;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
 }
 
-/* ===== Existing breakdown styles (kept) ===== */
+/* ===== Existing breakdown styles (kept, but tightened) ===== */
 .mathBox {
-  margin: 16px;
+  margin: 12px;
   border-radius: 12px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.05);
 }
 
 .mathHeader {
@@ -748,19 +731,19 @@
   justify-content: space-between;
   gap: 10px;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .mathTitle {
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
-  font-size: 13px;
+  font-size: 12px;
   margin-bottom: 2px;
 }
 
 .mathSub {
   color: #6b7280;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.35;
   margin-top: 0;
 }
@@ -769,9 +752,9 @@
 .tagChip,
 .gainChip {
   border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-weight: 800;
+  padding: 5px 8px;
+  font-size: 10px;
+  font-weight: 900;
   white-space: nowrap;
   border: 1px solid transparent;
   font-variant-numeric: tabular-nums;
@@ -797,11 +780,11 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  padding: 10px 12px;
+  padding: 9px 10px;
   border: 1px solid #e6f4f1;
   background: #f2fbf9;
   border-radius: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .infoDot {
   width: 8px;
@@ -812,23 +795,23 @@
   flex-shrink: 0;
 }
 .infoTitle {
-  font-weight: 800;
+  font-weight: 900;
   color: #0f766e;
-  font-size: 11px;
+  font-size: 10px;
   margin-bottom: 2px;
 }
 .infoText {
   color: #334155;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.45;
 }
 
 /* Step cards */
 .stepGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(150px, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
 }
 @media (max-width: 900px) {
   .stepGrid {
@@ -837,7 +820,7 @@
 }
 .stepCard {
   border-radius: 12px;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #eef0f3;
   background: #fbfcfd;
 }
@@ -848,34 +831,31 @@
   margin-bottom: 6px;
 }
 .stepBadge {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   display: grid;
   place-items: center;
   border-radius: 999px;
   background: #111827;
   color: #fff;
-  font-weight: 900;
-  font-size: 11px;
+  font-weight: 950;
+  font-size: 10px;
 }
 .stepLabel {
-  font-weight: 850;
+  font-weight: 900;
   color: #111827;
-  font-size: 11px;
+  font-size: 10px;
 }
 .stepValue {
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
-  font-size: 13px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 4px;
-}
-.stepCoin {
-  font-weight: 900;
+  margin-bottom: 3px;
 }
 .stepHint {
   color: #6b7280;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.3;
 }
 
@@ -892,18 +872,6 @@
   background: rgba(13, 148, 136, 0.08);
   border-color: rgba(13, 148, 136, 0.18);
 }
-.stepBuy {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.18);
-}
-.stepPaid {
-  background: rgba(17, 24, 39, 0.04);
-  border-color: rgba(17, 24, 39, 0.1);
-}
-.stepPrice {
-  background: rgba(16, 185, 129, 0.07);
-  border-color: rgba(16, 185, 129, 0.16);
-}
 
 /* Equation */
 .equationRow {
@@ -911,7 +879,7 @@
   grid-template-columns: 1fr auto 1fr auto 1.2fr;
   gap: 8px;
   align-items: stretch;
-  margin: 12px 0;
+  margin: 10px 0;
 }
 @media (max-width: 900px) {
   .equationRow {
@@ -924,30 +892,30 @@
 .eqBox {
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 9px 10px;
   background: #fff;
 }
 .eqResult {
   background: #fafafa;
 }
 .eqLabel {
-  font-size: 10px;
+  font-size: 9px;
   color: #6b7280;
-  font-weight: 850;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .eqValue {
-  margin-top: 6px;
-  font-weight: 900;
-  font-size: 13px;
+  margin-top: 5px;
+  font-weight: 950;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 .eqOp {
   display: grid;
   place-items: center;
-  font-size: 16px;
-  font-weight: 900;
+  font-size: 14px;
+  font-weight: 950;
   color: #6b7280;
 }
 
@@ -955,7 +923,7 @@
 .lotsBlock {
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 12px;
+  padding: 10px;
   background: #fbfcfd;
 }
 .lotsHeader {
@@ -963,16 +931,16 @@
   justify-content: space-between;
   gap: 12px;
   align-items: baseline;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .lotsTitle {
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
-  font-size: 12px;
+  font-size: 11px;
 }
 .lotsMeta {
   color: #6b7280;
-  font-size: 11px;
+  font-size: 10px;
 }
 .lotTimeline {
   list-style: none;
@@ -983,7 +951,7 @@
   display: grid;
   grid-template-columns: 14px 1fr;
   gap: 10px;
-  padding: 8px 0;
+  padding: 7px 0;
   position: relative;
 }
 .lotItem:not(:last-child)::after {
@@ -1007,25 +975,25 @@
   background: #fff;
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 9px 10px;
 }
 .lotTopRow {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   align-items: baseline;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 .lotDate,
 .lotCost {
-  font-size: 11px;
+  font-size: 10px;
   color: #111827;
-  font-weight: 750;
+  font-weight: 850;
   font-variant-numeric: tabular-nums;
 }
 .lotGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-columns: repeat(3, minmax(90px, 1fr));
   gap: 8px;
 }
 @media (max-width: 900px) {
@@ -1036,50 +1004,50 @@
 .lotKV {
   border: 1px solid #f1f3f5;
   border-radius: 10px;
-  padding: 8px 10px;
+  padding: 7px 8px;
   background: #fbfcfd;
 }
 .lotK {
-  font-size: 10px;
+  font-size: 9px;
   color: #6b7280;
-  font-weight: 850;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .lotV {
   margin-top: 4px;
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
   font-variant-numeric: tabular-nums;
   text-align: right;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .emptyLots {
-  padding: 10px 12px;
+  padding: 9px 10px;
   background: #fff;
   border: 1px dashed #e5e7eb;
   border-radius: 12px;
   color: #6b7280;
-  font-size: 11px;
+  font-size: 10px;
   text-align: center;
 }
 
 .helperText {
-  margin-top: 10px;
-  font-size: 11px;
+  margin-top: 8px;
+  font-size: 10px;
   color: #6b7280;
   line-height: 1.35;
 }
 
 .warn {
-  margin-top: 12px;
+  margin-top: 10px;
   color: #92400e;
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.25);
-  padding: 12px;
+  padding: 10px;
   border-radius: 10px;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.4;
 }
 
@@ -1087,19 +1055,19 @@
 .lotCreateCard {
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 12px;
+  padding: 10px;
   background: #fbfcfd;
 }
 .lotCreateTitle {
-  font-weight: 900;
+  font-weight: 950;
   color: #111827;
-  font-size: 12px;
-  margin-bottom: 10px;
+  font-size: 11px;
+  margin-bottom: 8px;
 }
 .kvGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px 16px;
+  gap: 8px 12px;
 }
 @media (max-width: 760px) {
   .kvGrid {
@@ -1108,13 +1076,13 @@
 }
 .k {
   color: #6b7280;
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: 850;
 }
 .v {
   color: #111827;
-  font-size: 11px;
-  font-weight: 900;
+  font-size: 10px;
+  font-weight: 950;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
