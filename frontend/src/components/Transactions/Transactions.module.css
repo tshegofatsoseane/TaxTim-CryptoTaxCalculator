@@ -12,13 +12,13 @@
   justify-content: space-between;
   align-items: flex-end;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 650;
+  font-size: 24px;
+  font-weight: 700;
   color: #111827;
 }
 
@@ -83,51 +83,179 @@
   border: 1px solid #e5e7eb;
   background: transparent;
   color: #111827;
-  padding: 10px 12px;
+  padding: 10px 16px;
   border-radius: 10px;
   font-weight: 800;
   cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s ease;
 }
 .ghostBtn:hover {
   background: #f9fafb;
+  border-color: #d1d5db;
 }
 
-/* ===== SARS hero ===== */
-.sarsYearHero {
-  background: linear-gradient(180deg, #ffffff 0%, #f6fbfa 100%);
-  border: 1px solid rgba(13, 148, 136, 0.16);
-  border-radius: 14px;
+/* ===== Main Tax Declaration Card ===== */
+.taxDeclarationCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border: 2px solid rgba(13, 148, 136, 0.2);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 22px rgba(16, 24, 40, 0.06);
-  margin: 10px 0 12px 0;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
+  margin-bottom: 20px;
 }
 
-.sarsYearHeroTop {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(238, 240, 243, 0.9);
+.taxDeclHeader {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(13, 148, 136, 0.1);
   background: rgba(15, 118, 110, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.sarsYearTitle {
+.taxDeclBadge {
+  font-weight: 900;
+  color: #0f766e;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(13, 148, 136, 0.15);
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.taxDeclAmount {
+  padding: 32px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.taxDeclLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.taxDeclValue {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 12px;
+}
+
+.taxDeclHint {
+  font-size: 14px;
+  color: #6b7280;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Year Breakdown Section */
+.yearBreakdown {
+  padding: 20px;
+  border-top: 1px solid rgba(13, 148, 136, 0.1);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.yearBreakdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.yearBreakdownTitle {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.helpIconInline {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ea;
+  background: #ffffff;
+  color: #0f766e;
+  font-weight: 950;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  position: relative;
+}
+.helpIconInline:hover .tooltip,
+.helpIconInline:focus .tooltip {
+  opacity: 1;
+}
+
+.yearCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.yearCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.yearCard:hover {
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
+  transform: translateY(-2px);
+}
+
+.yearCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.yearCardYear {
+  font-size: 16px;
   font-weight: 900;
   color: #111827;
-  font-size: 13px;
 }
 
-.sarsYearBig {
-  padding: 14px;
-  font-size: 28px;
-  font-weight: 950;
-  letter-spacing: -0.02em;
+.yearCardAmount {
+  font-size: 18px;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
 }
 
-.sarsYearBullets {
-  margin: 0;
-  padding: 0 14px 14px 28px;
+.yearCardStats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.yearCardStat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.yearCardStatLabel {
   color: #6b7280;
-  font-size: 13px;
-  line-height: 1.5;
+  font-weight: 600;
+}
+
+.yearCardStatValue {
+  font-weight: 800;
+  color: #111827;
 }
 
 /* Colors */
@@ -145,123 +273,175 @@
   color: #6b7280;
 }
 
-/* ===== Equation ===== */
-.declareEquation {
-  padding: 0 14px 14px 14px;
-}
-
-.declareEquationLabelRow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 8px 0;
-}
-
-.declareEquationLabel {
-  font-size: 11px;
-  font-weight: 800;
-  color: #64748b;
-}
-
-.helpIconInline {
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  border: 1px solid #dbe3ea;
-  background: #ffffff;
-  color: #0f766e;
-  font-weight: 950;
-  font-size: 11px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: help;
-  position: relative;
-  transform: translateY(1px);
-}
-.helpIconInline:hover .tooltip,
-.helpIconInline:focus .tooltip {
-  opacity: 1;
-}
-
-.declareEquationRow {
-  display: flex;
-  align-items: stretch;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.declareTerm {
-  min-width: 200px;
-  flex: 1;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid #eef0f3;
-  border-radius: 12px;
-  padding: 10px 10px 10px 10px;
-}
-
-.declareTermTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.declareTermYear {
-  font-size: 11px;
-  font-weight: 900;
-  color: #111827;
-}
-
-.declareTermVal {
-  font-size: 12px;
-  font-weight: 950;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.declareTermSub {
-  margin-top: 6px;
-  font-size: 11px;
-  color: #64748b;
-  line-height: 1.3;
-}
-
-.declareTermMeta {
-  color: #6b7280;
-  font-weight: 800;
-}
-
-.declareOp {
+/* ===== Stats Grid ===== */
+.statsGrid {
   display: grid;
-  place-items: center;
-  font-weight: 950;
-  color: #94a3b8;
-  padding: 0 2px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.declareTotalPill {
-  min-width: 210px;
+.statCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 10px 12px;
-  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.06);
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.statCard:hover {
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
+  transform: translateY(-2px);
+}
+
+.statIcon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.statHint {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ===== Notes Card ===== */
+.notesCard {
+  background: #fff;
+  border: 1px solid rgb(248, 246, 246);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.notesHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.notesIcon {
+  font-size: 24px;
+}
+
+.notesTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f766e;
+}
+
+.notesList {
+  margin: 0;
+  padding-left: 20px;
+  color: #0f766e;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.notesList li {
+  margin-bottom: 12px;
+}
+
+.notesList strong {
+  font-weight: 700;
+  color: #0f766e;
+}
+
+/* ===== Collapsible Transactions Table ===== */
+.txCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.txHeaderCollapsible {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.txHeaderCollapsible:hover {
+  background: #f9fafb;
+}
+
+.txHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.collapseIcon {
+  font-size: 14px;
+  font-weight: 900;
+  color: #0f766e;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.txTitle {
+  font-weight: 900;
+  color: #111827;
+  font-size: 15px;
+}
+
+.txMeta {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.txHeaderRight {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Filters area inside the card */
+.txFilters {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fbfcfd;
+}
+
+.txFiltersTop {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 12px;
+  margin-bottom: 12px;
 }
-.declareTotalLabel {
+
+.txFiltersLabel {
   font-size: 11px;
-  font-weight: 950;
-  color: #111827;
-}
-.declareTotalVal {
-  font-size: 12px;
-  font-weight: 950;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  font-weight: 900;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* ===== Filters ===== */
@@ -297,6 +477,7 @@
   padding: 10px 12px;
   font-size: 13px;
   outline: none;
+  transition: all 0.15s ease;
 }
 
 .select:focus,
@@ -316,11 +497,12 @@
 .segBtn {
   border: none;
   background: transparent;
-  padding: 10px 12px;
+  padding: 10px 14px;
   font-size: 12px;
   font-weight: 900;
   color: #64748b;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 .segBtn:hover {
   background: #f9fafb;
@@ -338,67 +520,11 @@
   font-size: 12px;
   cursor: pointer;
   padding: 0;
+  transition: opacity 0.15s ease;
 }
 .clearLink:hover {
+  opacity: 0.8;
   text-decoration: underline;
-}
-
-/* ✅ Combined transactions card */
-.txCard {
-  background: #fff;
-  border: 1px solid #eef0f3;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
-}
-
-/* Header (replaces tableHeaderRow for this card) */
-.txHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  border-bottom: 1px solid #eef0f3;
-}
-
-.txTitle {
-  font-weight: 900;
-  color: #111827;
-  font-size: 13px;
-}
-
-.txMeta {
-  color: #6b7280;
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-.txHeaderRight {
-  display: inline-flex;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Filters area inside the card */
-.txFilters {
-  padding: 12px 14px;
-  border-bottom: 1px solid #eef0f3;
-  background: #fbfcfd;
-}
-
-.txFiltersTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 10px;
-}
-
-.txFiltersLabel {
-  font-size: 11px;
-  font-weight: 900;
-  color: #64748b;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
 }
 
 /* Buttons */
@@ -406,14 +532,15 @@
   background: #0d9488;
   border: none;
   color: #fff;
-  padding: 8px 10px;
+  padding: 8px 12px;
   border-radius: 10px;
   font-weight: 900;
   cursor: pointer;
   font-size: 12px;
+  transition: all 0.15s ease;
 }
 .smallBtn:hover {
-  opacity: 0.95;
+  background: #0f766e;
 }
 
 /* ===== Table ===== */
@@ -426,10 +553,6 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
-  /* Optional stability:
-     Uncomment if you want columns to stop shifting.
-     table-layout: fixed;
-  */
 }
 
 .table thead th {
@@ -441,85 +564,136 @@
   color: #6b7280;
   text-align: left;
   padding: 12px 12px;
-  font-weight: 850;
-  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-/* Right-align numeric headers */
-.thNum {
-  text-align: right;
+.table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.1s ease;
+}
+
+.table tbody tr:hover {
+  background: #fafbfc;
 }
 
 .table td {
   padding: 12px 12px;
-  border-bottom: 1px solid #f1f3f5;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
-/* zebra striping (light) */
-.table tbody tr:nth-child(odd) td {
-  background: #fcfdfd;
+/* Table cells */
+.cellIconToggle {
+  width: 28px;
+  padding: 8px 4px 8px 12px;
 }
 
-.row:hover td {
-  background: #f7fbfa;
+.expandToggle {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #0f766e;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
 }
 
-.num {
+.expandToggle:hover {
+  background: #f0fdfa;
+  border-color: #0d9488;
+}
+
+.cellIndex {
+  color: #9ca3af;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.cellDate {
+  color: #111827;
+  font-size: 12px;
+}
+
+.cellType {
+  /* TypePill handles styling */
+}
+
+.cellSold,
+.cellBought {
+  font-size: 12px;
+}
+
+.cellSold .mono,
+.cellBought .mono {
+  font-weight: 900;
+  color: #111827;
+}
+
+.cellSold .coin,
+.cellBought .coin {
+  font-size: 10px;
+  color: #6b7280;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.cellPrice,
+.cellTotal {
+  font-size: 12px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.cellGain {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.cellActions {
   text-align: right;
-  font-variant-numeric: tabular-nums;
 }
 
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, "SF Mono", Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Liberation Mono", Menlo, Courier, monospace;
   font-variant-numeric: tabular-nums;
-  color: #111827;
 }
 
-.coinStrong {
-  font-weight: 900;
-  color: #111827;
-}
-
-/* ✅ Alignment anchor: headers + cells share the same right edge */
-.thInnerRight,
-.tdInnerRight {
-  display: block;
-  width: 100%;
-  text-align: right;
-}
-
-/* Details button */
-.chevCell {
-  width: 110px;
-}
 .detailsBtn {
   border: 1px solid #e5e7eb;
-  background: #fff;
-  border-radius: 10px;
-  padding: 8px 10px;
+  background: transparent;
+  border-radius: 8px;
+  padding: 6px 10px;
   cursor: pointer;
   font-weight: 900;
-  font-size: 12px;
+  font-size: 11px;
   color: #111827;
   display: inline-flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
+  transition: all 0.15s ease;
 }
 .detailsBtn:hover {
   background: #f9fafb;
+  border-color: #d1d5db;
 }
 
 .gainAnchor {
-  font-weight: 950; /* make Gain/Loss the scan anchor */
+  font-weight: 950;
 }
 
 /* Pills */
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 4px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-weight: 850;
   font-size: 11px;
@@ -553,19 +727,20 @@
 }
 
 .noRows {
-  padding: 14px;
+  padding: 20px;
   color: #6b7280;
-  text-align: left;
+  text-align: center;
+  font-size: 13px;
 }
 
 /* ===== Existing breakdown styles (kept) ===== */
 .mathBox {
-  margin-top: 10px;
+  margin: 16px;
   border-radius: 12px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  padding: 10px;
-  box-shadow: 0 10px 25px rgba(17, 24, 39, 0.08);
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
 }
 
 .mathHeader {
@@ -573,13 +748,13 @@
   justify-content: space-between;
   gap: 10px;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .mathTitle {
   font-weight: 900;
   color: #111827;
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 2px;
 }
 
@@ -594,7 +769,7 @@
 .tagChip,
 .gainChip {
   border-radius: 999px;
-  padding: 6px 8px;
+  padding: 6px 10px;
   font-size: 11px;
   font-weight: 800;
   white-space: nowrap;
@@ -622,11 +797,11 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border: 1px solid #e6f4f1;
   background: #f2fbf9;
   border-radius: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .infoDot {
   width: 8px;
@@ -640,20 +815,20 @@
   font-weight: 800;
   color: #0f766e;
   font-size: 11px;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
 }
 .infoText {
   color: #334155;
   font-size: 11px;
-  line-height: 1.35;
+  line-height: 1.45;
 }
 
 /* Step cards */
 .stepGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 @media (max-width: 900px) {
   .stepGrid {
@@ -662,26 +837,26 @@
 }
 .stepCard {
   border-radius: 12px;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #eef0f3;
   background: #fbfcfd;
 }
 .stepTop {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 .stepBadge {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: grid;
   place-items: center;
   border-radius: 999px;
   background: #111827;
   color: #fff;
   font-weight: 900;
-  font-size: 10px;
+  font-size: 11px;
 }
 .stepLabel {
   font-weight: 850;
@@ -691,14 +866,14 @@
 .stepValue {
   font-weight: 900;
   color: #111827;
-  font-size: 12px;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
 }
 .stepCoin {
   font-weight: 900;
 }
 .stepHint {
-  margin-top: 4px;
   color: #6b7280;
   font-size: 11px;
   line-height: 1.3;
@@ -736,7 +911,7 @@
   grid-template-columns: 1fr auto 1fr auto 1.2fr;
   gap: 8px;
   align-items: stretch;
-  margin: 8px 0 10px 0;
+  margin: 12px 0;
 }
 @media (max-width: 900px) {
   .equationRow {
@@ -749,7 +924,7 @@
 .eqBox {
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 8px 10px;
+  padding: 10px 12px;
   background: #fff;
 }
 .eqResult {
@@ -763,9 +938,9 @@
   letter-spacing: 0.03em;
 }
 .eqValue {
-  margin-top: 4px;
+  margin-top: 6px;
   font-weight: 900;
-  font-size: 12px;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
 .eqOp {
@@ -780,7 +955,7 @@
 .lotsBlock {
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 10px;
+  padding: 12px;
   background: #fbfcfd;
 }
 .lotsHeader {
@@ -788,12 +963,12 @@
   justify-content: space-between;
   gap: 12px;
   align-items: baseline;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .lotsTitle {
   font-weight: 900;
   color: #111827;
-  font-size: 11px;
+  font-size: 12px;
 }
 .lotsMeta {
   color: #6b7280;
@@ -807,7 +982,7 @@
 .lotItem {
   display: grid;
   grid-template-columns: 14px 1fr;
-  gap: 8px;
+  gap: 10px;
   padding: 8px 0;
   position: relative;
 }
@@ -825,21 +1000,21 @@
   height: 10px;
   border-radius: 999px;
   background: #0d9488;
-  margin-top: 4px;
+  margin-top: 5px;
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
 }
 .lotCard {
   background: #fff;
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 8px 10px;
+  padding: 10px 12px;
 }
 .lotTopRow {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   align-items: baseline;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .lotDate,
 .lotCost {
@@ -850,8 +1025,8 @@
 }
 .lotGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(120px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  gap: 8px;
 }
 @media (max-width: 900px) {
   .lotGrid {
@@ -861,7 +1036,7 @@
 .lotKV {
   border: 1px solid #f1f3f5;
   border-radius: 10px;
-  padding: 7px 8px;
+  padding: 8px 10px;
   background: #fbfcfd;
 }
 .lotK {
@@ -872,7 +1047,7 @@
   letter-spacing: 0.03em;
 }
 .lotV {
-  margin-top: 3px;
+  margin-top: 4px;
   font-weight: 900;
   color: #111827;
   font-variant-numeric: tabular-nums;
@@ -881,48 +1056,50 @@
 }
 
 .emptyLots {
-  padding: 8px 10px;
+  padding: 10px 12px;
   background: #fff;
   border: 1px dashed #e5e7eb;
   border-radius: 12px;
   color: #6b7280;
   font-size: 11px;
+  text-align: center;
 }
 
 .helperText {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 11px;
   color: #6b7280;
   line-height: 1.35;
 }
 
 .warn {
-  margin-top: 10px;
+  margin-top: 12px;
   color: #92400e;
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.25);
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   font-size: 11px;
+  line-height: 1.4;
 }
 
 /* BUY lot create */
 .lotCreateCard {
   border: 1px solid #eef0f3;
   border-radius: 12px;
-  padding: 10px;
+  padding: 12px;
   background: #fbfcfd;
 }
 .lotCreateTitle {
   font-weight: 900;
   color: #111827;
-  font-size: 11px;
-  margin-bottom: 8px;
+  font-size: 12px;
+  margin-bottom: 10px;
 }
 .kvGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
+  gap: 10px 16px;
 }
 @media (max-width: 760px) {
   .kvGrid {
