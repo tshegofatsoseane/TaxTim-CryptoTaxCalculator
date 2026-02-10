@@ -1,0 +1,386 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.modal {
+  width: min(900px, 96vw);
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+/* Top */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.leftTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kicker {
+  font-size: 12px;
+  font-weight: 900;
+  color: #64748b;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.stepPill {
+  font-size: 12px;
+  color: #0f766e;
+  background: rgba(13, 148, 136, 0.08);
+  border: 1px solid rgba(13, 148, 136, 0.18);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.close {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.close:hover {
+  background: #f9fafb;
+}
+
+/* Progress row */
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #eef0f3;
+  background: #fbfcfd;
+}
+
+.progressHint {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+.dotActive {
+  background: #0d9488;
+}
+
+/* Main content grid (LEFT visual, RIGHT text) */
+.contentRow {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 18px;
+  padding: 18px;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .contentRow {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* Right copy */
+.body {
+  padding: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 950;
+  color: #111827;
+}
+
+.subtitle {
+  margin: 10px 0 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.bullets {
+  margin: 12px 0 0 18px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.note {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f2fbf9;
+  border: 1px solid #e6f4f1;
+  color: #0f766e;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+/* Left visual */
+.visual {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.visualCard {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid #eef0f3;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+  box-shadow: 0 14px 34px rgba(16, 24, 40, 0.10);
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.visualCaption {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* Step 1 screenshot (bigger) */
+.stepShotWrap {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 6px 0 18px 0;
+}
+
+.stepShot {
+  width: min(620px, 100%);
+  height: auto;
+  display: block;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 44px rgba(16, 24, 40, 0.14);
+  background: #fff;
+}
+
+/* Placeholder for other steps */
+.visualPlaceholder {
+  border-radius: 14px;
+  border: 1px dashed #e5e7eb;
+  background: #ffffff;
+  padding: 14px;
+  min-height: 220px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.placeholderBar {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.22);
+}
+.placeholderBarSmall {
+  height: 10px;
+  width: 70%;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.18);
+}
+
+.placeholderChipRow {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.placeholderChip {
+  width: 44px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(13, 148, 136, 0.10);
+  border: 1px solid rgba(13, 148, 136, 0.16);
+}
+
+/* Mascot: always present, floating */
+.mascotWrap {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 170px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.guy {
+  width: 170px;
+  height: auto;
+  display: block;
+  user-select: none;
+  animation: guyFloat 6s ease-in-out infinite;
+  transform-origin: 40% 70%;
+  will-change: transform;
+}
+
+/* subtle float */
+@keyframes guyFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-0.6deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* Sparkles (always on) */
+.sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(13, 148, 136, 0.18);
+  border: 1px solid rgba(13, 148, 136, 0.22);
+  box-shadow: 0 10px 22px rgba(13, 148, 136, 0.12);
+  opacity: 0.9;
+  animation: sparkleFloat 2.8s ease-in-out infinite,
+    sparklePulse 2.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.sparkle1 {
+  top: 10px;
+  right: 22px;
+  animation-delay: 0ms;
+}
+.sparkle2 {
+  top: 44px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  animation-delay: 220ms;
+}
+.sparkle3 {
+  top: 28px;
+  right: 44px;
+  width: 6px;
+  height: 6px;
+  animation-delay: 420ms;
+}
+
+@keyframes sparkleFloat {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-4px) translateX(2px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+@keyframes sparklePulse {
+  0% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0.55;
+  }
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid #eef0f3;
+  background: #fff;
+}
+
+.footerRight {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.ghost {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 900;
+  cursor: pointer;
+  color: #111827;
+}
+.ghost:hover {
+  background: #f9fafb;
+}
+.ghost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary {
+  border: none;
+  background: #0d9488;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.primary:hover {
+  opacity: 0.95;
+}
+
+/* Motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .guy,
+  .sparkle {
+    animation: none;
+    transform: none;
+    opacity: 0.6;
+  }
+}
+
+/* Step images */
+.stepShot {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 44px rgba(16, 24, 40, 0.14);
+  background: #fff;
+}
+
+.stepShotLarge {
+  max-width: 620px; /* Step 1 slightly bigger */
+}
