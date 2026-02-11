@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { parseExcelText } from "../../utils/excelParser.jsx";
 import styles from "./InputScreen.module.css";
+import Loader from '../Loader/Loader';
 
 export default function InputScreen({ onCalculate }) {
   const [rawText, setRawText] = useState("");
@@ -126,11 +127,7 @@ export default function InputScreen({ onCalculate }) {
               onClick={handleSubmit}
               disabled={loading}
             >
-              {loading ? (
-                <span className={styles.spinnerWrap}>
-                  <span className={styles.spinner} />
-                  Processing…
-                </span>
+              {loading ? ( <Loader />
               ) : (
                 "Calculate"
               )}
