@@ -1,10 +1,16 @@
 .tabsContainer {
   width: 100%;
+  z-index: 9999;
 }
 
 .tabsList {
   display: flex;
   align-items: center;
+  position: sticky;
+  top: var(--header-h, 200px);
+  top: 110px; /* Fix components appearing behind*/
+  z-index: 9999;
+  background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -43,4 +49,28 @@
 .tabContent {
   margin-top: 1.5rem;
   padding: 1rem;
+}
+
+@media (max-width: 770px) {
+  .tabsContainer {
+    margin-top: var(--header-h, 50px);
+  }
+
+  .tabsList {
+    top: var(--header-h, 50px);
+    top: 83px;
+  }
+
+  .tabButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .tabContent {
+    padding: 0.5rem;
+  }
+
+  .activeIndicator {
+    height: 1.5px;
+  }
 }
