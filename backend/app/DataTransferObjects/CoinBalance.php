@@ -15,7 +15,10 @@ class CoinBalance
 
     public function addLot(CoinLot $lot): void
     {
-        if ($this->coinSymbol !== $this->coinSymbol) {
+        // BUG FIX: was `$this->coinSymbol !== $this->coinSymbol` which is ALWAYS false
+        // (comparing a variable to itself), so the guard never fired.
+        // Changed to compare the lot's coin symbol against this balance's coin symbol.
+        if ($lot->coinSymbol !== $this->coinSymbol) {
             throw new \Exception("Cannot add {$lot->coinSymbol} lot to {$this->coinSymbol} balance");
         }
 
@@ -53,65 +56,65 @@ class CoinBalance
             return !$lot->isEmpty();
         }));
 
-            return $removedLots;
-        }
+        return $removedLots;
+    }
 
-        public function getTotalAmount(): float
-        {
-            return array_reduce($this->lots, function($sum, $lot) {
-                return $sum + $lot->amount;
-            }, 0.0);
-        }
+    public function getTotalAmount(): float
+    {
+        return array_reduce($this->lots, function($sum, $lot) {
+            return $sum + $lot->amount;
+        }, 0.0);
+    }
 
-        public function getTotalCostBasis(): float 
-        {
-            return array_reduce($this->lots, function($sum, $lot) {
-                return $sum + $lot->getCostBasis();
-            }, 0.0);
-        }
+    public function getTotalCostBasis(): float 
+    {
+        return array_reduce($this->lots, function($sum, $lot) {
+            return $sum + $lot->getCostBasis();
+        }, 0.0);
+    }
 
-        public function getLots(): array
-        {
-            return $this->lots;
-        }
+    public function getLots(): array
+    {
+        return $this->lots;
+    }
 
-        public function isEmpty(): bool
-        {
-            return empty($this->lots) || $this->getTotalAmount() <= 0.00000001;
-        }
+    public function isEmpty(): bool
+    {
+        return empty($this->lots) || $this->getTotalAmount() <= 0.00000001;
+    }
 
-        public function getBalanceAsOfDate(DateTime $date): array
-        {
-            $lotsAtDate = array_filter($this->lots, function($lot) use ($date) {
-                return $lot->purchaseDate <= $date;
-            });
+    public function getBalanceAsOfDate(DateTime $date): array
+    {
+        $lotsAtDate = array_filter($this->lots, function($lot) use ($date) {
+            return $lot->purchaseDate <= $date;
+        });
 
-            $totalAmount = array_reduce($lotsAtDate, function($sum, $lot) {
-                return $sum + $lot->amount;
-            }, 0.0);
+        $totalAmount = array_reduce($lotsAtDate, function($sum, $lot) {
+            return $sum + $lot->amount;
+        }, 0.0);
 
-            $totalCostBasis = array_reduce($lotsAtDate, function($sum, $lot) {
-                return $sum + $lot->getCostBasis();
-            }, 0.0);
+        $totalCostBasis = array_reduce($lotsAtDate, function($sum, $lot) {
+            return $sum + $lot->getCostBasis();
+        }, 0.0);
 
-            return [
-                'amount' => $totalAmount,
-                'costBasis' => $totalCostBasis,
-                'lots' => array_map(function($lot) {
-                    return $lot->toArray();
-                }, array_values($lotsAtDate))
-            ];
-        }
+        return [
+            'amount' => $totalAmount,
+            'costBasis' => $totalCostBasis,
+            'lots' => array_map(function($lot) {
+                return $lot->toArray();
+            }, array_values($lotsAtDate))
+        ];
+    }
 
-        public function toArray(): array
-        {
-            return [
-                'coinSymbol' => $this->coinSymbol,
-                'totalAmount' => $this->getTotalAmount(),
-                'totalCostBasis' => $this->getTotalCostBasis(),
-                'lots' => array_map(function($lot) {
-                    return $lot->toArray();
-                }, $this->lots),
-            ];
-        }
+    public function toArray(): array
+    {
+        return [
+            'coinSymbol' => $this->coinSymbol,
+            'totalAmount' => $this->getTotalAmount(),
+            'totalCostBasis' => $this->getTotalCostBasis(),
+            'lots' => array_map(function($lot) {
+                return $lot->toArray();
+            }, $this->lots),
+        ];
+    }
 }
