@@ -78,7 +78,10 @@ class CoinLot
         return [
             'amount' => $this->amount,
             'pricePerCoin' => $this->pricePerCoin,
-            'priceDate' => $this->purchaseDate,
+            // BUG FIX: purchaseDate is a DateTime object and cannot be directly JSON-serialized.
+            // Without this fix, json_encode throws a JsonException, causing a 500 error
+            // on any endpoint that returns capitalGainEvents (which include lotsUsed).
+            'priceDate' => $this->purchaseDate->format('Y-m-d H:i:s'),
             'coinSymbol' => $this->coinSymbol,
             'costBasis' => $this->getCostBasis()
         ];
