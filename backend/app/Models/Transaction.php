@@ -63,6 +63,14 @@ class Transaction
      */
     public function getTotalValue(): float
     {
+        if ($this->type === 'SELL') {
+            return $this->buyAmount;
+        }
+
+        if ($this->type === 'BUY') {
+            return $this->sellAmount;
+        }
+        
         return $this->buyAmount * $this->buyPricePerCoin;
     }
 }
