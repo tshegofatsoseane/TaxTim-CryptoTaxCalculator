@@ -251,41 +251,41 @@ export default function Transactions({
   const allExpanded = expanded.size > 0 && rowKeys.every((k) => expanded.has(k))
 
   return (
-    <div className={styles.page}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerIntro}>
-          <h2 className={styles.title}>Tax Summary</h2>
-          <p className={styles.sub}>
-            Your capital gains/losses calculated using FIFO (First In, First
-            Out) method
-          </p>
-          {metadata?.transactionCount != null && (
-            <p className={styles.sub}>
-              Calculated from <b>{metadata.transactionCount}</b> transactions
-              across <b>{(metadata.coinsTracked ?? []).length}</b> coins
-            </p>
-          )}
-        </div>
+        <div className={styles.page}>
+          {/* Header */}
+          <div className={styles.header}>
+            <div className={styles.headerIntro}>
+              <h2 className={styles.title}>Tax Summary</h2>
+              <p className={styles.sub}>
+                Your capital gains/losses calculated using FIFO (First In, First
+                Out) method
+              </p>
+              {metadata?.transactionCount != null && (
+                <p className={styles.sub}>
+                  Calculated from <b>{metadata.transactionCount}</b> transactions
+                  across <b>{(metadata.coinsTracked ?? []).length}</b> coins
+                </p>
+              )}
+            </div>
 
-    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-      <SarsPdfDownloadButton
-        apiData={apiData}
-        metadata={metadata}
-        filename={`sars_crypto_summary_${declaration?.years?.[0] ?? "results"}`}
-        label="Download SARS PDF"
-        variant="ghost"
-      />
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+                <SarsPdfDownloadButton
+                  apiData={apiData}
+                  metadata={metadata}
+                  filename={`sars_crypto_summary_${declaration?.years?.[0] ?? "results"}`}
+                  label="Download SARS PDF"
+                  variant="ghost"
+                />
 
-      <button
-        className={styles.ghostBtn}
-        onClick={() => onReset?.()}
-        title="Replace transactions"
-        type="button"
-      >
-        Replace transactions
-      </button>
-    </div>
+                <button
+                  className={styles.ghostBtn}
+                  onClick={() => onReset?.()}
+                  title="Replace transactions"
+                  type="button"
+                >
+                  Replace transactions
+                </button>
+              </div>
         
       </div>
 

@@ -28,7 +28,8 @@
 
 .title {
   margin: 0;
-  font-size: 20px;
+  font-size: clamp(20px, 2.5vw, 26px);
+  line-height: 1.2;
   font-weight: 800;
   color: #111827;
 }
@@ -36,7 +37,7 @@
 .sub {
   margin: 5px 0 0 0;
   color: #6b7280;
-  font-size: 14px;
+  font-size: clamp(14px, 1.6vw, 16px);
   line-height: 1.1;
 }
 
@@ -1398,3 +1399,169 @@
   }
 }
 
+
+/* =========================
+   Header Layout
+   ========================= */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 🔥 better than flex-end */
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap; /* 🔥 allows wrapping on medium screens */
+}
+
+/* Left intro block */
+.headerIntro {
+  flex: 1 1 400px; /* grows but wraps nicely */
+  min-width: 260px;
+}
+
+/* Title */
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+  color: #111827;
+  line-height: 1.2;
+}
+
+/* Subtitle text */
+.sub {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Right button group */
+.headerActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* =========================
+   Mobile Layout
+   ========================= */
+
+@media (max-width: 640px) {
+
+
+  .headerIntro {
+    min-width: 100%;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .sub {
+    font-size: 14px;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerActions button {
+    width: 100%;
+  }
+}
+
+/* ==============================
+   ACTION CONTAINER
+============================== */
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ==============================
+   BASE BUTTON
+============================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  min-height: 42px;
+}
+
+/* ==============================
+   PRIMARY BUTTON (Download)
+============================== */
+
+.primaryBtn {
+  composes: btn;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.primaryBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.primaryBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* ==============================
+   SECONDARY BUTTON
+============================== */
+
+.secondaryBtn {
+  composes: btn;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid var(--border-light);
+}
+
+.secondaryBtn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.secondaryBtn:active {
+  background: #f3f4f6;
+}
+
+/* ==============================
+   MOBILE OPTIMIZATION
+============================== */
+
+@media (max-width: 640px) {
+  .actions {
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
