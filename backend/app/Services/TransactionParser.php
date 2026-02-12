@@ -14,6 +14,12 @@ class TransactionParser
      * Expected format (tab or comma separated):
      * Date | Type | SellCoin | SellAmount | BuyCoin | BuyAmount | BuyPricePerCoin
      * 
+     * NOTE: For BUY transactions, the BuyAmount (coin quantity) column may be left
+     * blank in the source spreadsheet — only the ZAR amount (SellAmount) and the
+     * BuyPricePerCoin are recorded. When BuyAmount is missing or zero for a BUY row,
+     * this parser derives it automatically:
+     *     buyAmount = sellAmount / buyPricePerCoin
+     * 
      * @param string $input Raw text from Excel copy-paste
      * @return array Array of Transaction objects
      * @throws Exception if parsing fails
@@ -85,13 +91,25 @@ class TransactionParser
         }
 
         // Parse and clean each column
-        $date = $this->parseDate(trim($columns[0]));
-        $type = trim($columns[1]);
-        $sellCoin = trim($columns[2]);
-        $sellAmount = $this->parseAmount($columns[3]);
-        $buyCoin = trim($columns[4]);
-        $buyAmount = $this->parseAmount($columns[5]);
+        $date        = $this->parseDate(trim($columns[0]));
+        $type        = strtoupper(trim($columns[1]));
+        $sellCoin    = trim($columns[2]);
+        $sellAmount  = $this->parseAmount($columns[3]);
+        $buyCoin     = trim($columns[4]);
         $buyPricePerCoin = $this->parseAmount($columns[6]);
+
+        // BUG FIX: For BUY transactions the spreadsheet may leave BuyAmount blank,
+        // storing only ZAR spent (SellAmount) and price per coin (BuyPricePerCoin).
+        // Derive the coin quantity instead of failing or using 0.
+        $buyAmountRaw = trim($columns[5]);
+        if ($type === 'BUY' && ($buyAmountRaw === '' || $buyAmountRaw === '0')) {
+            if ($buyPricePerCoin <= 0) {
+                throw new Exception("Cannot derive BuyAmount: BuyPricePerCoin is zero or missing");
+            }
+            $buyAmount = $sellAmount / $buyPricePerCoin;
+        } else {
+            $buyAmount = $this->parseAmount($columns[5]);
+        }
 
         // Validation
         $this->validateTransaction($type, $sellCoin, $buyCoin, $lineNumber);
@@ -137,6 +155,12 @@ class TransactionParser
     {
         // Remove common currency symbols, spaces, and commas
         $cleaned = preg_replace('/[R$€£,\s]/', '', trim($amountString));
+
+        // BUG FIX: treat empty string as 0 instead of throwing, so callers can
+        // decide how to handle missing values (e.g., deriving BuyAmount for BUY rows).
+        if ($cleaned === '' || $cleaned === null) {
+            return 0.0;
+        }
         
         if (!is_numeric($cleaned)) {
             throw new Exception("Invalid amount: {$amountString}");
