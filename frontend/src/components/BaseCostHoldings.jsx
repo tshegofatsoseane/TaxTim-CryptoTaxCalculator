@@ -13,7 +13,7 @@ const BaseCostHoldings = ({ transactions }) => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/crypto-tax/calculate', {
+        const response = await fetch('/api/crypto-tax/calculate', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

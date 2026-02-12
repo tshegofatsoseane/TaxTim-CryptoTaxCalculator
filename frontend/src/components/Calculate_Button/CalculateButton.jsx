@@ -10,7 +10,7 @@ const CalculateButton = () => {
     setMessage('');
 
     try {
-      const response = await fetch('https://FIFO-calculator/api/endpoint.php', {
+      const response = await fetch('https://crypto-tax/api/calculate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
