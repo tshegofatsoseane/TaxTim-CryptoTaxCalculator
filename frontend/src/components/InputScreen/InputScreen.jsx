@@ -122,16 +122,18 @@ export default function InputScreen({ onCalculate }) {
           )}
 
           <div className={styles.actions}>
+            {/* Button */}
             <button
               className={styles.submitTransactionsBtn}
               onClick={handleSubmit}
               disabled={loading}
             >
-              {loading ? ( <Loader />
-              ) : (
-                "Calculate"
-              )}
+              Calculate
             </button>
+
+            {/* Global loader */}
+            {loading && <Loader />}
+
 
             <div className={styles.smallHint}>
               Your data stays in your browser.
