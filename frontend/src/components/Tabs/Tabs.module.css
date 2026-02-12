@@ -1,6 +1,7 @@
 .tabsContainer {
   margin-top: 80px;
   width: 100%;
+  z-index: 9999;
 }
 
 .tabsList {
@@ -9,7 +10,7 @@
   position: sticky;
   top: var(--header-h, 200px);
   top: 110px; /* Fix components appearing behind*/
-  z-index: 60;
+  z-index: 9999;
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
   padding: 6px 0;
@@ -65,32 +66,7 @@
   padding: 1rem;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .tabsContainer {
-    margin-top: var(--header-h, 60px);
-  }
-
-  .tabsList {
-    top: var(--header-h, 60px);
-    top: 100px;
-    padding: 4px 0;
-    gap: 0;
-  }
-
-  .tabButton {
-    padding: 0.625rem 0.875rem;
-    font-size: 0.8125rem;
-  }
-
-  .tabContent {
-    margin-top: 1rem;
-    padding: 0.75rem;
-  }
-}
-
-/* Extra small screens */
-@media (max-width: 480px) {
+@media (max-width: 770px) {
   .tabsContainer {
     margin-top: var(--header-h, 50px);
   }
