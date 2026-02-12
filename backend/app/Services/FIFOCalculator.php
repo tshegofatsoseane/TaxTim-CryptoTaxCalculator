@@ -7,7 +7,6 @@ use App\DataTransferObjects\CoinBalance;
 use App\DataTransferObjects\CoinLot;
 use App\DataTransferObjects\CapitalGainEvent;
 use DateTime;
-
 /**
  * Main FIFO Calculator for crypto tax calculations
  * Processes transactions and calculates capital gains using First-In-First-Out method
@@ -85,6 +84,7 @@ class FIFOCalculator
      */
     private function processSell(Transaction $transaction): void
     {
+        
         $coinBalance = $this->getOrCreateBalance($transaction->sellCoin);
 
         // Remove the sold amount using FIFO
@@ -95,8 +95,9 @@ class FIFOCalculator
             return $sum + $lot->getCostBasis();
         }, 0.0);
 
-        // Proceeds are the ZAR we received
-        $proceeds = $transaction->getTotalValue();
+        // For SELL transactions, proceeds are simply the ZAR amount received (buyAmount)
+        // NOT buyAmount × buyPricePerCoin (that would give billions!)
+        $proceeds = $transaction->buyAmount;
 
         // Record the capital gain event
         $gainEvent = new CapitalGainEvent(
