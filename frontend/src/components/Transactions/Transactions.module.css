@@ -5,10 +5,8 @@
   background: #f6f7f9;
   padding: 14px;
   border-radius: 12px;
-
-  /* makes everything slightly smaller without rewriting every class */
-  /*  zoom: 0.90; /* works great in Chromium */
 }
+
 
 /* fallback for browsers that don't support zoom well */
 @supports not (zoom: 1) {
@@ -1370,7 +1368,33 @@
   padding: 0;
 }
 
+.headerIntro{
+  font-size: 14px;
+  padding: 6px 8px;
+}
+
 .helpIconBtnSmall:hover {
   background: rgba(13, 148, 136, 0.08);
   border-color: rgba(13, 148, 136, 0.22);
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0;          /* 👈 edge-to-edge */
+    border-radius: 0;    /* 👈 no floating card look */
+    background: #f6f7f9;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0 !important;       /* removes the side gaps */
+    border-radius: 0 !important;  /* removes rounded “card” edges */
+  }
+
+  /* remove any extra outer spacing if present */
+  .header {
+    padding: 0; /* optional: keep tiny readable padding. set to 0 for true edge-to-edge */
+  }
+}
+

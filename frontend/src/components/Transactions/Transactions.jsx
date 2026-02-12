@@ -254,7 +254,7 @@ export default function Transactions({
     <div className={styles.page}>
       {/* Header */}
       <div className={styles.header}>
-        <div>
+        <div className={styles.headerIntro}>
           <h2 className={styles.title}>Tax Summary</h2>
           <p className={styles.sub}>
             Your capital gains/losses calculated using FIFO (First In, First
