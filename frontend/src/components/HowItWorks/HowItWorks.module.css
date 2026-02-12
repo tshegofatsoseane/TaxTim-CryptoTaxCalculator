@@ -1,20 +1,22 @@
 .container {
-  /*width: 100%;*/
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: 1.5rem;
+  max-width: 60rem;
+  margin: clamp(12px, 3vw, 24px) auto 0 auto; 
+  padding: clamp(12px, 3vw, 16px) clamp(12px, 4vw, 16px);  
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .heading {
   color: #6b7280;
-  font-size: 1.125rem;
-  margin-bottom: 1.5rem;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  font-weight: 600;
+  margin-bottom: clamp(10px, 2vw, 12px); 
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: clamp(10px, 2vw, 12px);    
 }
 
 @media (min-width: 768px) {
@@ -26,29 +28,35 @@
 .step {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: clamp(8px, 1.5vw, 10px); 
 }
 
 .badge {
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
+  width: clamp(20px, 4vw, 22px);
+  height: clamp(20px, 4vw, 22px);
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 999px;
   background-color: #0d9488;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: clamp(0.65rem, 1.5vw, 0.7rem); 
 }
 
 .text {
   color: #4b5563;
-  font-size: 0.875rem;
-  padding-top: 0.25rem;
+  font-size: clamp(0.75rem, 1.8vw, 0.8rem); 
+  line-height: 1.5;
+  padding-top: 1px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .highlight {
-  font-weight: 600;
+  font-weight: 700;
+  color: #0f766e;   
 }

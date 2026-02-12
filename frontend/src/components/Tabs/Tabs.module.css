@@ -1,4 +1,5 @@
 .tabsContainer {
+  margin-top: 80px;
   width: 100%;
   z-index: 9999;
 }
@@ -12,6 +13,18 @@
   z-index: 9999;
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
+  padding: 6px 0;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.tabsList::-webkit-scrollbar {
+  display: none;
 }
 
 .tabButton {
@@ -23,6 +36,8 @@
   background: none;
   border: none;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tabButton:hover {

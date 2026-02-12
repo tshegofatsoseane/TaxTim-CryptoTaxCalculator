@@ -1,0 +1,221 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Laravel",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api"
+        }
+    ],
+    "paths": {
+        "/crypto-tax/health": {
+            "get": {
+                "operationId": "cryptoTax.health",
+                "description": "Check if the Crypto Tax API is running.",
+                "summary": "Health check",
+                "tags": [
+                    "CryptoTax"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer",
+                                    "enum": [
+                                        200
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crypto-tax/calculate": {
+            "post": {
+                "operationId": "cryptoTax.calculate",
+                "description": "Calculate full tax report based on transaction history.",
+                "summary": "Calculate crypto taxes",
+                "tags": [
+                    "CryptoTax"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "transactions": {
+                                        "type": "string",
+                                        "minLength": 10
+                                    }
+                                },
+                                "required": [
+                                    "transactions"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer",
+                                    "enum": [
+                                        200
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crypto-tax/balances": {
+            "post": {
+                "operationId": "cryptoTax.getBalances",
+                "description": "Returns only current balances without full tax calculations.",
+                "summary": "Get current balances",
+                "tags": [
+                    "CryptoTax"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "transactions": {
+                                        "type": "string",
+                                        "minLength": 10
+                                    }
+                                },
+                                "required": [
+                                    "transactions"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer",
+                                    "enum": [
+                                        200
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crypto-tax/tax-year": {
+            "post": {
+                "operationId": "cryptoTax.getTaxYearSummary",
+                "description": "Returns capital gains, base costs, and events for a specific tax year.",
+                "summary": "Get tax year summary",
+                "tags": [
+                    "CryptoTax"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "transactions": {
+                                        "type": "string",
+                                        "minLength": 10
+                                    },
+                                    "taxYear": {
+                                        "type": "integer",
+                                        "minimum": 2000,
+                                        "maximum": 2100
+                                    }
+                                },
+                                "required": [
+                                    "transactions",
+                                    "taxYear"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer",
+                                    "enum": [
+                                        200
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crypto-tax/validate": {
+            "post": {
+                "operationId": "cryptoTax.validateTransactions",
+                "description": "Checks transaction data for correctness without calculating taxes.",
+                "summary": "Validate transactions",
+                "tags": [
+                    "CryptoTax"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "transactions": {
+                                        "type": "string",
+                                        "minLength": 10
+                                    }
+                                },
+                                "required": [
+                                    "transactions"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer",
+                                    "enum": [
+                                        200
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

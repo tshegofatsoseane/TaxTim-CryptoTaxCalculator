@@ -2,20 +2,24 @@
 
 return [
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+  'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+  'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173'],
+  'allowed_origins' => [
+    'http://localhost:5173',
+    'https://tax-tim-crypto-tax-calculator-jtod.vercel.app/',
+  ],
 
-    'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+  'allowed_origins_patterns' => [],
 
-    'exposed_headers' => [],
+  'allowed_headers' => ['*'],
 
-    'max_age' => 0,
+  'exposed_headers' => [],
 
-    'supports_credentials' => false,
+  'max_age' => 0,
+
+  'supports_credentials' => false,
 
 ];

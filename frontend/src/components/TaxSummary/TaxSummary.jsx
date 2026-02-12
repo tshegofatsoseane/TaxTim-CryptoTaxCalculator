@@ -1,70 +1,91 @@
-import React from 'react';
-import styles from './TaxSummary.module.css';
+import { useMemo } from "react";
+import styles from "./TaxSummary.module.css";
 
-const TaxSummary = ({ data }) => {
-  // Demo data for testing
-  const demoData = {
-    taxYears: [
-      {
-        year: "2024",
-        dateRange: "1 Mar 2023-29 Feb 2024",
-        coins: [
-          { coin: "BTC", capitalGains: "R4,180", capitalLosses: "R4,180" },
-          { coin: "ETH", capitalGains: "-R320", capitalLosses: "-R320" },
-          { coin: "USDT", capitalGains: "R6,064", capitalLosses: "R8,084" }
-        ],
-        totalCapitalGains: "R18,244"
-      },
-      {
-        year: "2025",
-        dateRange: "1 Mar 2024-28 Feb 2024",
-        coins: [
-          { coin: "BTC", capitalGains: "R1,880", capitalLosses: "R1,890" },
-          { coin: "SOL", capitalGains: "-640", capitalLosses: "-R640" }
-        ],
-        totalCapitalGains: "R8,921"
-      }
-    ]
-  };
+const money = (n) =>
+  `R${Number(n || 0).toLocaleString("en-ZA", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  })}`;
 
-  // Currently using to demo data from above
-  const displayData = data || demoData;
-
-  return (
-    <div className={styles.container}>
-      {displayData.taxYears.map((yearData, index) => (
-        <div key={index} className={styles.taxYearSection}>
-          <div className={styles.header}>
-            <h2 className={styles.year}>{yearData.year} Tax Year</h2>
-            <span className={styles.dateRange}>({yearData.dateRange})</span>
-          </div>
-          
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th className={styles.tableHeader}>Coin</th>
-                <th className={styles.tableHeader}>Capital Gains</th>
-                <th className={styles.tableHeader}>Capital Losses</th>
-              </tr>
-            </thead>
-            <tbody>
-              {yearData.coins.map((coinData, coinIndex) => (
-                <tr key={coinIndex} className={styles.tableRow}>
-                  <td className={styles.tableCell}>{coinData.coin}</td>
-                  <td className={styles.tableCell}>{coinData.capitalGains}</td>
-                  <td className={styles.tableCell}>{coinData.capitalLosses}</td>
-                </tr>
-              ))}
-              <tr className={styles.totalRow}>
-                <td className={styles.tableCell}>Total Capital Gain:</td>
-                <td className={styles.tableCell} colSpan="2">{yearData.totalCapitalGains}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ))}
-    </div>
-  );
+const taxRange = (taxYear) => {
+  const startYear = taxYear - 1;
+  const endYear = taxYear;
+  const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);
+  const endDay = isLeap(endYear) ? 29 : 28;
+  return `1 Mar ${startYear} - ${endDay} Feb ${endYear}`;
 };
 
-export default TaxSummary;
+export default function TaxYearSummaryCards({ apiData }) {
+  const summaries = apiData?.taxYearSummaries ?? [];
+
+  const cards = useMemo(() => {
+    return summaries
+      .slice()
+      .sort((a, b) => Number(b.taxYear) - Number(a.taxYear))
+      .map((s) => ({
+        year: s.taxYear,
+        range: taxRange(Number(s.taxYear)),
+        total: s.netGain ?? s.totalGain ?? 0,
+        rows: (s.byCoins ?? []).slice().sort((a, b) => a.coin.localeCompare(b.coin)),
+      }));
+  }, [summaries]);
+
+  if (!apiData) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.emptyCard}>
+          <h3>Tax year summary</h3>
+          <p>Paste transactions and click Submit to generate a summary.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!cards.length) return null;
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.grid}>
+        {cards.map((c) => (
+          <div key={c.year} className={styles.card}>
+            <div className={styles.cardHeader}>
+              <div className={styles.yearTitle}>{c.year} Tax Year</div>
+              <div className={styles.range}>({c.range})</div>
+            </div>
+
+            <div className={styles.tableWrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Coin</th>
+                    <th className={styles.right}>Capital Gains</th>
+                    <th className={styles.right}>Capital Losses</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {c.rows.map((r) => (
+                    <tr key={r.coin}>
+                      <td className={styles.coin}>{r.coin}</td>
+                      <td className={styles.right}>{money(r.totalGain)}</td>
+                      <td className={styles.right}>{money(r.totalLoss)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td className={styles.totalLabel} colSpan={2}>
+                      Total Capital Gain:
+                    </td>
+                    <td className={`${styles.right} ${styles.totalValue}`}>
+                      {money(c.total)}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

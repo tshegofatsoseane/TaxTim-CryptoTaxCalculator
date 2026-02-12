@@ -189,7 +189,45 @@ http://localhost:5173
 
 ---
 
-## 5. Architecture notes
+## 5. Contributing
+
+- Create a new branch for your changes:
+  ```bash
+  git checkout -b feature/your-feature-name
+  ```
+
+## Commit Guidelines
+
+- Use clear and descriptive commit messages.
+- Keep commits small and focused.
+
+Example:
+```bash
+git commit -m "fix: resolve component re-render issue"
+```
+
+## Submitting a Pull Request
+
+1. Push your branch to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+2. Open a Pull Request targeting the `main` branch.
+3. In your Pull Request description, include:
+   - A clear summary of the changes
+   - The reason for the change
+   - Screenshots or additional context if applicable
+
+
+## Code of Conduct
+
+By participating in this project, you agree to be respectful and considerate of others.  
+Harassment, abusive behavior, or discrimination will not be tolerated.
+
+---
+
+
+## 6. Architecture notes
 
 - All tax logic lives in:
   ```
