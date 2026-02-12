@@ -1,0 +1,82 @@
+/* ✅ Create: src/components/Tooltip/Tooltip.module.css */
+
+.wrap {
+  display: inline-flex;
+  position: relative;
+}
+
+/* Bubble is fixed so it never drifts inside overflow/scroll containers */
+.bubble {
+  position: fixed;
+  z-index: 9999;
+
+  background: #111827;
+  color: #ffffff;
+
+  border-radius: 14px;
+  padding: 12px 12px;
+
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  font-size: 13px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+
+  animation: tooltipIn 120ms ease-out;
+  transform-origin: center;
+}
+
+@keyframes tooltipIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.content strong {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 850;
+  font-size: 13px;
+}
+
+/* Arrow */
+.arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #111827;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  transform: rotate(45deg);
+}
+
+/* Place arrow based on placement */
+.top .arrow {
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.bottom .arrow {
+  left: 50%;
+  top: -5px;
+  transform: translateX(-50%) rotate(225deg);
+}
+
+.left .arrow {
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(135deg);
+}
+
+.right .arrow {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}

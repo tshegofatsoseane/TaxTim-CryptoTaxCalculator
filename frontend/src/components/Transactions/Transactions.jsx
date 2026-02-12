@@ -2,6 +2,8 @@
 import React, { useMemo, useState } from "react"
 import styles from "./Transactions.module.css"
 import InputScreen from "../InputScreen/InputScreen"
+import Tooltip from "../../components/Tooltip/Tooltip";
+import SarsPdfDownloadButton from "../SarsPdfDownloadButton/SarsPdfDownloadButton";
 
 // ---------- helpers ----------
 const fmtCurrency = (n) => {
@@ -266,16 +268,25 @@ export default function Transactions({
           )}
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
-          <button
-            className={styles.ghostBtn}
-            onClick={() => onReset?.()}
-            title="Replace transactions"
-            type="button"
-          >
-            Replace transactions
-          </button>
-        </div>
+    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <SarsPdfDownloadButton
+        apiData={apiData}
+        metadata={metadata}
+        filename={`sars_crypto_summary_${declaration?.years?.[0] ?? "results"}`}
+        label="Download SARS PDF"
+        variant="ghost"
+      />
+
+      <button
+        className={styles.ghostBtn}
+        onClick={() => onReset?.()}
+        title="Replace transactions"
+        type="button"
+      >
+        Replace transactions
+      </button>
+    </div>
+        
       </div>
 
       {/* Main Tax Declaration Card */}
@@ -286,24 +297,25 @@ export default function Transactions({
       >
         <div className={styles.taxDeclHeader}>
           <div className={styles.taxDeclBadge}>SARS Declaration</div>
-          <span
-            className={styles.helpIcon}
-            tabIndex={0}
-            aria-label="What is this?"
+          <Tooltip
+            placement="bottom"
+            content={
+              <div>
+                <strong>What is this?</strong>
+                This is your total capital gain/loss that you need to declare to SARS. It's
+                calculated using FIFO (First In, First Out) — when you sell or trade, we
+                assume you sold your oldest coins first.
+              </div>
+            }
           >
-            ?
-            <span className={styles.tooltip}>
-              <strong>What is this?</strong>
-              This is your total capital gain/loss that you need to declare to
-              SARS. It's calculated using the FIFO (First In, First Out) method,
-              which means when you sell or trade crypto, we assume you sold your
-              oldest coins first.
-            </span>
-          </span>
+            <button type="button" className={styles.helpIconBtn} aria-label="What is this?">
+              ?
+            </button>
+          </Tooltip>
         </div>
 
         <div className={styles.taxDeclAmount}>
-          <div className={styles.taxDeclLabel}>Total Capital Gain/Loss</div>
+          <div className={styles.taxDeclLabel}>Total Capital Gain/Loss (This is what you declare to SARS)</div>
           <div
             className={`${styles.taxDeclValue} ${
               declaration.total >= 0 ? styles.pos : styles.neg
@@ -329,20 +341,20 @@ export default function Transactions({
               <div className={styles.yearBreakdownTitle}>
                 Breakdown by Tax Year
               </div>
-              <span
-                className={styles.helpIconInline}
-                tabIndex={0}
-                aria-label="Understanding tax years"
+              <Tooltip
+                placement="bottom"
+                content={
+                  <div>
+                    <strong>Tax Years Explained</strong>
+                    Each tax year (Mar 1 – Feb 28/29) shows your net capital gain/loss from
+                    SELL and TRADE events. BUY transactions create lots used later.
+                  </div>
+                }
               >
-                ?
-                <span className={styles.tooltip}>
-                  <strong>Tax Years Explained</strong>
-                  Each tax year (March 1 - February 28/29) shows your net
-                  capital gain/loss from SELL and TRADE events. BUY transactions
-                  don't create gains — they only create cost lots used when you
-                  sell later.
-                </span>
-              </span>
+                <button type="button" className={styles.helpIconBtnSmall} aria-label="Understanding tax years">
+                  ?
+                </button>
+              </Tooltip>
             </div>
 
             <div className={styles.yearCards}>

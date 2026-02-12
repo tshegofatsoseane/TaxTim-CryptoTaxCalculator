@@ -1,0 +1,133 @@
+/* ================= GENERAL FOOTER ================= */
+.footer {
+  background-color: #4a4a4a;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  padding: 50px 20px 30px;
+  line-height: 1.6;
+}
+
+.footer a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #00c853;
+}
+
+/* ================= TOP SECTION ================= */
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+/* ===== BRAND / LOGO / ABOUT ===== */
+.footer-brand {
+  flex: 1 1 250px;
+  min-width: 250px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.footer-logo img.tax-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+}
+
+.footer-about-text {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* ===== CALL-TO-ACTION BUTTON ===== */
+.footer-cta-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 22px;
+  background-color: #00c853;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.footer-cta-btn:hover {
+  background-color: #00e676;
+  transform: translateY(-2px);
+}
+
+/* ================= COLUMNS ================= */
+.footer-column {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-column h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.footer-column p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* ================= BOTTOM SECTION ================= */
+.footer-divider {
+  border: none;
+  border-top: 1px solid #6d6d6d;
+  margin: 20px 0;
+}
+
+/* ===== SOCIAL MEDIA ICONS BELOW DIVIDER (CENTERED, ORIGINAL COLORS) ===== */
+.footer-socials-bottom {
+  display: flex;
+  justify-content: center; /* centered */
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.footer-socials-bottom a img.social-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.footer-socials-bottom a img.social-icon:hover {
+  transform: scale(1.1);
+}
+
+/* ================= BOTTOM BAR ================= */
+.footer-bottom {
+  text-align: center;
+  font-size: 12px;
+  color: #cfcfcf;
+  line-height: 1.5;
+}
+
+.footer-terms {
+  margin-bottom: 10px;
+}
+
+.footer-copy {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.footer-small {
+  font-size: 11px;
+}

@@ -1,6 +1,8 @@
+// CapitalGains.jsx
 import { useMemo, useState } from "react";
 import styles from "./CapitalGains.module.css";
 import CompletionBanner from "../Completionbanner/CompletionBanner";
+import InfoModal from "../../components/InfoModal/InfoModal";
 
 const fmtCurrency = (n) => {
   const val = Number(n || 0);
@@ -49,6 +51,9 @@ export default function CapitalGains({ apiData }) {
   const [expandedRows, setExpandedRows] = useState(() => new Set());
   const [expandAll, setExpandAll] = useState(false);
 
+  // ✅ Help modal state
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
+
   const years = useMemo(() => {
     const ys = summaries
       .map((s) => Number(s.taxYear))
@@ -88,61 +93,125 @@ export default function CapitalGains({ apiData }) {
     return rows;
   }, [events, selectedYear, coinFilter, query]);
 
+  // ✅ Capital gain to declare to SARS (all years)
+  const declaration = useMemo(() => {
+    const byYear = new Map();
 
-    // ✅ Capital gain to declare to SARS (all years + breakdown + simple equation parts)
-    const declaration = useMemo(() => {
-      const byYear = new Map();
-
-      if (Array.isArray(summaries) && summaries.length) {
-        for (const s of summaries) {
-          const y = Number(s.taxYear);
-          if (!y) continue;
-          const net = Number(s.netGain ?? s.totalGain ?? 0);
-          byYear.set(y, net);
-        }
-      } else {
-        for (const e of events) {
-          const y = Number(e.taxYear);
-          if (!y) continue;
-          const g = Number(e.capitalGain ?? 0);
-          byYear.set(y, (byYear.get(y) ?? 0) + g);
-        }
+    if (Array.isArray(summaries) && summaries.length) {
+      for (const s of summaries) {
+        const y = Number(s.taxYear);
+        if (!y) continue;
+        const net = Number(s.netGain ?? s.totalGain ?? 0);
+        byYear.set(y, net);
       }
+    } else {
+      for (const e of events) {
+        const y = Number(e.taxYear);
+        if (!y) continue;
+        const g = Number(e.capitalGain ?? 0);
+        byYear.set(y, (byYear.get(y) ?? 0) + g);
+      }
+    }
 
-      const yearList = Array.from(byYear.keys()).sort((a, b) => b - a);
+    const yearList = Array.from(byYear.keys()).sort((a, b) => b - a);
+    const total = yearList.reduce((acc, y) => acc + (byYear.get(y) ?? 0), 0);
 
-      // Net total across years
-      const total = yearList.reduce((acc, y) => acc + (byYear.get(y) ?? 0), 0);
+    const selectedVal = selectedYear
+      ? Number(byYear.get(Number(selectedYear)) ?? 0)
+      : null;
 
-      // For the “equation” UI:
-      const totalGains = yearList.reduce((acc, y) => {
-        const v = Number(byYear.get(y) ?? 0);
-        return v > 0 ? acc + v : acc;
-      }, 0);
-
-      const totalLossesAbs = yearList.reduce((acc, y) => {
-        const v = Number(byYear.get(y) ?? 0);
-        return v < 0 ? acc + Math.abs(v) : acc;
-      }, 0);
-
-      const selectedVal = selectedYear
-        ? Number(byYear.get(Number(selectedYear)) ?? 0)
-        : null;
-
-      return {
-        yearList,
-        byYear,
-        total,
-        selectedVal,
-        totalGains,
-        totalLossesAbs,
-      };
-    }, [summaries, events, selectedYear]);
+    return { yearList, byYear, total, selectedVal };
+  }, [summaries, events, selectedYear]);
 
   const selectedSummary = useMemo(() => {
     if (!selectedYear) return null;
     return summaries.find((s) => Number(s.taxYear) === Number(selectedYear));
   }, [summaries, selectedYear]);
+
+  // ✅ Example calc: use first matching event from the current view if possible
+  const exampleEvent = useMemo(() => {
+    const pickFrom = selectedYear ? filteredEvents : events;
+    const e = (pickFrom ?? []).find((x) => {
+      const t = String(x.transactionType || "").toUpperCase();
+      return (t === "SELL" || t === "TRADE") && x.proceeds != null && x.costBasis != null;
+    });
+    return e || null;
+  }, [selectedYear, filteredEvents, events]);
+
+  const HelpContent = (
+    <div>
+      <p className={styles.helpP}>
+        SARS treats <b>selling</b> or <b>trading</b> crypto as a “disposal”.
+        When you dispose of crypto, you must calculate a <b>capital gain or loss</b>.
+      </p>
+
+      <div className={styles.helpNote}>
+        Simple rule: <b>Gain/Loss = Proceeds − Cost basis</b>
+      </div>
+
+      <p className={styles.helpP}>
+        <b>Proceeds</b> = the value you received when you sold/traded. <br />
+        <b>Cost basis</b> = what you originally paid for those coins. We calculate cost basis
+        using <b>FIFO</b> (oldest coins first).
+      </p>
+
+      <div className={styles.helpExample}>
+        <div className={styles.helpExampleTitle}>
+          Example {exampleEvent ? "using your data" : ""}
+        </div>
+
+        {exampleEvent ? (
+          <>
+            <div className={styles.helpExampleText}>
+              On <b>{exampleEvent.date}</b> you {String(exampleEvent.transactionType || "").toLowerCase()}{" "}
+              <b>{fmtNumber(exampleEvent.soldAmount, 8)} {exampleEvent.soldCoin}</b>
+            </div>
+
+            <div className={styles.helpCalcRow}>
+              <div className={styles.helpCalcBox}>
+                <div className={styles.helpCalcLabel}>Proceeds</div>
+                <div className={styles.helpCalcValue}>{fmtCurrency(exampleEvent.proceeds)}</div>
+              </div>
+
+              <div className={styles.helpCalcOp}>−</div>
+
+              <div className={styles.helpCalcBox}>
+                <div className={styles.helpCalcLabel}>Cost basis</div>
+                <div className={styles.helpCalcValue}>{fmtCurrency(exampleEvent.costBasis)}</div>
+              </div>
+
+              <div className={styles.helpCalcOp}>=</div>
+
+              <div className={styles.helpCalcBox}>
+                <div className={styles.helpCalcLabel}>Gain / Loss</div>
+                <div
+                  className={`${styles.helpCalcValue} ${
+                    Number(exampleEvent.capitalGain ?? 0) >= 0 ? styles.pos : styles.neg
+                  }`}
+                >
+                  {fmtCurrency(exampleEvent.capitalGain)}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.helpExampleText}>
+              If you sell for <b>R12,000</b> and the coins originally cost you <b>R9,000</b>:
+            </div>
+            <div className={styles.helpCalcSimple}>
+              R12,000 − R9,000 = <b>R3,000 gain</b>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className={styles.helpFooterHint}>
+        The number you declare to SARS is your <b>net capital gain/loss</b> per tax year
+        (1 March → end Feb), and the app totals it for you.
+      </div>
+    </div>
+  );
 
   const toggleRow = (key) => {
     setExpandedRows((prev) => {
@@ -152,7 +221,6 @@ export default function CapitalGains({ apiData }) {
       return next;
     });
   };
-
 
   const setAllRowsExpanded = (on) => {
     setExpandAll(on);
@@ -168,11 +236,17 @@ export default function CapitalGains({ apiData }) {
   if (!apiData) {
     return (
       <div className={styles.page}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Your capital gains & losses</h2>
-          <p className={styles.sub}>
-            Paste transactions and click <b>Submit Transactions</b> to see results.
-          </p>
+        <div className={styles.headerRow}>
+          <div>
+            <h2 className={styles.title}>Your capital gains & losses</h2>
+            <p className={styles.sub}>
+              Paste transactions and click <b>Submit Transactions</b> to see results.
+            </p>
+          </div>
+
+          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+            What is this?
+          </button>
         </div>
 
         <div className={styles.emptyCard}>
@@ -184,6 +258,16 @@ export default function CapitalGains({ apiData }) {
             </div>
           </div>
         </div>
+
+        <InfoModal
+          isOpen={isHelpOpen}
+          onClose={() => setIsHelpOpen(false)}
+          title="How crypto capital gains work"
+          primaryText="Got it"
+          maxWidth={620}
+        >
+          {HelpContent}
+        </InfoModal>
       </div>
     );
   }
@@ -192,10 +276,26 @@ export default function CapitalGains({ apiData }) {
   if (!years.length) {
     return (
       <div className={styles.page}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Your capital gains & losses</h2>
-          <p className={styles.sub}>No capital gain events found.</p>
+        <div className={styles.headerRow}>
+          <div>
+            <h2 className={styles.title}>Your capital gains & losses</h2>
+            <p className={styles.sub}>No capital gain events found.</p>
+          </div>
+
+          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+            What is this?
+          </button>
         </div>
+
+        <InfoModal
+          isOpen={isHelpOpen}
+          onClose={() => setIsHelpOpen(false)}
+          title="How crypto capital gains work"
+          primaryText="Got it"
+          maxWidth={620}
+        >
+          {HelpContent}
+        </InfoModal>
       </div>
     );
   }
@@ -206,12 +306,26 @@ export default function CapitalGains({ apiData }) {
   if (!selectedYear) {
     return (
       <div className={styles.page}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Your capital gains & losses</h2>
+        <div className={styles.headerRow}>
+          <div>
+            <h2 className={styles.title}>Your capital gains & losses</h2>
+            <p className={styles.sub}>
+              These are the gains and losses you must declare to SARS, grouped by tax year.
+            </p>
+          </div>
+
+          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+            What is this?
+          </button>
+        </div>
 
         {/* ✅ Big “declare to SARS” card */}
         {!!declaration.yearList.length && (
-          <div className={styles.sarsHero} role="note" aria-label="Capital gain to declare to SARS">
+          <div
+            className={styles.sarsHero}
+            role="note"
+            aria-label="Capital gain to declare to SARS"
+          >
             <div className={styles.sarsHeroTop}>
               <div>
                 <div className={styles.sarsHeroTitle}>Capital gain to declare to SARS</div>
@@ -234,11 +348,6 @@ export default function CapitalGains({ apiData }) {
             </div>
           </div>
         )}
-
-          <p className={styles.sub}>
-            These are the gains and losses you must declare to SARS, grouped by tax year.
-          </p>
-        </div>
 
         <div className={styles.grid}>
           {years.map((y) => {
@@ -272,7 +381,9 @@ export default function CapitalGains({ apiData }) {
                           <span className={styles.coinSym}>{c.coin}</span>
                           <span
                             className={`${styles.coinVal} ${
-                              Number(c.netGain ?? c.totalGain ?? 0) >= 0 ? styles.pos : styles.neg
+                              Number(c.netGain ?? c.totalGain ?? 0) >= 0
+                                ? styles.pos
+                                : styles.neg
                             }`}
                           >
                             {fmtCurrency(c.netGain ?? c.totalGain ?? 0)}
@@ -281,7 +392,9 @@ export default function CapitalGains({ apiData }) {
                       ))}
 
                       {byCoins.length > 4 && (
-                        <div className={styles.moreCoins}>+{byCoins.length - 4} more</div>
+                        <div className={styles.moreCoins}>
+                          +{byCoins.length - 4} more
+                        </div>
                       )}
                     </>
                   ) : (
@@ -290,7 +403,6 @@ export default function CapitalGains({ apiData }) {
                     </div>
                   )}
                 </div>
-
 
                 <button
                   className={styles.primaryBtn}
@@ -311,7 +423,15 @@ export default function CapitalGains({ apiData }) {
 
         <CompletionBanner />
 
-
+        <InfoModal
+          isOpen={isHelpOpen}
+          onClose={() => setIsHelpOpen(false)}
+          title="How crypto capital gains work"
+          primaryText="Got it"
+          maxWidth={620}
+        >
+          {HelpContent}
+        </InfoModal>
       </div>
     );
   }
@@ -329,64 +449,69 @@ export default function CapitalGains({ apiData }) {
           </p>
         </div>
 
-        <button
-          className={styles.ghostBtn}
-          onClick={() => {
-            setSelectedYear(null);
-            setExpandedRows(new Set());
-            setExpandAll(false);
-          }}
-        >
-          ← Back to tax years
-        </button>
+        <div style={{ display: "inline-flex", gap: 10, alignItems: "center" }}>
+
+          <button
+            className={styles.ghostBtn}
+            onClick={() => {
+              setSelectedYear(null);
+              setExpandedRows(new Set());
+              setExpandAll(false);
+            }}
+          >
+            ← Back to tax years
+          </button>
+
+          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+            What is this?
+          </button>
+
+        </div>
       </div>
 
-              {/* Year summary mini card */}
-        {selectedSummary && (
-          <div className={styles.statementCard}>
+      {/* Year summary mini card */}
+      {selectedSummary && (
+        <div className={styles.statementCard}>
+          <div className={styles.statementSection}>
+            <div className={styles.statementSectionTitle}>Summary</div>
 
-
-            <div className={styles.statementSection}>
-              <div className={styles.statementSectionTitle}>Summary</div>
-
-              <div className={styles.kvGrid}>
-                <div className={styles.k}>This is what you declare to SARS</div>
-                <div
-                  className={`${styles.v} ${
-                    Number(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0) >= 0
-                      ? styles.pos
-                      : styles.neg
-                  }`}
-                >
-                  {fmtCurrency(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0)}
-                </div>
+            <div className={styles.kvGrid}>
+              <div className={styles.k}>This is what you declare to SARS</div>
+              <div
+                className={`${styles.v} ${
+                  Number(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0) >= 0
+                    ? styles.pos
+                    : styles.neg
+                }`}
+              >
+                {fmtCurrency(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0)}
               </div>
-            </div>
-
-            <div className={styles.statementSection}>
-              <div className={styles.statementSectionTitle}>Breakdown by coin</div>
-
-              <div className={styles.kvGrid}>
-                {(selectedSummary.byCoins ?? []).map((c) => {
-                  const val = Number(c.netGain ?? c.totalGain ?? 0);
-                  return (
-                    <div key={c.coin} className={styles.kvRow}>
-                      <div className={styles.k}>{c.coin}</div>
-                      <div className={`${styles.v} ${val >= 0 ? styles.pos : styles.neg}`}>
-                        {fmtCurrency(val)}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className={styles.statementFooter}>
-              Amounts shown in ZAR. Values are calculated using FIFO (oldest coins first).
             </div>
           </div>
-        )}
 
+          <div className={styles.statementSection}>
+            <div className={styles.statementSectionTitle}>Breakdown by coin</div>
+
+            <div className={styles.kvGrid}>
+              {(selectedSummary.byCoins ?? []).map((c) => {
+                const val = Number(c.netGain ?? c.totalGain ?? 0);
+                return (
+                  <div key={c.coin} className={styles.kvRow}>
+                    <div className={styles.k}>{c.coin}</div>
+                    <div className={`${styles.v} ${val >= 0 ? styles.pos : styles.neg}`}>
+                      {fmtCurrency(val)}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className={styles.statementFooter}>
+            Amounts shown in ZAR. Values are calculated using FIFO (oldest coins first).
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className={styles.filters}>
@@ -481,11 +606,7 @@ export default function CapitalGains({ apiData }) {
                       <td className={styles.num}>{fmtCurrency(e.costBasis)}</td>
                       <td className={styles.num}>{fmtCurrency(e.proceeds)}</td>
 
-                      <td
-                        className={`${styles.num} ${
-                          gain >= 0 ? styles.pos : styles.neg
-                        }`}
-                      >
+                      <td className={`${styles.num} ${gain >= 0 ? styles.pos : styles.neg}`}>
                         {fmtCurrency(gain)}
                       </td>
                     </tr>
@@ -502,7 +623,9 @@ export default function CapitalGains({ apiData }) {
                             <div className={styles.mathSummary}>
                               <div>
                                 <span className={styles.mathLabel}>Sold:</span>{" "}
-                                <b>{fmtNumber(e.soldAmount, 8)} {e.soldCoin}</b>
+                                <b>
+                                  {fmtNumber(e.soldAmount, 8)} {e.soldCoin}
+                                </b>
                               </div>
                               <div>
                                 <span className={styles.mathLabel}>Cost basis:</span>{" "}
@@ -528,35 +651,23 @@ export default function CapitalGains({ apiData }) {
                                   <tr>
                                     <th>Buy date</th>
                                     <th className={styles.num}>Amount used</th>
-                                    <th className={styles.num}>Buy price</th>
+                                    <th className={styles.num}>Buy price/coin</th>
                                     <th className={styles.num}>Cost</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {(e.lotsUsed ?? []).map((lot, i) => (
                                     <tr key={i}>
-                                      <td className={styles.mono}>
-                                        {lot.priceDate?.date ?? "-"}
-                                      </td>
-                                      <td className={styles.num}>
-                                        {fmtNumber(lot.amount, 8)}
-                                      </td>
-                                      <td className={styles.num}>
-                                        {fmtCurrency(
-                                          Number(lot.pricePerCoin || 0) *
-                                            Number(lot.amount || 0)
-                                            ? lot.pricePerCoin
-                                            : lot.pricePerCoin
-                                        )}
-                                      </td>
-                                      <td className={styles.num}>
-                                        {fmtCurrency(lot.costBasis)}
-                                      </td>
+                                      <td className={styles.mono}>{lot.priceDate?.date ?? "-"}</td>
+                                      <td className={styles.num}>{fmtNumber(lot.amount, 8)}</td>
+                                      <td className={styles.num}>{fmtCurrency(lot.pricePerCoin)}</td>
+                                      <td className={styles.num}>{fmtCurrency(lot.costBasis)}</td>
                                     </tr>
                                   ))}
-                                  {(!(e.lotsUsed ?? []).length) && (
+
+                                  {!(e.lotsUsed ?? []).length && (
                                     <tr>
-                                      <td colSpan={4} className={styles.muted}>
+                                      <td colSpan={4} className={styles.muted} style={{ padding: 10 }}>
                                         No lot breakdown available for this event.
                                       </td>
                                     </tr>
@@ -566,7 +677,7 @@ export default function CapitalGains({ apiData }) {
                             </div>
 
                             <div className={styles.helperText}>
-                             
+                              Gain/Loss = Proceeds − Cost basis. Cost basis is FIFO (oldest lots first).
                             </div>
                           </div>
                         </td>
@@ -588,8 +699,15 @@ export default function CapitalGains({ apiData }) {
         </div>
       </div>
 
-      {/* Done bar */}
-
+      <InfoModal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        title="How crypto capital gains work"
+        primaryText="Got it"
+        maxWidth={620}
+      >
+        {HelpContent}
+      </InfoModal>
     </div>
   );
 }

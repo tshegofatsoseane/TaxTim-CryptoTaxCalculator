@@ -7,7 +7,7 @@
   border-radius: 12px;
 
   /* makes everything slightly smaller without rewriting every class */
-  zoom: 0.90; /* works great in Chromium */
+  /*  zoom: 0.90; /* works great in Chromium */
 }
 
 /* fallback for browsers that don't support zoom well */
@@ -38,8 +38,8 @@
 .sub {
   margin: 5px 0 0 0;
   color: #6b7280;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.1;
 }
 
 /* FIFO help */
@@ -93,15 +93,15 @@
 
 /* Quiet button (Replace transactions) */
 .ghostBtn {
-  border: 1px solid #e5e7eb;
-  background: transparent;
-  color: #111827;
-  padding: 8px 12px;
-  border-radius: 10px;
+  border: 1px solid rgba(13, 148, 136, 0.2);
+  background: rgba(13, 148, 136, 0.08);
+  color: #0f766e;
   font-weight: 800;
-  cursor: pointer;
   font-size: 12px;
-  transition: all 0.15s ease;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  min-height: 40px;
 }
 .ghostBtn:hover {
   background: #f9fafb;
@@ -353,7 +353,7 @@
 }
 
 .notesTitle {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 900;
   color: #0f766e;
 }
@@ -362,8 +362,8 @@
   margin: 0;
   padding-left: 18px;
   color: #0f766e;
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.15;
 }
 
 .notesList li {
@@ -1085,4 +1085,292 @@
   font-weight: 950;
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+
+/* =========================
+   Readability overrides
+   ========================= */
+
+/* Header text */
+.title {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.sub {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Top pills + badges */
+.taxDeclBadge {
+  font-size: 12px;
+}
+
+.taxDeclLabel {
+  font-size: 12px;
+}
+
+.taxDeclHint {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Big number stays bold but not overwhelming */
+.taxDeclValue {
+  font-size: 36px;
+}
+
+/* Tooltips */
+.tooltip {
+  font-size: 13px;
+  line-height: 1.55;
+}
+.tooltip strong {
+  font-size: 13px;
+}
+
+/* Year cards */
+.yearBreakdownTitle {
+  font-size: 13px;
+}
+
+.yearCardYear {
+  font-size: 15px;
+}
+
+.yearCardAmount {
+  font-size: 16px;
+}
+
+.yearCardStat {
+  font-size: 13px;
+}
+.yearCardStatLabel {
+  font-size: 13px;
+}
+.yearCardStatValue {
+  font-size: 13px;
+}
+
+/* Stats cards */
+.statLabel {
+  font-size: 12px;
+}
+.statValue {
+  font-size: 28px;
+}
+.statHint {
+  font-size: 13px;
+}
+
+/* Notes */
+.notesTitle {
+  font-size: 16px;
+}
+
+.notesList {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #334155; /* more readable than green text blocks */
+}
+.notesList strong {
+  color: #0f766e;
+}
+
+/* Filters */
+.txFiltersLabel {
+  font-size: 12px;
+}
+
+.filterLabel {
+  font-size: 12px;
+}
+
+.select,
+.input {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+/* Segmented buttons */
+.segBtn {
+  font-size: 13px;
+  padding: 10px 12px;
+}
+
+/* Buttons */
+.smallBtn {
+  font-size: 13px;
+  padding: 9px 12px;
+}
+
+.ghostBtn {
+  font-size: 13px;
+  padding: 9px 12px;
+}
+
+.clearLink {
+  font-size: 13px;
+}
+
+/* Table */
+.table {
+  font-size: 13px;
+}
+
+.table thead th {
+  font-size: 12px;
+  padding: 12px 12px;
+}
+
+.table td {
+  padding: 12px 12px;
+}
+
+.cellIndex {
+  font-size: 12px;
+}
+
+.cellDate,
+.cellSold,
+.cellBought,
+.cellPrice,
+.cellTotal,
+.cellGain {
+  font-size: 13px;
+}
+
+.cellSold .coin,
+.cellBought .coin {
+  font-size: 11px;
+}
+
+/* Details button */
+.detailsBtn {
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+/* Expanded breakdown */
+.mathTitle {
+  font-size: 14px;
+}
+.mathSub {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.infoTitle {
+  font-size: 12px;
+}
+.infoText {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.stepLabel {
+  font-size: 12px;
+}
+.stepValue {
+  font-size: 14px;
+}
+.stepHint {
+  font-size: 12px;
+}
+
+/* Equation */
+.eqLabel {
+  font-size: 11px;
+}
+.eqValue {
+  font-size: 14px;
+}
+
+/* Lots block */
+.lotsTitle {
+  font-size: 13px;
+}
+.lotsMeta {
+  font-size: 12px;
+}
+.lotDate,
+.lotCost {
+  font-size: 12px;
+}
+.lotK {
+  font-size: 11px;
+}
+.lotV {
+  font-size: 12px;
+}
+
+.helperText {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.warn {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Mobile: keep things readable */
+@media (max-width: 520px) {
+  .page {
+    padding: 12px;
+  }
+
+  .taxDeclValue {
+    font-size: 32px;
+  }
+
+  .tableWrap {
+    max-height: 420px;
+  }
+}
+
+/* ✅ Add to Transactions.module.css (and REMOVE .tooltip hover CSS since Tooltip handles it) */
+
+.helpIconBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ea;
+  background: #ffffff;
+  color: #0f766e;
+  font-weight: 950;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.helpIconBtn:hover {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.22);
+}
+
+.helpIconBtnSmall {
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ea;
+  background: #ffffff;
+  color: #0f766e;
+  font-weight: 950;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.helpIconBtnSmall:hover {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.22);
 }
