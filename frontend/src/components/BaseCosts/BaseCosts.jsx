@@ -1,58 +1,30 @@
-// BaseCost.jsx
 import { useMemo, useState } from "react";
 import styles from "./BaseCosts.module.css";
 import InfoModal from "../../components/InfoModal/InfoModal";
 
-const fmtCurrency = (n) => {
-  const val = Number(n || 0);
-  const formatted = Math.abs(val).toLocaleString("en-ZA", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  return val < 0 ? `-R${formatted}` : `R${formatted}`;
-};
-
-const fmtNumber = (n, max = 8) =>
-  Number(n || 0).toLocaleString("en-ZA", { maximumFractionDigits: max });
+import { fmtCurrency, fmtNumber } from "../../utils/formatters";
+import {
+  sortBoundaries,
+  getSelectedBoundary,
+  getTotalForBoundary,
+  getExampleData,
+} from "../../utils/baseCostHelpers";
 
 export default function BaseCosts({ apiData }) {
   const boundaries = apiData?.baseCostsByTaxYear ?? [];
   const [selectedTaxYear, setSelectedTaxYear] = useState(null);
-
-  // ✅ Help modal state
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  const sorted = useMemo(() => {
-    return [...boundaries].sort((a, b) => Number(b.taxYear) - Number(a.taxYear));
-  }, [boundaries]);
-
-  const selected = useMemo(() => {
-    if (!selectedTaxYear) return null;
-    return sorted.find((x) => Number(x.taxYear) === Number(selectedTaxYear)) ?? null;
-  }, [sorted, selectedTaxYear]);
-
-  const totalForSelected = useMemo(() => {
-    const coins = selected?.coins ?? [];
-    return coins.reduce((sum, c) => sum + Number(c.costBasis || 0), 0);
-  }, [selected]);
-
-  // ✅ Example using user's numbers if possible
-  const exampleData = useMemo(() => {
-    if (!sorted.length) return null;
-    const first = sorted[0];
-    const coins = (first.coins ?? []).slice(0, 2);
-    if (!coins.length) return null;
-
-    return {
-      date: first.date,
-      items: coins.map((c) => ({
-        coin: c.coin,
-        amount: c.amount,
-        cost: c.costBasis,
-      })),
-      total: coins.reduce((sum, c) => sum + Number(c.costBasis || 0), 0),
-    };
-  }, [sorted]);
+  const sorted = useMemo(() => sortBoundaries(boundaries), [boundaries]);
+  const selected = useMemo(
+    () => getSelectedBoundary(sorted, selectedTaxYear),
+    [sorted, selectedTaxYear]
+  );
+  const totalForSelected = useMemo(
+    () => getTotalForBoundary(selected),
+    [selected]
+  );
+  const exampleData = useMemo(() => getExampleData(sorted), [sorted]);
 
   const HelpContent = (
     <div>
@@ -115,7 +87,7 @@ export default function BaseCosts({ apiData }) {
     </div>
   );
 
-  // EMPTY STATE (no apiData)
+  // --- EMPTY STATE (no apiData) ---
   if (!apiData) {
     return (
       <div className={styles.page}>
@@ -155,7 +127,7 @@ export default function BaseCosts({ apiData }) {
     );
   }
 
-  // EMPTY STATE (no boundaries)
+  // --- EMPTY STATE (no boundaries) ---
   if (!sorted.length) {
     return (
       <div className={styles.page}>
@@ -192,7 +164,7 @@ export default function BaseCosts({ apiData }) {
     );
   }
 
-  // VIEW 1: SUMMARY CARDS
+  // --- VIEW 1: SUMMARY CARDS ---
   if (!selectedTaxYear) {
     return (
       <div className={styles.page}>
@@ -272,7 +244,7 @@ export default function BaseCosts({ apiData }) {
     );
   }
 
-  // VIEW 2: DRILL DOWN TABLE
+  // --- VIEW 2: DRILL DOWN TABLE ---
   return (
     <div className={styles.page}>
       <div className={styles.headerRow}>

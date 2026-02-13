@@ -4,42 +4,9 @@ import styles from "./CapitalGains.module.css";
 import CompletionBanner from "../Completionbanner/CompletionBanner";
 import InfoModal from "../../components/InfoModal/InfoModal";
 
-const fmtCurrency = (n) => {
-  const val = Number(n || 0);
-  const formatted = Math.abs(val).toLocaleString("en-ZA", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  return val < 0 ? `-R${formatted}` : `R${formatted}`;
-};
-
-const fmtNumber = (n, max = 8) => {
-  const val = Number(n || 0);
-  return val.toLocaleString("en-ZA", { maximumFractionDigits: max });
-};
-
-const taxYearRange = (taxYear) => {
-  const startYear = Number(taxYear) - 1;
-  const endYear = Number(taxYear);
-  const isLeap =
-    (endYear % 4 === 0 && endYear % 100 !== 0) || endYear % 400 === 0;
-  const endDay = isLeap ? 29 : 28;
-  return `1 Mar ${startYear} – ${endDay} Feb ${endYear}`;
-};
-
-const humanType = (t) => {
-  if (t === "SELL") return "Sold";
-  if (t === "TRADE") return "Traded";
-  if (t === "BUY") return "Bought";
-  return t || "-";
-};
-
-const pillClass = (t) => {
-  if (t === "SELL") return styles.pillSell;
-  if (t === "TRADE") return styles.pillTrade;
-  if (t === "BUY") return styles.pillBuy;
-  return styles.pillDefault;
-};
+import { fmtCurrency, fmtNumber } from "../../utils/formatters";
+import { taxYearRange } from "../../utils/taxYear";
+import { humanType, pillClass } from "../../utils/transactionUI";
 
 export default function CapitalGains({ apiData }) {
   const summaries = apiData?.taxYearSummaries ?? [];
@@ -133,7 +100,11 @@ export default function CapitalGains({ apiData }) {
     const pickFrom = selectedYear ? filteredEvents : events;
     const e = (pickFrom ?? []).find((x) => {
       const t = String(x.transactionType || "").toUpperCase();
-      return (t === "SELL" || t === "TRADE") && x.proceeds != null && x.costBasis != null;
+      return (
+        (t === "SELL" || t === "TRADE") &&
+        x.proceeds != null &&
+        x.costBasis != null
+      );
     });
     return e || null;
   }, [selectedYear, filteredEvents, events]);
@@ -163,21 +134,28 @@ export default function CapitalGains({ apiData }) {
         {exampleEvent ? (
           <>
             <div className={styles.helpExampleText}>
-              On <b>{exampleEvent.date}</b> you {String(exampleEvent.transactionType || "").toLowerCase()}{" "}
-              <b>{fmtNumber(exampleEvent.soldAmount, 8)} {exampleEvent.soldCoin}</b>
+              On <b>{exampleEvent.date}</b> you{" "}
+              {String(exampleEvent.transactionType || "").toLowerCase()}{" "}
+              <b>
+                {fmtNumber(exampleEvent.soldAmount, 8)} {exampleEvent.soldCoin}
+              </b>
             </div>
 
             <div className={styles.helpCalcRow}>
               <div className={styles.helpCalcBox}>
                 <div className={styles.helpCalcLabel}>Proceeds</div>
-                <div className={styles.helpCalcValue}>{fmtCurrency(exampleEvent.proceeds)}</div>
+                <div className={styles.helpCalcValue}>
+                  {fmtCurrency(exampleEvent.proceeds)}
+                </div>
               </div>
 
               <div className={styles.helpCalcOp}>−</div>
 
               <div className={styles.helpCalcBox}>
                 <div className={styles.helpCalcLabel}>Cost basis</div>
-                <div className={styles.helpCalcValue}>{fmtCurrency(exampleEvent.costBasis)}</div>
+                <div className={styles.helpCalcValue}>
+                  {fmtCurrency(exampleEvent.costBasis)}
+                </div>
               </div>
 
               <div className={styles.helpCalcOp}>=</div>
@@ -186,7 +164,9 @@ export default function CapitalGains({ apiData }) {
                 <div className={styles.helpCalcLabel}>Gain / Loss</div>
                 <div
                   className={`${styles.helpCalcValue} ${
-                    Number(exampleEvent.capitalGain ?? 0) >= 0 ? styles.pos : styles.neg
+                    Number(exampleEvent.capitalGain ?? 0) >= 0
+                      ? styles.pos
+                      : styles.neg
                   }`}
                 >
                   {fmtCurrency(exampleEvent.capitalGain)}
@@ -244,7 +224,11 @@ export default function CapitalGains({ apiData }) {
             </p>
           </div>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
         </div>
@@ -282,7 +266,11 @@ export default function CapitalGains({ apiData }) {
             <p className={styles.sub}>No capital gain events found.</p>
           </div>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
         </div>
@@ -314,7 +302,11 @@ export default function CapitalGains({ apiData }) {
             </p>
           </div>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
         </div>
@@ -328,7 +320,9 @@ export default function CapitalGains({ apiData }) {
           >
             <div className={styles.sarsHeroTop}>
               <div>
-                <div className={styles.sarsHeroTitle}>Capital gain to declare to SARS</div>
+                <div className={styles.sarsHeroTitle}>
+                  Capital gain to declare to SARS
+                </div>
                 <div className={styles.sarsHeroSub}>
                   This is the total capital gain/loss you enter on your <b>SARS return</b>.
                 </div>
@@ -450,7 +444,6 @@ export default function CapitalGains({ apiData }) {
         </div>
 
         <div style={{ display: "inline-flex", gap: 10, alignItems: "center" }}>
-
           <button
             className={styles.ghostBtn}
             onClick={() => {
@@ -462,10 +455,13 @@ export default function CapitalGains({ apiData }) {
             ← Back to tax years
           </button>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
-
         </div>
       </div>
 
@@ -479,7 +475,9 @@ export default function CapitalGains({ apiData }) {
               <div className={styles.k}>This is what you declare to SARS</div>
               <div
                 className={`${styles.v} ${
-                  Number(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0) >= 0
+                  Number(
+                    selectedSummary.netGain ?? selectedSummary.totalGain ?? 0
+                  ) >= 0
                     ? styles.pos
                     : styles.neg
                 }`}
@@ -595,7 +593,7 @@ export default function CapitalGains({ apiData }) {
                       <td className={styles.mono}>{e.date}</td>
 
                       <td>
-                        <span className={`${styles.pill} ${pillClass(e.transactionType)}`}>
+                        <span className={`${styles.pill} ${pillClass(e.transactionType, styles)}`}>
                           {humanType(e.transactionType)}
                         </span>
                       </td>

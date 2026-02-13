@@ -28,7 +28,6 @@ function App() {
     setRawText("");
   };
 
-  // 4-step walkthrough content (modal-only)
   const walkthroughSteps = useMemo(
     () => [
       {
