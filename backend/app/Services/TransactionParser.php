@@ -98,17 +98,13 @@ class TransactionParser
         $buyCoin     = trim($columns[4]);
         $buyPricePerCoin = $this->parseAmount($columns[6]);
 
-        // BUG FIX: For BUY transactions the spreadsheet may leave BuyAmount blank,
-        // storing only ZAR spent (SellAmount) and price per coin (BuyPricePerCoin).
-        // Derive the coin quantity instead of failing or using 0.
+        // Parse buyAmount, handle if blank
         $buyAmountRaw = trim($columns[5]);
-        if ($type === 'BUY' && ($buyAmountRaw === '' || $buyAmountRaw === '0')) {
-            if ($buyPricePerCoin <= 0) {
-                throw new Exception("Cannot derive BuyAmount: BuyPricePerCoin is zero or missing");
-            }
+        $buyAmount = empty($buyAmountRaw) ? 0 : $this->parseAmount($buyAmountRaw);
+
+        // If buyAmount is missing/zero and this is a BUY, derive it
+        if ($buyAmount == 0 && strtoupper($type) === 'BUY' && $buyPricePerCoin > 0) {
             $buyAmount = $sellAmount / $buyPricePerCoin;
-        } else {
-            $buyAmount = $this->parseAmount($columns[5]);
         }
 
         // Validation
@@ -149,21 +145,47 @@ class TransactionParser
     }
 
     /**
-     * Parse amount string into float, removing currency symbols and commas
+     * Parse amount string into float, removing currency symbols, spaces, and commas
+     * Handles both formats: "0.1" and "0,1" (European format)
      */
     private function parseAmount(string $amountString): float
     {
-        // Remove common currency symbols, spaces, and commas
-        $cleaned = preg_replace('/[R$€£,\s]/', '', trim($amountString));
-
-        // BUG FIX: treat empty string as 0 instead of throwing, so callers can
-        // decide how to handle missing values (e.g., deriving BuyAmount for BUY rows).
-        if ($cleaned === '' || $cleaned === null) {
-            return 0.0;
+        $original = $amountString; // Keep for error messages
+        
+        // Remove currency symbols (R, $, €, £) and spaces
+        $cleaned = preg_replace('/[R$€£\s]/', '', trim($amountString));
+        
+        // Count commas and periods to determine format
+        $commaCount = substr_count($cleaned, ',');
+        $periodCount = substr_count($cleaned, '.');
+        
+        // Determine if comma is decimal separator or thousands separator
+        if ($commaCount > 0 && $periodCount === 0) {
+            // European format: comma as decimal (e.g., "0,1" or "100 000,50")
+            // Remove any remaining thousand separators (spaces already removed)
+            $cleaned = str_replace(',', '.', $cleaned);
+        } elseif ($commaCount > 0 && $periodCount > 0) {
+            // Mixed format: determine which is decimal separator
+            $lastComma = strrpos($cleaned, ',');
+            $lastPeriod = strrpos($cleaned, '.');
+            
+            if ($lastComma > $lastPeriod) {
+                // Comma is decimal: "1.000,50" → remove periods, replace comma with period
+                $cleaned = str_replace('.', '', $cleaned);
+                $cleaned = str_replace(',', '.', $cleaned);
+            } else {
+                // Period is decimal: "1,000.50" → just remove commas
+                $cleaned = str_replace(',', '', $cleaned);
+            }
+        } else {
+            // Only periods: "1000.50" or no separators: "1000"
+            // Just remove any remaining commas (thousand separators)
+            $cleaned = str_replace(',', '', $cleaned);
         }
         
+        // Final validation
         if (!is_numeric($cleaned)) {
-            throw new Exception("Invalid amount: {$amountString}");
+            throw new Exception("Invalid amount: '{$original}' (cleaned to '{$cleaned}')");
         }
 
         return (float) $cleaned;
