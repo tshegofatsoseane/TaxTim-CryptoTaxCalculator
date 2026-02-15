@@ -40,18 +40,26 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
+  outline: none;
+  box-shadow: none;
 }
 
 .tabButton:hover {
   color: #374151;
 }
 
-.tabButtonActive {
-  color: #111827;
+.tabButton:active {
+  outline: none;
+  box-shadow: none;
 }
 
 .tabButtonInactive {
   color: #6b7280;
+}
+
+.tabButton:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .activeIndicator {
@@ -61,6 +69,11 @@
   right: 0;
   height: 2px;
   background-color: #0d9488;
+}
+
+.tabButton:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .tabContent {

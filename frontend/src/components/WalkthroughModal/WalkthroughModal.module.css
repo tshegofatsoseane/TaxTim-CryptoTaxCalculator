@@ -95,7 +95,7 @@
 /* Main content grid (LEFT visual, RIGHT text) */
 .contentRow {
   display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
+   grid-template-columns: 1.2fr 0.8fr;
   gap: 18px;
   padding: 18px;
   align-items: start;
@@ -174,11 +174,12 @@
   width: 100%;
   display: grid;
   place-items: center;
-  padding: 6px 0 18px 0;
+  padding: 0;
 }
 
 .stepShot {
-  width: min(620px, 100%);
+  width: 100%;
+  max-width: 680px;   /* ⬆️ bigger by default */
   height: auto;
   display: block;
   border-radius: 14px;
@@ -186,6 +187,11 @@
   box-shadow: 0 18px 44px rgba(16, 24, 40, 0.14);
   background: #fff;
 }
+
+.stepShotLarge {
+  max-width: 760px;   /* Step 1 is clearly larger */
+}
+
 
 /* Placeholder for other steps */
 .visualPlaceholder {
@@ -375,7 +381,9 @@
 /* Step images */
 .stepShot {
   width: 100%;
-  max-width: 520px;
+  max-width: 680px;   /* ⬆️ bigger by default */
+  height: auto;
+  display: block;
   border-radius: 14px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 18px 44px rgba(16, 24, 40, 0.14);
@@ -383,5 +391,5 @@
 }
 
 .stepShotLarge {
-  max-width: 620px; /* Step 1 slightly bigger */
+  max-width: 760px;   /* Step 1 is clearly larger */
 }

@@ -1,4 +1,3 @@
-// src/components/InfoModal/InfoModal.jsx
 import React, { useEffect } from "react";
 import styles from "./InfoModal.module.css";
 

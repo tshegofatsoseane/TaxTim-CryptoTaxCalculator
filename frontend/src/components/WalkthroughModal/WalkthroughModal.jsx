@@ -7,6 +7,8 @@ import taxTimGuy from "../../assets/guide.png";
 // Step images
 import step1Img from "../../assets/step1.png";
 import step2Img from "../../assets/step2.png";
+import step3Img from "../../assets/step3.png";
+import step4Img from "../../assets/step4.png";
 
 export default function WalkthroughModal({
   isOpen,
@@ -45,6 +47,8 @@ export default function WalkthroughModal({
   const stepImages = {
     0: step1Img,
     1: step2Img,
+    2: step3Img,
+    3: step4Img,
   };
 
   const activeImage = stepImages[idx];

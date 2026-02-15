@@ -1,4 +1,3 @@
-// CapitalGains.jsx
 import { useMemo, useState } from "react";
 import styles from "./CapitalGains.module.css";
 import CompletionBanner from "../Completionbanner/CompletionBanner";
