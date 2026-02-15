@@ -179,10 +179,10 @@ Start the development server:
 npm run dev
 ```
 
-Frontend URL (Vite will display this in terminal):
+Frontend URL (Vite will display port 5173 in terminal, but restart it and use port 5174):
 
 ```
-http://localhost:5173
+http://localhost:5174
 ```
 
 > Make sure the backend server is running so the frontend can fetch data correctly.
