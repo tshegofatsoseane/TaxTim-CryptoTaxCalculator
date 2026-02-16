@@ -173,6 +173,11 @@ Install dependencies:
 npm install
 ```
 
+Create .env file and put the following environment variable: 
+```bash
+VITE_API_BASE_URL = https://taxtim-cryptotaxcalculator.onrender.com
+```
+
 Start the development server:
 
 ```bash
@@ -185,7 +190,7 @@ Frontend URL (Vite will display port 5173 in terminal, but restart it and use po
 http://localhost:5174
 ```
 
-> Make sure the backend server is running so the frontend can fetch data correctly.
+> The backend server doesn't have to be running because we're using live(deployed) endpoints to conect to the backend.
 
 ---
 
