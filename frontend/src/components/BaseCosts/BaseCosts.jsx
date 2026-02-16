@@ -10,6 +10,9 @@ import {
   getExampleData,
 } from "../../utils/baseCostHelpers";
 
+// ✅ add this (put image at: src/assets/noresults.png)
+import noResultsImg from "../../assets/noresults.png";
+
 export default function BaseCosts({ apiData }) {
   const boundaries = apiData?.baseCostsByTaxYear ?? [];
   const [selectedTaxYear, setSelectedTaxYear] = useState(null);
@@ -93,6 +96,7 @@ export default function BaseCosts({ apiData }) {
       <div className={styles.page}>
         <div className={styles.headerRow}>
           <div>
+            <div className={styles.stepKicker}>Step 2</div>
             <h2 className={styles.title}>Base cost of your crypto holdings</h2>
             <p className={styles.sub}>
               Submit transactions first. Then we’ll show your holdings at each <b>1 March</b>{" "}
@@ -100,17 +104,33 @@ export default function BaseCosts({ apiData }) {
             </p>
           </div>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
         </div>
 
-        <div className={styles.emptyCard}>
-          <div className={styles.emptyIcon}>✓</div>
-          <div>
-            <div className={styles.emptyTitle}>No results yet</div>
-            <div className={styles.emptyText}>
-              Go to <b>Transactions</b>, paste your list, and click <b>Submit Transactions</b>.
+        {/* ✅ Image + keep your tick icon + original text */}
+        <div className={styles.emptyHero}>
+          <img
+            src={noResultsImg}
+            alt="No results yet"
+            className={styles.emptyHeroImg}
+            loading="lazy"
+          />
+
+          <div className={styles.emptyCard}>
+            {/* ✅ keep the tick icon */}
+            <div className={styles.emptyIcon}>✓</div>
+            <div>
+              <div className={styles.emptyTitle}>No results yet</div>
+              <div className={styles.emptyText}>
+                Go to <b>Transactions</b>, paste your list, and click{" "}
+                <b>Submit Transactions</b>.
+              </div>
             </div>
           </div>
         </div>
@@ -134,10 +154,16 @@ export default function BaseCosts({ apiData }) {
         <div className={styles.headerRow}>
           <div>
             <h2 className={styles.title}>Base cost of your crypto holdings</h2>
-            <p className={styles.sub}>We didn’t find any base cost boundaries in your results.</p>
+            <p className={styles.sub}>
+              We didn’t find any base cost boundaries in your results.
+            </p>
           </div>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
         </div>
@@ -177,7 +203,11 @@ export default function BaseCosts({ apiData }) {
             </p>
           </div>
 
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
         </div>
@@ -251,16 +281,25 @@ export default function BaseCosts({ apiData }) {
         <div>
           <h2 className={styles.title}>Base cost of your crypto holdings</h2>
           <p className={styles.sub}>
-            Showing holdings as at <b>{selected?.date}</b> (tax year boundary <b>{selectedTaxYear}</b>)
+            Showing holdings as at <b>{selected?.date}</b> (tax year boundary{" "}
+            <b>{selectedTaxYear}</b>)
           </p>
         </div>
 
         <div style={{ display: "inline-flex", gap: 10, alignItems: "center" }}>
-          <button type="button" className={styles.helpBtn} onClick={() => setIsHelpOpen(true)}>
+          <button
+            type="button"
+            className={styles.helpBtn}
+            onClick={() => setIsHelpOpen(true)}
+          >
             What is this?
           </button>
 
-          <button className={styles.ghostBtn} type="button" onClick={() => setSelectedTaxYear(null)}>
+          <button
+            className={styles.ghostBtn}
+            type="button"
+            onClick={() => setSelectedTaxYear(null)}
+          >
             ← Back to dates
           </button>
         </div>
@@ -292,8 +331,12 @@ export default function BaseCosts({ apiData }) {
               {(selected?.coins ?? []).map((c) => (
                 <tr key={c.coin} className={styles.row}>
                   <td className={styles.coinStrong}>{c.coin}</td>
-                  <td className={`${styles.num} ${styles.monoNum}`}>{fmtNumber(c.amount, 8)}</td>
-                  <td className={`${styles.num} ${styles.money}`}>{fmtCurrency(c.costBasis)}</td>
+                  <td className={`${styles.num} ${styles.monoNum}`}>
+                    {fmtNumber(c.amount, 8)}
+                  </td>
+                  <td className={`${styles.num} ${styles.money}`}>
+                    {fmtCurrency(c.costBasis)}
+                  </td>
                 </tr>
               ))}
 
@@ -320,7 +363,8 @@ export default function BaseCosts({ apiData }) {
         </div>
 
         <div className={styles.helperText}>
-          This uses SARS FIFO: your “base cost” is the original purchase cost of the coins you still hold on this date.
+          This uses SARS FIFO: your “base cost” is the original purchase cost of the coins you
+          still hold on this date.
         </div>
       </div>
 

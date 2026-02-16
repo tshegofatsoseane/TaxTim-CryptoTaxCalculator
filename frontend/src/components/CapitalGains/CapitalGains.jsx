@@ -3,9 +3,13 @@ import styles from "./CapitalGains.module.css";
 import CompletionBanner from "../Completionbanner/CompletionBanner";
 import InfoModal from "../../components/InfoModal/InfoModal";
 
+
 import { fmtCurrency, fmtNumber } from "../../utils/formatters";
 import { taxYearRange } from "../../utils/taxYear";
 import { humanType, pillClass } from "../../utils/transactionUI";
+
+// ✅ add this (put image at: src/assets/noresults.png)
+import noResultsImg from "../../assets/noresults.png";
 
 export default function CapitalGains({ apiData }) {
   const summaries = apiData?.taxYearSummaries ?? [];
@@ -111,8 +115,8 @@ export default function CapitalGains({ apiData }) {
   const HelpContent = (
     <div>
       <p className={styles.helpP}>
-        SARS treats <b>selling</b> or <b>trading</b> crypto as a “disposal”.
-        When you dispose of crypto, you must calculate a <b>capital gain or loss</b>.
+        SARS treats <b>selling</b> or <b>trading</b> crypto as a “disposal”. When
+        you dispose of crypto, you must calculate a <b>capital gain or loss</b>.
       </p>
 
       <div className={styles.helpNote}>
@@ -121,8 +125,8 @@ export default function CapitalGains({ apiData }) {
 
       <p className={styles.helpP}>
         <b>Proceeds</b> = the value you received when you sold/traded. <br />
-        <b>Cost basis</b> = what you originally paid for those coins. We calculate cost basis
-        using <b>FIFO</b> (oldest coins first).
+        <b>Cost basis</b> = what you originally paid for those coins. We
+        calculate cost basis using <b>FIFO</b> (oldest coins first).
       </p>
 
       <div className={styles.helpExample}>
@@ -176,7 +180,8 @@ export default function CapitalGains({ apiData }) {
         ) : (
           <>
             <div className={styles.helpExampleText}>
-              If you sell for <b>R12,000</b> and the coins originally cost you <b>R9,000</b>:
+              If you sell for <b>R12,000</b> and the coins originally cost you{" "}
+              <b>R9,000</b>:
             </div>
             <div className={styles.helpCalcSimple}>
               R12,000 − R9,000 = <b>R3,000 gain</b>
@@ -186,8 +191,8 @@ export default function CapitalGains({ apiData }) {
       </div>
 
       <div className={styles.helpFooterHint}>
-        The number you declare to SARS is your <b>net capital gain/loss</b> per tax year
-        (1 March → end Feb), and the app totals it for you.
+        The number you declare to SARS is your <b>net capital gain/loss</b> per
+        tax year (1 March → end Feb), and the app totals it for you.
       </div>
     </div>
   );
@@ -217,9 +222,11 @@ export default function CapitalGains({ apiData }) {
       <div className={styles.page}>
         <div className={styles.headerRow}>
           <div>
+          <div className={styles.stepKicker}>Step 3</div>
             <h2 className={styles.title}>Your capital gains & losses</h2>
             <p className={styles.sub}>
-              Paste transactions and click <b>Submit Transactions</b> to see results.
+              Paste transactions and click <b>Submit Transactions</b> to see
+              results.
             </p>
           </div>
 
@@ -232,12 +239,24 @@ export default function CapitalGains({ apiData }) {
           </button>
         </div>
 
-        <div className={styles.emptyCard}>
-          <div className={styles.emptyIcon}>✓</div>
-          <div>
-            <div className={styles.emptyTitle}>No results yet</div>
-            <div className={styles.emptyText}>
-              Once you submit your transactions, your SARS tax-year totals will appear here.
+        {/* ✅ Image + keep your tick icon + original text */}
+        <div className={styles.emptyHero}>
+          <img
+            src={noResultsImg}
+            alt="No results yet"
+            className={styles.emptyHeroImg}
+            loading="lazy"
+          />
+
+          <div className={styles.emptyCard}>
+            {/* ✅ keep the tick icon */}
+            <div className={styles.emptyIcon}>✓</div>
+            <div>
+              <div className={styles.emptyTitle}>No results yet</div>
+              <div className={styles.emptyText}>
+                Once you submit your transactions, your SARS tax-year totals will
+                appear here.
+              </div>
             </div>
           </div>
         </div>
@@ -297,7 +316,8 @@ export default function CapitalGains({ apiData }) {
           <div>
             <h2 className={styles.title}>Your capital gains & losses</h2>
             <p className={styles.sub}>
-              These are the gains and losses you must declare to SARS, grouped by tax year.
+              These are the gains and losses you must declare to SARS, grouped by
+              tax year.
             </p>
           </div>
 
@@ -310,7 +330,6 @@ export default function CapitalGains({ apiData }) {
           </button>
         </div>
 
-        {/* ✅ Big “declare to SARS” card */}
         {!!declaration.yearList.length && (
           <div
             className={styles.sarsHero}
@@ -323,7 +342,8 @@ export default function CapitalGains({ apiData }) {
                   Capital gain to declare to SARS
                 </div>
                 <div className={styles.sarsHeroSub}>
-                  This is the total capital gain/loss you enter on your <b>SARS return</b>.
+                  This is the total capital gain/loss you enter on your{" "}
+                  <b>SARS return</b>.
                 </div>
               </div>
 
@@ -464,7 +484,6 @@ export default function CapitalGains({ apiData }) {
         </div>
       </div>
 
-      {/* Year summary mini card */}
       {selectedSummary && (
         <div className={styles.statementCard}>
           <div className={styles.statementSection}>
@@ -481,7 +500,9 @@ export default function CapitalGains({ apiData }) {
                     : styles.neg
                 }`}
               >
-                {fmtCurrency(selectedSummary.netGain ?? selectedSummary.totalGain ?? 0)}
+                {fmtCurrency(
+                  selectedSummary.netGain ?? selectedSummary.totalGain ?? 0
+                )}
               </div>
             </div>
           </div>
@@ -495,7 +516,11 @@ export default function CapitalGains({ apiData }) {
                 return (
                   <div key={c.coin} className={styles.kvRow}>
                     <div className={styles.k}>{c.coin}</div>
-                    <div className={`${styles.v} ${val >= 0 ? styles.pos : styles.neg}`}>
+                    <div
+                      className={`${styles.v} ${
+                        val >= 0 ? styles.pos : styles.neg
+                      }`}
+                    >
                       {fmtCurrency(val)}
                     </div>
                   </div>
@@ -505,50 +530,50 @@ export default function CapitalGains({ apiData }) {
           </div>
 
           <div className={styles.statementFooter}>
-            Amounts shown in ZAR. Values are calculated using FIFO (oldest coins first).
+            Amounts shown in ZAR. Values are calculated using FIFO (oldest coins
+            first).
           </div>
         </div>
       )}
 
-      {/* Filters */}
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.filterLabel}>Coin</label>
-          <select
-            className={styles.select}
-            value={coinFilter}
-            onChange={(e) => setCoinFilter(e.target.value)}
-          >
-            {coinsForYear.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+        <div className={styles.filters}>
+          <div className={styles.filterGroup}>
+            <label className={styles.filterLabel}>Coin</label>
+            <select
+              className={styles.select}
+              value={coinFilter}
+              onChange={(e) => setCoinFilter(e.target.value)}
+            >
+              {coinsForYear.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={`${styles.filterGroup} ${styles.filterGrow}`}>
+            <label className={styles.filterLabel}>Search</label>
+            <input
+              className={styles.input}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Date, Sold coin, Type…"
+            />
+          </div>
+
+          <div className={`${styles.filterGroup} ${styles.filterActions}`}>
+            <label className={styles.filterLabel}>Transparency</label>
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              onClick={() => setAllRowsExpanded(!expandAll)}
+            >
+              {expandAll ? "Collapse all math" : "Expand all math"}
+            </button>
+          </div>
         </div>
 
-        <div className={styles.filterGroup} style={{ flex: 1 }}>
-          <label className={styles.filterLabel}>Search</label>
-          <input
-            className={styles.input}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Date, Sold coin, Type…"
-          />
-        </div>
-
-        <div className={styles.filterGroup}>
-          <label className={styles.filterLabel}>Transparency</label>
-          <button
-            className={styles.secondaryBtn}
-            onClick={() => setAllRowsExpanded(!expandAll)}
-          >
-            {expandAll ? "Collapse all math" : "Expand all math"}
-          </button>
-        </div>
-      </div>
-
-      {/* Events table */}
       <div className={styles.tableCard}>
         <div className={styles.tableHeaderRow}>
           <div className={styles.tableTitle}>Transactions that created this gain</div>

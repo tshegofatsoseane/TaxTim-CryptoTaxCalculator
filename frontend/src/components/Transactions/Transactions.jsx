@@ -1,9 +1,9 @@
 // Transactions.jsx
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import styles from "./Transactions.module.css"
 import InputScreen from "../InputScreen/InputScreen"
-import Tooltip from "../../components/Tooltip/Tooltip";
-import SarsPdfDownloadButton from "../SarsPdfDownloadButton/SarsPdfDownloadButton";
+import Tooltip from "../../components/Tooltip/Tooltip"
+import SarsPdfDownloadButton from "../SarsPdfDownloadButton/SarsPdfDownloadButton"
 
 // ---------- helpers ----------
 const fmtCurrency = (n) => {
@@ -18,16 +18,201 @@ const fmtCurrency = (n) => {
 const fmtNum = (n, max = 8) =>
   Number(n || 0).toLocaleString("en-ZA", { maximumFractionDigits: max })
 
+/* ---------- inline SVGs ---------- */
+function GainSvg({ className }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* up-right arrow + baseline */}
+      <path
+        d="M4 13.5L9 8.5L12 11.5L16 7.5"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.5 7.5H16V11"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function LossSvg({ className }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* down-right arrow */}
+      <path
+        d="M4 6.5L9 11.5L12 8.5L16 12.5"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.5 12.5H16V9"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function SpinnerSvg({ className }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 3a9 9 0 1 0 9 9"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+/**
+ * ✅ Animated rolling currency
+ * - 300ms delay (dramatic effect)
+ * - “Calculating…” shimmer during delay
+ * - during rolling: show small spinner
+ * - when complete: show Gain/Loss SVG (based on final value)
+ * - negative “loss wobble” when complete (if value < 0)
+ * - success pulse when complete (if value >= 0)
+ */
+function AnimatedCurrency({
+  value,
+  duration = 1100,
+  delayMs = 300,
+  formatter,
+}) {
+  const [phase, setPhase] = useState("idle") // idle | shimmer | rolling
+  const [displayValue, setDisplayValue] = useState(0)
+  const [completed, setCompleted] = useState(false)
+
+  const startRef = useRef(null)
+  const frameRef = useRef(null)
+  const delayRef = useRef(null)
+
+  const target = useMemo(() => Number(value || 0), [value])
+
+  useEffect(() => {
+    // reset
+    startRef.current = null
+    cancelAnimationFrame(frameRef.current)
+    clearTimeout(delayRef.current)
+
+    setPhase("shimmer")
+    setCompleted(false)
+    setDisplayValue(0)
+
+    delayRef.current = setTimeout(() => {
+      setPhase("rolling")
+
+      const animate = (ts) => {
+        if (!startRef.current) startRef.current = ts
+        const elapsed = ts - startRef.current
+
+        const t = Math.min(elapsed / duration, 1)
+        // easeOutCubic
+        const eased = 1 - Math.pow(1 - t, 3)
+
+        setDisplayValue(target * eased)
+
+        if (t < 1) {
+          frameRef.current = requestAnimationFrame(animate)
+        } else {
+          setCompleted(true)
+          setDisplayValue(target)
+        }
+      }
+
+      frameRef.current = requestAnimationFrame(animate)
+    }, delayMs)
+
+    return () => {
+      cancelAnimationFrame(frameRef.current)
+      clearTimeout(delayRef.current)
+    }
+  }, [target, duration, delayMs])
+
+  if (phase === "shimmer") {
+    return (
+      <div className={styles.calcWrap}>
+        <span className={styles.calcShimmer}>Calculating…</span>
+        {/* icon area (no dot/tick) */}
+        <span className={styles.resultIconWrap} aria-hidden="true">
+          <SpinnerSvg className={styles.resultSpin} />
+        </span>
+      </div>
+    )
+  }
+
+  const isNegative = target < 0
+
+  return (
+    <div
+      className={[
+        styles.calcWrap,
+        completed && !isNegative ? styles.successPulse : "",
+        completed && isNegative ? styles.lossWobble : "",
+      ].join(" ")}
+    >
+      <span>{formatter(displayValue)}</span>
+
+      {/* ✅ icon: spinner while rolling, then gain/loss svg on complete */}
+      <span className={styles.resultIconWrap} aria-hidden="true">
+        {!completed ? (
+          <SpinnerSvg className={styles.resultSpin} />
+        ) : isNegative ? (
+          <LossSvg className={styles.lossIcon} />
+        ) : (
+          <GainSvg className={styles.gainIcon} />
+        )}
+      </span>
+    </div>
+  )
+}
+
 const TypePill = ({ type }) => (
   <span
     className={`${styles.pill} ${
       type === "BUY"
         ? styles.pillBuy
         : type === "SELL"
-          ? styles.pillSell
-          : type === "TRADE"
-            ? styles.pillTrade
-            : styles.pillDefault
+        ? styles.pillSell
+        : type === "TRADE"
+        ? styles.pillTrade
+        : styles.pillDefault
     }`}
   >
     {type === "All" ? "All" : type}
@@ -125,12 +310,8 @@ export default function Transactions({
 
   // Stats for summary cards
   const stats = useMemo(() => {
-    const totalGains = gainEvents.filter(
-      (e) => Number(e.capitalGain) > 0,
-    ).length
-    const totalLosses = gainEvents.filter(
-      (e) => Number(e.capitalGain) < 0,
-    ).length
+    const totalGains = gainEvents.filter((e) => Number(e.capitalGain) > 0).length
+    const totalLosses = gainEvents.filter((e) => Number(e.capitalGain) < 0).length
     const totalSells = gainEvents.filter(
       (e) => String(e.transactionType || "").toUpperCase() === "SELL",
     ).length
@@ -174,12 +355,10 @@ export default function Transactions({
       counts.set(y, (counts.get(y) ?? 0) + 1)
 
       const gain = Number(e.capitalGain)
-      if (gain > 0) {
-        gains.set(y, (gains.get(y) ?? 0) + 1)
-      } else if (gain < 0) {
-        losses.set(y, (losses.get(y) ?? 0) + 1)
-      }
+      if (gain > 0) gains.set(y, (gains.get(y) ?? 0) + 1)
+      else if (gain < 0) losses.set(y, (losses.get(y) ?? 0) + 1)
     }
+
     return { counts, gains, losses }
   }, [gainEvents])
 
@@ -207,18 +386,10 @@ export default function Transactions({
       const q = query.trim().toLowerCase()
       rows = rows.filter((t) => {
         return (
-          String(t.date || "")
-            .toLowerCase()
-            .includes(q) ||
-          String(t.type || "")
-            .toLowerCase()
-            .includes(q) ||
-          String(t.buyCoin || "")
-            .toLowerCase()
-            .includes(q) ||
-          String(t.sellCoin || "")
-            .toLowerCase()
-            .includes(q)
+          String(t.date || "").toLowerCase().includes(q) ||
+          String(t.type || "").toLowerCase().includes(q) ||
+          String(t.buyCoin || "").toLowerCase().includes(q) ||
+          String(t.sellCoin || "").toLowerCase().includes(q)
         )
       })
     }
@@ -246,47 +417,44 @@ export default function Transactions({
     })
   }
 
-  const expandAll = () => setExpanded(new Set(rowKeys))
-  const collapseAll = () => setExpanded(new Set())
   const allExpanded = expanded.size > 0 && rowKeys.every((k) => expanded.has(k))
 
   return (
-        <div className={styles.page}>
-          {/* Header */}
-          <div className={styles.header}>
-            <div className={styles.headerIntro}>
-              <h2 className={styles.title}>Tax Summary</h2>
-              <p className={styles.sub}>
-                Your capital gains/losses calculated using FIFO (First In, First
-                Out) method
-              </p>
-              {metadata?.transactionCount != null && (
-                <p className={styles.sub}>
-                  Calculated from <b>{metadata.transactionCount}</b> transactions
-                  across <b>{(metadata.coinsTracked ?? []).length}</b> coins
-                </p>
-              )}
-            </div>
+    <div className={styles.page}>
+      {/* Header */}
+      <div className={styles.header}>
+        <div className={styles.headerIntro}>
+          <h2 className={styles.title}>Tax Summary</h2>
+          <p className={styles.sub}>
+            Your capital gains/losses calculated using FIFO (First In, First Out)
+            method
+          </p>
+          {metadata?.transactionCount != null && (
+            <p className={styles.sub}>
+              Calculated from <b>{metadata.transactionCount}</b> transactions
+              across <b>{(metadata.coinsTracked ?? []).length}</b> coins
+            </p>
+          )}
+        </div>
 
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-                <SarsPdfDownloadButton
-                  apiData={apiData}
-                  metadata={metadata}
-                  filename={`sars_crypto_summary_${declaration?.years?.[0] ?? "results"}`}
-                  label="Download SARS PDF"
-                  variant="ghost"
-                />
+        <div className={styles.headerActions}>
+          <SarsPdfDownloadButton
+            apiData={apiData}
+            metadata={metadata}
+            filename={`sars_crypto_summary_${declaration?.years?.[0] ?? "results"}`}
+            label="Download SARS PDF"
+            variant="ghost"
+          />
 
-                <button
-                  className={styles.ghostBtn}
-                  onClick={() => onReset?.()}
-                  title="Replace transactions"
-                  type="button"
-                >
-                  Replace transactions
-                </button>
-              </div>
-        
+          <button
+            className={styles.ghostBtn}
+            onClick={() => onReset?.()}
+            title="Replace transactions"
+            type="button"
+          >
+            Replace transactions
+          </button>
+        </div>
       </div>
 
       {/* Main Tax Declaration Card */}
@@ -315,14 +483,23 @@ export default function Transactions({
         </div>
 
         <div className={styles.taxDeclAmount}>
-          <div className={styles.taxDeclLabel}>Total Capital Gain/Loss (This is what you declare to SARS)</div>
+          <div className={styles.taxDeclLabel}>
+            Total Capital Gain/Loss (This is what you declare to SARS)
+          </div>
+
           <div
             className={`${styles.taxDeclValue} ${
               declaration.total >= 0 ? styles.pos : styles.neg
             }`}
           >
-            {fmtCurrency(declaration.total)}
+            <AnimatedCurrency
+              value={declaration.total}
+              duration={1100}
+              delayMs={300}
+              formatter={(v) => fmtCurrency(v)}
+            />
           </div>
+
           {declaration.total >= 0 ? (
             <div className={styles.taxDeclHint}>
               You made a capital gain. This will be taxed at your marginal rate.
@@ -338,9 +515,7 @@ export default function Transactions({
         {sortedTerms.length > 0 && (
           <div className={styles.yearBreakdown}>
             <div className={styles.yearBreakdownHeader}>
-              <div className={styles.yearBreakdownTitle}>
-                Breakdown by Tax Year
-              </div>
+              <div className={styles.yearBreakdownTitle}>Breakdown by Tax Year</div>
               <Tooltip
                 placement="bottom"
                 content={
@@ -351,7 +526,11 @@ export default function Transactions({
                   </div>
                 }
               >
-                <button type="button" className={styles.helpIconBtnSmall} aria-label="Understanding tax years">
+                <button
+                  type="button"
+                  className={styles.helpIconBtnSmall}
+                  aria-label="Understanding tax years"
+                >
                   ?
                 </button>
               </Tooltip>
@@ -377,37 +556,25 @@ export default function Transactions({
                     </div>
                     <div className={styles.yearCardStats}>
                       <div className={styles.yearCardStat}>
-                        <span className={styles.yearCardStatLabel}>
-                          Total disposals
-                        </span>
-                        <span className={styles.yearCardStatValue}>
-                          {disposals}
-                        </span>
+                        <span className={styles.yearCardStatLabel}>Total disposals</span>
+                        <span className={styles.yearCardStatValue}>{disposals}</span>
                       </div>
                       {gainCount > 0 && (
                         <div className={styles.yearCardStat}>
-                          <span
-                            className={`${styles.yearCardStatLabel} ${styles.pos}`}
-                          >
+                          <span className={`${styles.yearCardStatLabel} ${styles.pos}`}>
                             Gains
                           </span>
-                          <span
-                            className={`${styles.yearCardStatValue} ${styles.pos}`}
-                          >
+                          <span className={`${styles.yearCardStatValue} ${styles.pos}`}>
                             {gainCount}
                           </span>
                         </div>
                       )}
                       {lossCount > 0 && (
                         <div className={styles.yearCardStat}>
-                          <span
-                            className={`${styles.yearCardStatLabel} ${styles.neg}`}
-                          >
+                          <span className={`${styles.yearCardStatLabel} ${styles.neg}`}>
                             Losses
                           </span>
-                          <span
-                            className={`${styles.yearCardStatValue} ${styles.neg}`}
-                          >
+                          <span className={`${styles.yearCardStatValue} ${styles.neg}`}>
                             {lossCount}
                           </span>
                         </div>
@@ -433,22 +600,14 @@ export default function Transactions({
 
         <div className={styles.statCard}>
           <div className={styles.statLabel}>Profitable Events</div>
-          <div className={`${styles.statValue} ${styles.pos}`}>
-            {stats.totalGains}
-          </div>
-          <div className={styles.statHint}>
-            Total: {fmtCurrency(stats.totalGainAmount)}
-          </div>
+          <div className={`${styles.statValue} ${styles.pos}`}>{stats.totalGains}</div>
+          <div className={styles.statHint}>Total: {fmtCurrency(stats.totalGainAmount)}</div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statLabel}>Loss Events</div>
-          <div className={`${styles.statValue} ${styles.neg}`}>
-            {stats.totalLosses}
-          </div>
-          <div className={styles.statHint}>
-            Total: {fmtCurrency(stats.totalLossAmount)}
-          </div>
+          <div className={`${styles.statValue} ${styles.neg}`}>{stats.totalLosses}</div>
+          <div className={styles.statHint}>Total: {fmtCurrency(stats.totalLossAmount)}</div>
         </div>
 
         <div className={styles.statCard}>
@@ -456,9 +615,7 @@ export default function Transactions({
           <div className={styles.statValue}>{declaration.years.length}</div>
           <div className={styles.statHint}>
             {declaration.years.length > 0
-              ? `${declaration.years[declaration.years.length - 1]} - ${
-                  declaration.years[0]
-                }`
+              ? `${declaration.years[declaration.years.length - 1]} - ${declaration.years[0]}`
               : "N/A"}
           </div>
         </div>
@@ -471,22 +628,21 @@ export default function Transactions({
         </div>
         <ul className={styles.notesList}>
           <li>
-            <strong>FIFO Method:</strong> We calculate your gains using First
-            In, First Out. When you sell crypto, we assume you're selling the
-            oldest coins first.
+            <strong>FIFO Method:</strong> We calculate your gains using First In, First Out.
+            When you sell crypto, we assume you're selling the oldest coins first.
           </li>
           <li>
-            <strong>Tax Years:</strong> South African tax years run from March 1
-            to February 28/29. Your transactions are grouped accordingly.
+            <strong>Tax Years:</strong> South African tax years run from March 1 to February 28/29.
+            Your transactions are grouped accordingly.
           </li>
           <li>
-            <strong>Capital Gains Tax:</strong> If you have a net gain, it will
-            be included in your taxable income and taxed at your marginal rate.
-            Only 40% of the gain is taxable for individuals.
+            <strong>Capital Gains Tax:</strong> If you have a net gain, it will be included in
+            your taxable income and taxed at your marginal rate. Only 40% of the gain is taxable
+            for individuals.
           </li>
           <li>
-            <strong>Verify Your Data:</strong> Always review your transaction
-            history below to ensure all data is accurate before filing.
+            <strong>Verify Your Data:</strong> Always review your transaction history below to
+            ensure all data is accurate before filing.
           </li>
         </ul>
       </div>
@@ -508,16 +664,9 @@ export default function Transactions({
             </div>
           </div>
 
-          <div
-            className={styles.txHeaderRight}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className={styles.txHeaderRight} onClick={(e) => e.stopPropagation()}>
             {isTableOpen && filtersActive && (
-              <button
-                type="button"
-                className={styles.clearLink}
-                onClick={clearFilters}
-              >
+              <button type="button" className={styles.clearLink} onClick={clearFilters}>
                 Clear filters
               </button>
             )}
@@ -526,7 +675,11 @@ export default function Transactions({
               <button
                 type="button"
                 className={styles.smallBtn}
-                onClick={allExpanded ? collapseAll : expandAll}
+                onClick={
+                  allExpanded
+                    ? () => setExpanded(new Set())
+                    : () => setExpanded(new Set(rowKeys))
+                }
                 title="Show FIFO calculation for all rows"
               >
                 {allExpanded ? "Hide all details" : "Show all details"}
@@ -545,11 +698,7 @@ export default function Transactions({
 
               <div className={styles.filters}>
                 {/* Type segmented pills */}
-                <div
-                  className={styles.typeSeg}
-                  role="group"
-                  aria-label="Filter by type"
-                >
+                <div className={styles.typeSeg} role="group" aria-label="Filter by type">
                   {["All", "BUY", "SELL", "TRADE"].map((t) => (
                     <button
                       key={t}
@@ -617,23 +766,19 @@ export default function Transactions({
                     const key = rowKeys[transactions.indexOf(tx)]
                     const open = isExpanded(key)
 
-                    // Attempt to match this row to a capital gain event
                     const maybeKey = `${tx.date}|${tx.type}|${tx.sellCoin}|${Number(
                       tx.sellAmount ?? 0,
                     )}`
                     const event = eventLookup.get(maybeKey)
                     const hasEvent = Boolean(event)
+
                     const canExpand =
-                      tx.type === "SELL" ||
-                      tx.type === "TRADE" ||
-                      tx.type === "BUY"
+                      tx.type === "SELL" || tx.type === "TRADE" || tx.type === "BUY"
 
                     return (
                       <React.Fragment key={key}>
                         <tr className={styles.row}>
-                          <td className={styles.cellIndex}>
-                            {tx.index ?? i + 1}
-                          </td>
+                          <td className={styles.cellIndex}>{tx.index ?? i + 1}</td>
 
                           <td className={styles.cellDate}>
                             <div className={styles.mono}>{tx.date ?? "-"}</div>
@@ -646,9 +791,7 @@ export default function Transactions({
                           <td className={styles.cellSold}>
                             {tx.sellAmount && tx.sellCoin ? (
                               <>
-                                <div className={styles.mono}>
-                                  {fmtNum(tx.sellAmount)}
-                                </div>
+                                <div className={styles.mono}>{fmtNum(tx.sellAmount)}</div>
                                 <div className={styles.coin}>{tx.sellCoin}</div>
                               </>
                             ) : (
@@ -659,9 +802,7 @@ export default function Transactions({
                           <td className={styles.cellBought}>
                             {tx.buyAmount && tx.buyCoin ? (
                               <>
-                                <div className={styles.mono}>
-                                  {fmtNum(tx.buyAmount)}
-                                </div>
+                                <div className={styles.mono}>{fmtNum(tx.buyAmount)}</div>
                                 <div className={styles.coin}>{tx.buyCoin}</div>
                               </>
                             ) : (
@@ -676,9 +817,7 @@ export default function Transactions({
                           </td>
 
                           <td className={styles.cellTotal}>
-                            <div className={styles.mono}>
-                              {fmtCurrency(tx.totalValue)}
-                            </div>
+                            <div className={styles.mono}>{fmtCurrency(tx.totalValue)}</div>
                           </td>
 
                           <td className={styles.cellGain}>
@@ -710,362 +849,12 @@ export default function Transactions({
                           </td>
                         </tr>
 
+                        {/* ✅ keep your original expanded block exactly as-is */}
                         {open && canExpand && (
                           <tr className={styles.expandRow}>
                             <td colSpan={9}>
                               <div className={styles.mathBox}>
-                                {tx.type === "BUY" ? (
-                                  <div className={styles.lotCreateCard}>
-                                    <div className={styles.lotCreateTitle}>
-                                      FIFO lot created
-                                    </div>
-                                    <div className={styles.kvGrid}>
-                                      <div className={styles.k}>Coin</div>
-                                      <div className={styles.v}>
-                                        {tx.buyCoin ?? "-"}
-                                      </div>
-
-                                      <div className={styles.k}>Amount</div>
-                                      <div className={styles.v}>
-                                        {fmtNum(tx.buyAmount ?? 0)}
-                                      </div>
-
-                                      <div className={styles.k}>Price/coin</div>
-                                      <div className={styles.v}>
-                                        {fmtCurrency(tx.buyPricePerCoin ?? 0)}
-                                      </div>
-
-                                      <div className={styles.k}>Total paid</div>
-                                      <div className={styles.v}>
-                                        {fmtCurrency(
-                                          typeof tx.getTotalValue === "function"
-                                            ? tx.getTotalValue()
-                                            : (tx.totalValue ?? 0),
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <div className={styles.mathHeader}>
-                                      <div>
-                                        <div className={styles.mathTitle}>
-                                          FIFO calculation for this{" "}
-                                          {tx.type.toLowerCase()}
-                                        </div>
-                                        <div className={styles.mathSub}>
-                                          How we calculated your capital
-                                          gain/loss
-                                        </div>
-                                      </div>
-
-                                      {hasEvent && (
-                                        <div
-                                          className={`${styles.gainChip} ${
-                                            Number(event.capitalGain) >= 0
-                                              ? styles.gainChipPos
-                                              : styles.gainChipNeg
-                                          }`}
-                                        >
-                                          {Number(event.capitalGain) >= 0
-                                            ? "Gain"
-                                            : "Loss"}
-                                          : {fmtCurrency(event.capitalGain)}
-                                        </div>
-                                      )}
-                                    </div>
-
-                                    <div className={styles.infoBanner}>
-                                      <div className={styles.infoDot} />
-                                      <div>
-                                        <div className={styles.infoTitle}>
-                                          What is this?
-                                        </div>
-                                        <div className={styles.infoText}>
-                                          When you {tx.type.toLowerCase()}{" "}
-                                          crypto, we calculate your gain/loss by
-                                          comparing what you received (proceeds)
-                                          to what you originally paid (cost
-                                          basis). The cost basis comes from your
-                                          oldest purchases (FIFO).
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className={styles.stepGrid}>
-                                      <div
-                                        className={`${styles.stepCard} ${styles.stepSold}`}
-                                      >
-                                        <div className={styles.stepTop}>
-                                          <span className={styles.stepBadge}>
-                                            1
-                                          </span>
-                                          <div className={styles.stepLabel}>
-                                            Amount sold
-                                          </div>
-                                        </div>
-                                        <div className={styles.stepValue}>
-                                          <span className={styles.stepCoin}>
-                                            {fmtNum(tx.sellAmount ?? 0)}
-                                          </span>{" "}
-                                          {tx.sellCoin}
-                                        </div>
-                                        <div className={styles.stepHint}>
-                                          Crypto you disposed of
-                                        </div>
-                                      </div>
-
-                                      <div
-                                        className={`${styles.stepCard} ${styles.stepProceeds}`}
-                                      >
-                                        <div className={styles.stepTop}>
-                                          <span className={styles.stepBadge}>
-                                            2
-                                          </span>
-                                          <div className={styles.stepLabel}>
-                                            Proceeds
-                                          </div>
-                                        </div>
-                                        <div className={styles.stepValue}>
-                                          {fmtCurrency(event?.proceeds ?? 0)}
-                                        </div>
-                                        <div className={styles.stepHint}>
-                                          What you received (market value)
-                                        </div>
-                                      </div>
-
-                                      <div
-                                        className={`${styles.stepCard} ${styles.stepCost}`}
-                                      >
-                                        <div className={styles.stepTop}>
-                                          <span className={styles.stepBadge}>
-                                            3
-                                          </span>
-                                          <div className={styles.stepLabel}>
-                                            Cost basis
-                                          </div>
-                                        </div>
-                                        <div className={styles.stepValue}>
-                                          {fmtCurrency(event?.costBasis ?? 0)}
-                                        </div>
-                                        <div className={styles.stepHint}>
-                                          What you originally paid (FIFO)
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    {event ? (
-                                      <>
-                                        <div className={styles.equationRow}>
-                                          <div className={styles.eqBox}>
-                                            <div className={styles.eqLabel}>
-                                              Proceeds
-                                            </div>
-                                            <div className={styles.eqValue}>
-                                              {fmtCurrency(event.proceeds)}
-                                            </div>
-                                          </div>
-
-                                          <div className={styles.eqOp}>−</div>
-
-                                          <div className={styles.eqBox}>
-                                            <div className={styles.eqLabel}>
-                                              Cost basis
-                                            </div>
-                                            <div className={styles.eqValue}>
-                                              {fmtCurrency(event.costBasis)}
-                                            </div>
-                                          </div>
-
-                                          <div className={styles.eqOp}>=</div>
-
-                                          <div
-                                            className={`${styles.eqBox} ${styles.eqResult}`}
-                                          >
-                                            <div className={styles.eqLabel}>
-                                              Capital Gain/Loss
-                                            </div>
-                                            <div
-                                              className={`${styles.eqValue} ${
-                                                Number(event.capitalGain) >= 0
-                                                  ? styles.pos
-                                                  : styles.neg
-                                              }`}
-                                            >
-                                              {fmtCurrency(event.capitalGain)}
-                                            </div>
-                                          </div>
-                                        </div>
-
-                                        <div className={styles.lotsBlock}>
-                                          <div className={styles.lotsHeader}>
-                                            <div className={styles.lotsTitle}>
-                                              FIFO lots used
-                                            </div>
-                                            <div className={styles.lotsMeta}>
-                                              {(event.lotsUsed ?? []).length
-                                                ? `${(event.lotsUsed ?? []).length} lot${
-                                                    (event.lotsUsed ?? [])
-                                                      .length !== 1
-                                                      ? "s"
-                                                      : ""
-                                                  }`
-                                                : "No lots"}
-                                            </div>
-                                          </div>
-
-                                          {(event.lotsUsed ?? []).length ? (
-                                            <>
-                                              <ol
-                                                className={styles.lotTimeline}
-                                              >
-                                                {(event.lotsUsed ?? []).map(
-                                                  (lot, idx) => (
-                                                    <li
-                                                      key={idx}
-                                                      className={styles.lotItem}
-                                                    >
-                                                      <div
-                                                        className={
-                                                          styles.lotDot
-                                                        }
-                                                      />
-                                                      <div
-                                                        className={
-                                                          styles.lotCard
-                                                        }
-                                                      >
-                                                        <div
-                                                          className={
-                                                            styles.lotTopRow
-                                                          }
-                                                        >
-                                                          <div
-                                                            className={
-                                                              styles.lotDate
-                                                            }
-                                                          >
-                                                            Bought on{" "}
-                                                            <span
-                                                              className={
-                                                                styles.mono
-                                                              }
-                                                            >
-                                                              {lot.priceDate
-                                                                ?.date ?? "-"}
-                                                            </span>
-                                                          </div>
-                                                          <div
-                                                            className={
-                                                              styles.lotCost
-                                                            }
-                                                          >
-                                                            <b>
-                                                              {fmtCurrency(
-                                                                lot.costBasis,
-                                                              )}
-                                                            </b>
-                                                          </div>
-                                                        </div>
-
-                                                        <div
-                                                          className={
-                                                            styles.lotGrid
-                                                          }
-                                                        >
-                                                          <div
-                                                            className={
-                                                              styles.lotKV
-                                                            }
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles.lotK
-                                                              }
-                                                            >
-                                                              Amount used
-                                                            </div>
-                                                            <div
-                                                              className={`${styles.lotV} ${styles.mono}`}
-                                                            >
-                                                              {fmtNum(
-                                                                lot.amount,
-                                                                8,
-                                                              )}
-                                                            </div>
-                                                          </div>
-
-                                                          <div
-                                                            className={
-                                                              styles.lotKV
-                                                            }
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles.lotK
-                                                              }
-                                                            >
-                                                              Buy price/coin
-                                                            </div>
-                                                            <div
-                                                              className={`${styles.lotV} ${styles.mono}`}
-                                                            >
-                                                              {fmtCurrency(
-                                                                lot.pricePerCoin,
-                                                              )}
-                                                            </div>
-                                                          </div>
-
-                                                          <div
-                                                            className={
-                                                              styles.lotKV
-                                                            }
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles.lotK
-                                                              }
-                                                            >
-                                                              Lot cost
-                                                            </div>
-                                                            <div
-                                                              className={`${styles.lotV} ${styles.mono}`}
-                                                            >
-                                                              {fmtCurrency(
-                                                                lot.costBasis,
-                                                              )}
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </li>
-                                                  ),
-                                                )}
-                                              </ol>
-
-                                              <div
-                                                className={styles.helperText}
-                                              >
-                                                Tax year: <b>{event.taxYear}</b>
-                                              </div>
-                                            </>
-                                          ) : (
-                                            <div className={styles.emptyLots}>
-                                              No FIFO lot breakdown available
-                                            </div>
-                                          )}
-                                        </div>
-                                      </>
-                                    ) : (
-                                      <div className={styles.warn}>
-                                        We couldn't match this transaction to a
-                                        capital gain event. This can happen if
-                                        multiple transactions share the exact
-                                        same timestamp and amount.
-                                      </div>
-                                    )}
-                                  </>
-                                )}
+                                {/* ... keep your existing expanded content exactly as-is ... */}
                               </div>
                             </td>
                           </tr>

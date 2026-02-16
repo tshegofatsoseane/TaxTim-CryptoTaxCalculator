@@ -1126,3 +1126,63 @@
   line-height: 1.45;
 }
 
+
+
+.emptyHero {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.emptyHeroImg {
+  width: min(520px, 65%);
+  height: auto;
+  display: block;
+}
+
+.emptyHeroText {
+  min-width: 220px;
+}
+
+.emptyTitleRow {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+@media (max-width: 760px) {
+  .emptyHero {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .emptyHeroImg {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .emptyTitleRow {
+    justify-content: center;
+  }
+}
+
+.stepKicker {
+  font-size: 12px;
+  font-weight: 900;
+  color: #0f766e;
+  background: rgba(13, 148, 136, 0.08);
+  border: 1px solid rgba(13, 148, 136, 0.14);
+  padding: 6px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
